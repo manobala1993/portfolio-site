@@ -1,62 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bala Manoranjan | Salesforce Developer</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Calculator</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .section { margin-bottom: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem; }
+        input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; }
+        button { background: #007AFF; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; }
+        .result { font-weight: bold; margin-top: 1rem; }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Bala Manoranjan</h1>
-    <p>Senior Salesforce Developer & Integration Consultant</p>
-    <nav>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+    <div class="container">
+        <h2>Monthly Budget Calculator</h2>
+        
+        <div class="section">
+            <h3>Income</h3>
+            <input type="number" id="income" placeholder="Monthly Income (₹)">
+        </div>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I’m a Salesforce Developer with experience in Lightning Web Components, Apex, and integrations with MuleSoft and Snowflake. Passionate about building scalable CRM solutions and optimizing data pipelines.</p>
-  </section>
+        <div class="section">
+            <h3>Expenses</h3>
+            <input type="number" id="utilities" placeholder="Utilities (₹)">
+            <input type="number" id="carEmi" placeholder="Car EMI (₹)">
+            <input type="number" id="personalLoans" placeholder="Personal Loans (₹)">
+            <input type="number" id="creditCard" placeholder="Credit Card Payments (₹)">
+        </div>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <ul>
-      <li>
-        <strong>Lead Scoring Engine (AI PoC)</strong><br />
-        Built with Salesforce, Snowflake, MuleSoft
-      </li>
-      <li>
-        <strong>Real Estate Deal Automation</strong><br />
-        Custom LWC form, Apex triggers, file uploads
-      </li>
-      <!-- Add more as needed -->
-    </ul>
-  </section>
+        <div class="section">
+            <h3>New Loan Calculator</h3>
+            <input type="number" id="loanAmount" placeholder="Loan Amount (₹)">
+            <input type="number" id="interestRate" step="0.1" placeholder="Annual Interest Rate (%)">
+            <input type="number" id="loanTenure" placeholder="Tenure (months)">
+            <button onclick="calculateEmi()">Calculate EMI</button>
+            <div id="emiResult" class="result"></div>
+        </div>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <ul>
-      <li>Salesforce (Apex, LWC, Flows)</li>
-      <li>MuleSoft (MQ, DataWeave)</li>
-      <li>Snowflake, SOQL, Git, CI/CD</li>
-    </ul>
-  </section>
+        <button onclick="calculateBudget()">Calculate Budget</button>
+        <button onclick="resetForm()">Reset</button>
+        <div id="result" class="result"></div>
+    </div>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:bala@example.com">bala@example.com</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/balamanoranjan">balamanoranjan</a></p>
-  </section>
+    <script>
+        function calculateBudget() {
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const expenses = [
+                'utilities', 'carEmi', 'personalLoans', 'creditCard'
+            ].reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
 
-  <footer>
-    <p>&copy; 2025 Bala Manoranjan</p>
-  </footer>
+            const remaining = income - expenses;
+            document.getElementById('result').innerHTML = `
+                Total Expenses: ₹${expenses.toFixed(2)}<br>
+                Remaining Balance: ₹${remaining.toFixed(2)}
+            `;
+        }
+
+        function calculateEmi() {
+            const P = parseFloat(document.getElementById('loanAmount').value);
+            const r = parseFloat(document.getElementById('interestRate').value) / 1200;
+            const n = parseFloat(document.getElementById('loanTenure').value);
+
+            const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            document.getElementById('emiResult').innerHTML = 
+                `Monthly EMI: ₹${emi.toFixed(2)}`;
+        }
+
+        function resetForm() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.querySelectorAll('.result').forEach(el => el.innerHTML = '');
+        }
+    </script>
 </body>
 </html>

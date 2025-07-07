@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Budget & EMI Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+</head>
+<body>
+
+<div class="w3-top w3-black w3-bar w3-card">
+  <a href="index.html" class="w3-bar-item w3-button">HOME</a>
+  <a href="budget.html" class="w3-bar-item w3-button">BUDGET</a>
+  <a href="tech.html" class="w3-bar-item w3-button">TECH</a>
+  <a href="contact.html" class="w3-bar-item w3-button">CONTACT</a>
+</div>
+
+<div class="w3-container w3-padding-64" style="max-width:800px; margin:auto;">
+  <h2 class="w3-center">Monthly Budget & EMI Calculator</h2>
+
+  <div>
+    <h3>Income</h3>
+    <input class="w3-input w3-border" type="number" id="income" placeholder="Monthly Income (₹)">
+    
+    <h3>Expenses</h3>
+    <input class="w3-input w3-border" type="number" id="utilities" placeholder="Utilities (₹)">
+    <input class="w3-input w3-border" type="number" id="carEmi" placeholder="Car EMI (₹)">
+    <input class="w3-input w3-border" type="number" id="personalLoans" placeholder="Personal Loans (₹)">
+    <input class="w3-input w3-border" type="number" id="creditCard" placeholder="Credit Card Payments (₹)">
+
+    <h3>Loan Calculator</h3>
+    <input class="w3-input w3-border" type="number" id="loanAmount" placeholder="Loan Amount (₹)">
+    <input class="w3-input w3-border" type="number" id="interestRate" step="0.1" placeholder="Annual Interest Rate (%)">
+    <input class="w3-input w3-border" type="number" id="loanTenure" placeholder="Tenure (months)">
+
+    <button class="w3-button w3-blue w3-margin-top" onclick="calculateEmi()">Calculate EMI</button>
+    <div id="emiResult" class="w3-margin-top w3-large"></div>
+
+    <button class="w3-button w3-green w3-margin-top" onclick="calculateBudget()">Calculate Budget</button>
+    <button class="w3-button w3-red w3-margin-top" onclick="resetForm()">Reset</button>
+    <div id="result" class="w3-margin-top w3-large"></div>
+  </div>
+</div>
+
+<script>
+function calculateBudget() {
+  const income = parseFloat(document.getElementById('income').value) || 0;
+  const expenses = ['utilities', 'carEmi', 'personalLoans', 'creditCard'].reduce((sum, id) => {
+    return sum + (parseFloat(document.getElementById(id).value) || 0);
+  }, 0);
+  const remaining = income - expenses;
+  document.getElementById('result').innerHTML = `
+    <br>Total Expenses: ₹${expenses.toFixed(2)}<br>
+    Remaining Balance: ₹${remaining.toFixed(2)}
+  `;
+}
+
+function calculateEmi() {
+  const P = parseFloat(document.getElementById('loanAmount').value);
+  const r = parseFloat(document.getElementById('interestRate').value) / 1200;
+  const n = parseFloat(document.getElementById('loanTenure').value);
+  const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  document.getElementById('emiResult').innerHTML = `Monthly EMI: ₹${emi.toFixed(2)}`;
+}
+
+function resetForm() {
+  document.querySelectorAll('input').forEach(i => i.value = '');
+  document.getElementById('result').innerHTML = '';
+  document.getElementById('emiResult').innerHTML = '';
+}
+</script>
+
+</body>
+</html>

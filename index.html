@@ -1,203 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Welcome to the Force</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {font-family: "Lato", sans-serif}
-.mySlides {display: none}
-</style>
+  <title>Welcome to the Force</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
 
-<!-- Navbar -->
 <div class="w3-top">
   <div class="w3-bar w3-black w3-card">
-    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    <a href="#budget" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Budget</a>
-    <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
-    
-    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+    <a href="budget.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">BUDGET</a>
+    <a href="tech.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TECH</a>
+    <a href="contact.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
   </div>
 </div>
 
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-  <a href="#budget" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Budget</a>
- 
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-
+<!-- Add homepage hero message or banner -->
+<div class="w3-container w3-padding-64 w3-center">
+  <h1>Welcome to The Mule Force</h1>
+  <p>A site for financial tools and tech innovation</p>
 </div>
 
-<!-- Page content -->
-<div class="w3-content" style="max-width:2000px;margin-top:46px">
-
-  
-
-  <!-- The Band Section -->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="budget">
-   
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Calculator</title>
-    <style>
-        body { font-family: -apple-system, sans-serif; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; }
-        .section { margin-bottom: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem; }
-        input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; }
-        button { background: #007AFF; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; }
-        .result { font-weight: bold; margin-top: 1rem; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Monthly Budget Calculator</h2>
-        
-        <div class="section">
-            <h3>Income</h3>
-            <input type="number" id="income" placeholder="Monthly Income (₹)">
-        </div>
-
-        <div class="section">
-            <h3>Expenses</h3>
-            <input type="number" id="utilities" placeholder="Utilities (₹)">
-            <input type="number" id="carEmi" placeholder="Car EMI (₹)">
-            <input type="number" id="personalLoans" placeholder="Personal Loans (₹)">
-            <input type="number" id="creditCard" placeholder="Credit Card Payments (₹)">
-        </div>
-
-        <div class="section">
-            <h3>New Loan Calculator</h3>
-            <input type="number" id="loanAmount" placeholder="Loan Amount (₹)">
-            <input type="number" id="interestRate" step="0.1" placeholder="Annual Interest Rate (%)">
-            <input type="number" id="loanTenure" placeholder="Tenure (months)">
-            <button onclick="calculateEmi()">Calculate EMI</button>
-            <div id="emiResult" class="result"></div>
-        </div>
-
-        <button onclick="calculateBudget()">Calculate Budget</button>
-        <button onclick="resetForm()">Reset</button>
-        <div id="result" class="result"></div>
-    </div>
-
-    <script>
-        function calculateBudget() {
-            const income = parseFloat(document.getElementById('income').value) || 0;
-            const expenses = [
-                'utilities', 'carEmi', 'personalLoans', 'creditCard'
-            ].reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
-
-            const remaining = income - expenses;
-            document.getElementById('result').innerHTML = `
-                Total Expenses: ₹${expenses.toFixed(2)}<br>
-                Remaining Balance: ₹${remaining.toFixed(2)}
-            `;
-        }
-
-        function calculateEmi() {
-            const P = parseFloat(document.getElementById('loanAmount').value);
-            const r = parseFloat(document.getElementById('interestRate').value) / 1200;
-            const n = parseFloat(document.getElementById('loanTenure').value);
-
-            const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-            document.getElementById('emiResult').innerHTML = 
-                `Monthly EMI: ₹${emi.toFixed(2)}`;
-        }
-
-        function resetForm() {
-            document.querySelectorAll('input').forEach(input => input.value = '');
-            document.querySelectorAll('.result').forEach(el => el.innerHTML = '');
-        }
-    </script>
-</body>
-  </div>
-
- 
-  <!-- The Contact Section -->
-  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
-    <h2 class="w3-wide w3-center">CONTACT</h2>
-    <p class="w3-opacity w3-center"><i>Fan? Drop a note!</i></p>
-    <div class="w3-row w3-padding-32">
-      <div class="w3-col m6 w3-large w3-margin-bottom">
-        <i class="fa fa-map-marker" style="width:30px"></i>US<br>
-        <i class="fa fa-phone" style="width:30px"></i> Phone: +123-123-1234<br>
-        <i class="fa fa-envelope" style="width:30px"> </i> Email: mail@mail.com<br>
-      </div>
-      <div class="w3-col m6">
-        <form action="/action_page.php" target="_blank">
-          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-            <div class="w3-half">
-              <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
-            </div>
-            <div class="w3-half">
-              <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
-            </div>
-          </div>
-          <input class="w3-input w3-border" type="text" placeholder="Message" required name="Message">
-          <button class="w3-button w3-black w3-section w3-right" type="submit">SEND</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-<!-- End Page Content -->
-</div>
-
-<!-- Image of location/map -->
-<img src="/w3images/map.jpg" class="w3-image w3-greyscale-min" style="width:100%">
-
-<!-- Footer -->
-<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
-  <i class="fa fa-facebook-official w3-hover-opacity"></i>
-  <i class="fa fa-instagram w3-hover-opacity"></i>
-  <i class="fa fa-snapchat w3-hover-opacity"></i>
-  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-  <i class="fa fa-twitter w3-hover-opacity"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"></i>
-  <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+<footer class="w3-container w3-center w3-padding-32 w3-light-grey">
+  <p>© 2025 The Mule Force</p>
 </footer>
-
-<script>
-// Automatic Slideshow - change image every 4 seconds
-var myIndex = 0;
-carousel();
-
-function carousel() {
-  var i;
-  var x = document.getElementsByClassName("mySlides");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  myIndex++;
-  if (myIndex > x.length) {myIndex = 1}    
-  x[myIndex-1].style.display = "block";  
-  setTimeout(carousel, 4000);    
-}
-
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
-// When the user clicks anywhere outside of the modal, close it
-var modal = document.getElementById('ticketModal');
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-</script>
 
 </body>
 </html>

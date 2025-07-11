@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solar Loan Calculator</title>
+<style>
+  /* General styling */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 600px;
+    margin: 2em auto;
+    padding: 1em 2em;
+    background: linear-gradient(135deg, #FFF9E5 0%, #FFD54F 100%);
+    color: #3E2723;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2.5em;
+    margin-bottom: 0.3em;
+    color: #EF6C00;
+    text-shadow: 1px 1px 3px #F57C00;
+  }
+
+  /* Sun icon SVG styling */
+  .sun-icon {
+    display: block;
+    margin: 0 auto 1em;
+    width: 100px;
+    height: 100px;
+    filter: drop-shadow(0 0 4px #FFA726);
+  }
+
+  label {
+    display: block;
+    margin-top: 1.2em;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.55em 0.75em;
+    margin-top: 0.3em;
+    font-size: 1em;
+    border: 2px solid #FFB300;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+  }
+  input:focus {
+    border-color: #EF6C00;
+    outline: none;
+  }
+
+  button {
+    background: #EF6C00;
+    border: none;
+    color: white;
+    padding: 0.8em 1.5em;
+    font-size: 1.1em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1.5em;
+    box-shadow: 0 5px 10px rgba(239, 108, 0, 0.5);
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #FFB300;
+    box-shadow: 0 7px 14px rgba(255, 179, 0, 0.7);
+  }
+  button:active {
+    transform: translateY(2px);
+  }
+  button + button {
+    margin-left: 1em;
+    background: #FFA726;
+  }
+  button + button:hover {
+    background: #FFCC80;
+  }
+
+  .result {
+    margin-top: 2.5em;
+    padding: 1.5em;
+    background: rgba(255, 224, 178, 0.9);
+    border-radius: 12px;
+    border: 2px solid #FFB300;
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    color: #5D4037;
+  }
+  .result h2 {
+    margin-top: 0;
+    color: #E65100;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    body {
+      padding: 1em 1.2em;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    button, button + button {
+      width: 100%;
+      margin: 0.5em 0 0 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sun Icon -->
+<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#FFB300">
+  <circle cx="32" cy="32" r="14"/>
+  <g stroke="#FFB300" stroke-width="3">
+    <line x1="32" y1="2" x2="32" y2="14"/>
+    <line x1="32" y1="50" x2="32" y2="62"/>
+    <line x1="2" y1="32" x2="14" y2="32"/>
+    <line x1="50" y1="32" x2="62" y2="32"/>
+    <line x1="11" y1="11" x2="20" y2="20"/>
+    <line x1="44" y1="44" x2="53" y2="53"/>
+    <line x1="11" y1="53" x2="20" y2="44"/>
+    <line x1="44" y1="20" x2="53" y2="11"/>
+  </g>
+</svg>
+
+<h1>Solar Loan Calculator</h1>
+
+<label>
+  Loan Amount ($):
+  <input type="number" id="loanAmount" min="0" step="0.01" />
+</label>
+
+<label>
+  Annual Interest Rate (%):
+  <input type="number" id="interestRate" min="0" step="0.01" />
+</label>
+
+<label>
+  Monthly Principal Payment During Interest-Free Period ($):
+  <input type="number" id="monthlyPrincipal" min="0" step="0.01" />
+</label>
+
+<label>
+  Interest-Free Period (months):
+  <input type="number" id="interestFreeMonths" min="0" />
+</label>
+
+<label>
+  Lump Sum Payment Month (0 for none):
+  <input type="number" id="lumpSumMonth" min="0" />
+</label>
+
+<label>
+  Lump Sum Payment Amount ($):
+  <input type="number" id="lumpSumAmount" min="0" step="0.01" />
+</label>
+
+<label>
+  Total Loan Term (years):
+  <input type="number" id="loanTermYears" min="1" />
+</label>
+
+<button onclick="calculate()">Calculate</button>
+<button onclick="resetForm()" style="margin-left: 1em;">Reset</button>
+
+<div class="result" id="result" style="display:none;"></div>
+
+<script>
+function calculateMonthlyPayment(principal, monthlyRate, months) {
+  if (monthlyRate === 0) return principal / months;
+  return (monthlyRate * principal) / (1 - Math.pow(1 + monthlyRate, -months));
+}
+
+function calculate() {
+  const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+  const annualInterest = parseFloat(document.getElementById('interestRate').value) / 100;
+  const monthlyPrincipal = parseFloat(document.getElementById('monthlyPrincipal').value);
+  const interestFreeMonths = parseInt(document.getElementById('interestFreeMonths').value);
+  const lumpSumMonth = parseInt(document.getElementById('lumpSumMonth').value);
+  const lumpSumAmount = parseFloat(document.getElementById('lumpSumAmount').value);
+  const loanTermYears = parseInt(document.getElementById('loanTermYears').value);
+
+  if (
+    isNaN(loanAmount) || isNaN(annualInterest) || isNaN(monthlyPrincipal) ||
+    isNaN(interestFreeMonths) || isNaN(lumpSumMonth) || isNaN(lumpSumAmount) || isNaN(loanTermYears)
+  ) {
+    alert("Please fill out all fields with valid numbers.");
+    return;
+  }
+
+  const monthlyInterestRate = annualInterest / 12;
+  let principal = loanAmount;
+
+  for(let month = 1; month <= interestFreeMonths; month++) {
+    if(month === lumpSumMonth && lumpSumMonth > 0) {
+      principal -= lumpSumAmount;
+      if(principal < 0) principal = 0;
+    }
+    principal -= monthlyPrincipal;
+    if(principal < 0) principal = 0;
+  }
+
+  const remainingMonths = loanTermYears * 12 - interestFreeMonths;
+  const monthlyPaymentAfter = calculateMonthlyPayment(principal, monthlyInterestRate, remainingMonths);
+
+  const resultDiv = document.getElementById('result');
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = `
+    <h2>Results</h2>
+    <p><strong>Remaining Principal after ${interestFreeMonths} months:</strong> $${principal.toFixed(2)}</p>
+    <p><strong>Estimated Monthly Payment after interest period:</strong> $${monthlyPaymentAfter.toFixed(2)}</p>
+  `;
+}
+
+function resetForm() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => input.value = '');
+  const resultDiv = document.getElementById('result');
+  resultDiv.style.display = 'none';
+  resultDiv.innerHTML = '';
+}
+</script>
+
+</body>
+</html>

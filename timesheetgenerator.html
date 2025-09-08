@@ -1,86 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Timesheet & Invoice Generator</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background: #f2f2f2; }
-    button { margin-right: 10px; padding: 8px 12px; cursor: pointer; }
-
-    #invoice {
-      display: none;
-      border: 2px solid #333;
-      padding: 20px;
-      margin-top: 30px;
-      max-width: 600px;
-    }
-    #invoice h2 { margin-top: 0; }
-    .invoice-header { margin-bottom: 20px; }
-    .invoice-section { margin-bottom: 15px; }
-    .invoice-section span { display: inline-block; min-width: 120px; }
-  </style>
+<meta charset="UTF-8">
+<title>Professional Timesheet Invoice</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8faff;
+    color: #333;
+  }
+  h2 { color: #0056b3; text-align: center; margin: 20px 0; }
+  .form-section {
+    border: 2px solid #0056b3;
+    padding: 15px;
+    margin: 20px auto;
+    border-radius: 8px;
+    background: #ffffff;
+    max-width: 700px;
+  }
+  label { display: inline-block; width: 130px; margin-bottom: 10px; font-weight: bold; color: #0056b3; }
+  input { padding: 6px; margin-bottom: 10px; width: 200px; border: 1px solid #ccc; border-radius: 4px; }
+  .btn { padding: 10px 18px; margin-top: 10px; cursor: pointer; border: none; border-radius: 5px; background: #0056b3; color: white; font-weight: bold; }
+  .btn:hover { background: #003d80; }
+  /* Invoice Styling */
+  #invoice {
+    display: none;
+    background: white;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 30px;
+    border: 2px solid #0056b3;
+    border-radius: 8px;
+  }
+  #invoice h3 { color: #0056b3; margin-top: 0; text-align: center; }
+  #invoice table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+  #invoice th { background: #0056b3; color: white; padding: 10px; }
+  #invoice td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+  #invoice tbody tr:nth-child(1) { background: #eaf4ff; font-weight: bold; }
+  #invoice tbody tr:nth-child(2) { background: #ffeaea; color: #c9302c; font-weight: bold; }
+  .summary { margin-top: 20px; font-weight: bold; font-size: 1.2em; color: #2e7d32; padding: 10px; background: #eafaea; border: 2px solid #2e7d32; border-radius: 6px; text-align: center; }
+  /* Footer */
+  #invoice-footer { margin-top: 30px; font-size: 0.95em; text-align: center; color: #555; }
+  #invoice-footer p { margin: 5px 0; }
+  /* Print Styles */
+  @media print {
+    body { background: white; margin: 0; }
+    .form-section, .btn { display: none; }
+    #invoice { display: block; margin: 0; border: none; padding: 0; }
+  }
+</style>
 </head>
 <body>
 
-<h2>Timesheet Entry</h2>
-<table id="timesheet">
-  <tr><th>Date</th><th>Task</th><th>Hours</th></tr>
-  <tr>
-    <td><input type="date"></td>
-    <td><input type="text" placeholder="Task"></td>
-    <td><input type="number" class="hours" value="0"></td>
-  </tr>
-</table>
-<button onclick="addRow()">➕ Add Row</button>
-<button onclick="generateInvoice()">🧾 Generate Invoice</button>
+<h2>Timesheet Invoice Generator</h2>
+
+<div class="form-section">
+  <label>Consultant:</label><input id="consultant" type="text" placeholder="Your Name"><br>
+  <label>Employer:</label><input id="employer" type="text" placeholder="Your Employer"><br>
+  <label>Client:</label><input id="client" type="text" placeholder="Client Name"><br>
+  <label>Hourly Rate ($):</label><input id="rate" type="number" value="50"><br>
+  <label>Month:</label><input id="month" type="month" value=""><br>
+  <label>Total Hours:</label><input id="hours" type="number" value="0"><br>
+  <label>Extra Hours:</label><input id="extraHours" type="number" value="0"><br>
+  <button class="btn" onclick="generateInvoice()">Generate Invoice</button>
+  <button class="btn" onclick="window.print()">Print / Save PDF</button>
+  <button class="btn" onclick="downloadCSV()">Download CSV</button>
+</div>
 
 <div id="invoice">
-  <h2>Invoice</h2>
-  <div class="invoice-header">
-    <p><span><b>Consultant:</b></span> John Doe</p>
-    <p><span><b>Employer:</b></span> My Employer Inc.</p>
-    <p><span><b>Client:</b></span> Acme Corp.</p>
-    <p><span><b>Date:</b></span> <span id="invoiceDate"></span></p>
-    <p><span><b>Invoice #:</b></span> <span id="invoiceNum"></span></p>
-  </div>
+  <h3>Invoice</h3>
+  <p><strong>Consultant:</strong> <span id="iConsultant"></span></p>
+  <p><strong>Employer:</strong> <span id="iEmployer"></span></p>
+  <p><strong>Client:</strong> <span id="iClient"></span></p>
+  <p><strong>Month:</strong> <span id="iMonth"></span></p>
 
-  <div class="invoice-section">
-    <p><span><b>Total Hours:</b></span> <span id="totalHours"></span></p>
-    <p><span><b>Hourly Rate:</b></span> $<span id="rate">50</span></p>
-    <p><span><b>Amount Due:</b></span> $<span id="amount"></span></p>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Hours</th>
+        <th>Rate ($)</th>
+        <th>Total ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Regular Hours</td>
+        <td id="iHours"></td>
+        <td id="iRate"></td>
+        <td id="iTotal"></td>
+      </tr>
+      <tr>
+        <td>Extra Hours</td>
+        <td id="iExtraHours"></td>
+        <td id="iRate2"></td>
+        <td id="iExtraTotal"></td>
+      </tr>
+    </tbody>
+  </table>
 
-  <p><i>Note: Amount is auto-calculated. Edit hourly rate in code if needed.</i></p>
+  <p class="summary">Grand Total: $<span id="iGrandTotal"></span></p>
+
+  <div id="invoice-footer">
+  
+    <p>Thank you for your business!</p>
+  </div>
 </div>
 
 <script>
-function addRow() {
-  let table = document.getElementById("timesheet");
-  let row = table.insertRow(-1);
-  row.innerHTML = `
-    <td><input type="date"></td>
-    <td><input type="text" placeholder="Task"></td>
-    <td><input type="number" class="hours" value="0"></td>
-  `;
-}
-
 function generateInvoice() {
-  let hours = document.querySelectorAll(".hours");
-  let total = 0;
-  hours.forEach(h => total += parseFloat(h.value || 0));
+  const consultant = document.getElementById("consultant").value;
+  const employer = document.getElementById("employer").value;
+  const client = document.getElementById("client").value;
+  const rate = parseFloat(document.getElementById("rate").value) || 0;
+  const month = document.getElementById("month").value;
+  const hours = parseFloat(document.getElementById("hours").value) || 0;
+  const extraHours = parseFloat(document.getElementById("extraHours").value) || 0;
 
-  let rate = parseFloat(document.getElementById("rate").innerText);
-  let invoiceDate = new Date().toLocaleDateString();
-  let invoiceNum = "INV-" + new Date().getTime(); // simple unique ID
+  const total = hours * rate;
+  const extraTotal = extraHours * rate;
+  const grandTotal = total + extraTotal;
 
-  document.getElementById("totalHours").innerText = total;
-  document.getElementById("amount").innerText = (total * rate).toFixed(2);
-  document.getElementById("invoiceDate").innerText = invoiceDate;
-  document.getElementById("invoiceNum").innerText = invoiceNum;
+  document.getElementById("iConsultant").textContent = consultant;
+  document.getElementById("iEmployer").textContent = employer;
+  document.getElementById("iClient").textContent = client;
+  document.getElementById("iMonth").textContent = month;
+
+  document.getElementById("iHours").textContent = hours;
+  document.getElementById("iRate").textContent = rate.toFixed(2);
+  document.getElementById("iTotal").textContent = total.toFixed(2);
+
+  document.getElementById("iExtraHours").textContent = extraHours;
+  document.getElementById("iRate2").textContent = rate.toFixed(2);
+  document.getElementById("iExtraTotal").textContent = extraTotal.toFixed(2);
+
+  document.getElementById("iGrandTotal").textContent = grandTotal.toFixed(2);
 
   document.getElementById("invoice").style.display = "block";
+}
+
+function downloadCSV() {
+  const consultant = document.getElementById("consultant").value;
+  const employer = document.getElementById("employer").value;
+  const client = document.getElementById("client").value;
+  const rate = parseFloat(document.getElementById("rate").value) || 0;
+  const month = document.getElementById("month").value;
+  const hours = parseFloat(document.getElementById("hours").value) || 0;
+  const extraHours = parseFloat(document.getElementById("extraHours").value) || 0;
+
+  const total = hours * rate;
+  const extraTotal = extraHours * rate;
+  const grandTotal = total + extraTotal;
+
+  let csv = "Consultant,Employer,Client,Month,Description,Hours,Rate,Total\n";
+  csv += `${consultant},${employer},${client},${month},Regular Hours,${hours},${rate},${total}\n`;
+  csv += `${consultant},${employer},${client},${month},Extra Hours,${extraHours},${rate},${extraTotal}\n`;
+  csv += `${consultant},${employer},${client},${month},Grand Total,,,$${grandTotal}\n`;
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `Invoice_${month}.csv`;
+  link.click();
+}
+
+// set default month to current
+window.onload = () => {
+  const today = new Date();
+  const month = today.toISOString().slice(0,7);
+  document.getElementById("month").value = month;
 }
 </script>
 

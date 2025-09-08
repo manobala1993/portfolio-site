@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timesheet & Invoice Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f2f2f2; }
+    button { margin-right: 10px; padding: 8px 12px; cursor: pointer; }
+
+    #invoice {
+      display: none;
+      border: 2px solid #333;
+      padding: 20px;
+      margin-top: 30px;
+      max-width: 600px;
+    }
+    #invoice h2 { margin-top: 0; }
+    .invoice-header { margin-bottom: 20px; }
+    .invoice-section { margin-bottom: 15px; }
+    .invoice-section span { display: inline-block; min-width: 120px; }
+  </style>
+</head>
+<body>
+
+<h2>Timesheet Entry</h2>
+<table id="timesheet">
+  <tr><th>Date</th><th>Task</th><th>Hours</th></tr>
+  <tr>
+    <td><input type="date"></td>
+    <td><input type="text" placeholder="Task"></td>
+    <td><input type="number" class="hours" value="0"></td>
+  </tr>
+</table>
+<button onclick="addRow()">➕ Add Row</button>
+<button onclick="generateInvoice()">🧾 Generate Invoice</button>
+
+<div id="invoice">
+  <h2>Invoice</h2>
+  <div class="invoice-header">
+    <p><span><b>Consultant:</b></span> John Doe</p>
+    <p><span><b>Employer:</b></span> My Employer Inc.</p>
+    <p><span><b>Client:</b></span> Acme Corp.</p>
+    <p><span><b>Date:</b></span> <span id="invoiceDate"></span></p>
+    <p><span><b>Invoice #:</b></span> <span id="invoiceNum"></span></p>
+  </div>
+
+  <div class="invoice-section">
+    <p><span><b>Total Hours:</b></span> <span id="totalHours"></span></p>
+    <p><span><b>Hourly Rate:</b></span> $<span id="rate">50</span></p>
+    <p><span><b>Amount Due:</b></span> $<span id="amount"></span></p>
+  </div>
+
+  <p><i>Note: Amount is auto-calculated. Edit hourly rate in code if needed.</i></p>
+</div>
+
+<script>
+function addRow() {
+  let table = document.getElementById("timesheet");
+  let row = table.insertRow(-1);
+  row.innerHTML = `
+    <td><input type="date"></td>
+    <td><input type="text" placeholder="Task"></td>
+    <td><input type="number" class="hours" value="0"></td>
+  `;
+}
+
+function generateInvoice() {
+  let hours = document.querySelectorAll(".hours");
+  let total = 0;
+  hours.forEach(h => total += parseFloat(h.value || 0));
+
+  let rate = parseFloat(document.getElementById("rate").innerText);
+  let invoiceDate = new Date().toLocaleDateString();
+  let invoiceNum = "INV-" + new Date().getTime(); // simple unique ID
+
+  document.getElementById("totalHours").innerText = total;
+  document.getElementById("amount").innerText = (total * rate).toFixed(2);
+  document.getElementById("invoiceDate").innerText = invoiceDate;
+  document.getElementById("invoiceNum").innerText = invoiceNum;
+
+  document.getElementById("invoice").style.display = "block";
+}
+</script>
+
+</body>
+</html>

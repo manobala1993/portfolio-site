@@ -1,106 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
-  <style>
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-}
-
-.hero {
-    text-align: center;
-    padding: 3rem 1rem;
-    margin-bottom: 3rem;
-}
-
-.tagline {
-    font-size: 1.25rem;
-    color: #555;
-    font-weight: 300;
-}
-
-.about {
-    margin-bottom: 3rem;
-}
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.feature-card {
-    background: #f8f9fa;
-    padding: 2rem;
-    border-radius: 8px;
-    border-left: 4px solid #3498db;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.feature-card h3 {
-    margin-top: 0;
-    color: #2c3e50;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    margin-top: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover,
-.btn:focus {
-    background-color: #2980b9;
-}
-</style>
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998077449063507"
-     crossorigin="anonymous">
-    
-  </script>
-  <title>Welcome to the Force</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Guide: OAuth 2.0 Authentication Between MuleSoft and Salesforce | The Mule Force</title>
+    <meta name="description" content="Learn how to implement OAuth 2.0 authentication between MuleSoft and Salesforce with JWT Bearer Token flow. Includes code samples and troubleshooting tips.">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .article-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .article-title {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .article-content h2 {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00A1E0;
+        }
+        .article-content h3 {
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+        }
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        pre code {
+            background: none;
+            color: #abb2bf;
+            padding: 0;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #00A1E0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        .toc a {
+            color: #00A1E0;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .related-posts {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .related-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #00A1E0;
+        }
+        .related-card h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        .related-card p {
+            font-size: 0.9rem;
+            color: #6a6a6a;
+            margin-bottom: 0.75rem;
+        }
+        .related-card a {
+            color: #00A1E0;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">The Mule Force</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../categories.html">Categories</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<!-- Navbar -->
-<main class="container">
-    <section class="hero">
-        <h1>Welcome to The Mule Force</h1>
-        <p class="tagline">Personal Growth | Financial Tools | Tech Innovation</p>
-    </section>
+    <!-- Article Content -->
+    <div class="article-container">
+        <article>
+            <!-- Article Header -->
+            <header class="article-header">
+                <div class="article-meta">
+                    <span class="category">MuleSoft + Salesforce</span>
+                    <span class="read-time">⏱️ 8 min read</span>
+                    <span class="date">📅 January 3, 2026</span>
+                </div>
+                <h1 class="article-title">Complete Guide: OAuth 2.0 Authentication Between MuleSoft and Salesforce</h1>
+                <p style="font-size: 1.2rem; color: #6a6a6a;">Learn how to implement secure OAuth 2.0 authentication using JWT Bearer Token flow for seamless MuleSoft-Salesforce integration.</p>
+            </header>
 
-    <section class="about">
-        <h2>What We Offer</h2>
-        <div class="features">
-            <div class="feature-card">
-                <h3>💰 Budget Tools</h3>
-                <p>Smart financial calculators and budget planning tools to help you manage your money effectively.</p>
-                <a href="budget.html" class="btn">Explore Budget Tools</a>
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📋 Table of Contents</h3>
+                <ul>
+                    <li><a href="#problem">The Problem</a></li>
+                    <li><a href="#solution">Solution Overview</a></li>
+                    <li><a href="#prerequisites">Prerequisites</a></li>
+                    <li><a href="#setup">Salesforce Connected App Setup</a></li>
+                    <li><a href="#mulesoft">MuleSoft Configuration</a></li>
+                    <li><a href="#testing">Testing the Integration</a></li>
+                    <li><a href="#troubleshooting">Common Issues & Solutions</a></li>
+                    <li><a href="#best-practices">Best Practices</a></li>
+                </ul>
             </div>
-            
-            <div class="feature-card">
-                <h3>🔧 Tech Solutions</h3>
-                <p>Practical tech tools including solar calculators, timesheet generators, and more.</p>
-                <a href="tech.html" class="btn">View Tech Tools</a>
+
+            <!-- Article Body -->
+            <div class="article-content">
+                <h2 id="problem">🎯 The Problem</h2>
+                <p>When integrating MuleSoft with Salesforce, you need secure, automated authentication without storing usernames and passwords. Traditional username-password authentication poses several challenges:</p>
+                <ul>
+                    <li>Security risks of storing credentials</li>
+                    <li>Password expiration issues</li>
+                    <li>Two-factor authentication complications</li>
+                    <li>Difficulty managing authentication in production environments</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ Common Mistake:</strong> Many developers initially try using username-password authentication, which leads to maintenance nightmares when passwords expire or 2FA is enforced.
+                </div>
+
+                <h2 id="solution">💡 Solution Overview</h2>
+                <p>OAuth 2.0 JWT Bearer Token Flow provides a secure, automated authentication method that:</p>
+                <ul>
+                    <li>Uses certificate-based authentication</li>
+                    <li>Doesn't require user interaction</li>
+                    <li>Works with Salesforce security policies</li>
+                    <li>Provides refresh token capabilities</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>💡 Key Concept:</strong> JWT (JSON Web Token) Bearer Flow uses a signed token instead of passwords, making it ideal for server-to-server integrations.
+                </div>
+
+                <h2 id="prerequisites">📋 Prerequisites</h2>
+                <p>Before starting, ensure you have:</p>
+                <ul>
+                    <li>Salesforce Developer/Production org with API access</li>
+                    <li>System Administrator profile or equivalent permissions</li>
+                    <li>MuleSoft Anypoint Platform account</li>
+                    <li>Basic understanding of SSL certificates</li>
+                    <li>OpenSSL installed (for certificate generation)</li>
+                </ul>
+
+                <h2 id="setup">🔧 Salesforce Connected App Setup</h2>
+                
+                <h3>Step 1: Generate Self-Signed Certificate</h3>
+                <p>First, generate a private key and certificate using OpenSSL:</p>
+                
+                <pre><code># Generate private key
+openssl genrsa -out server.key 2048
+
+# Generate certificate signing request
+openssl req -new -key server.key -out server.csr
+
+# Generate self-signed certificate (valid for 365 days)
+openssl x509 -req -sha256 -days 365 -in server.csr \
+  -signkey server.key -out server.crt</code></pre>
+
+                <div class="success-box">
+                    <strong>✅ Pro Tip:</strong> Store these files securely! You'll need server.key for MuleSoft and server.crt for Salesforce.
+                </div>
+
+                <h3>Step 2: Create Connected App in Salesforce</h3>
+                <ol>
+                    <li>Navigate to <strong>Setup → App Manager → New Connected App</strong></li>
+                    <li>Fill in basic information:
+                        <ul>
+                            <li>Connected App Name: "MuleSoft Integration"</li>
+                            <li>API Name: Auto-generated</li>
+                            <li>Contact Email: your email</li>
+                        </ul>
+                    </li>
+                    <li>Enable OAuth Settings:
+                        <ul>
+                            <li>Check "Enable OAuth Settings"</li>
+                            <li>Callback URL: <code>https://login.salesforce.com</code></li>
+                            <li>Check "Use digital signatures"</li>
+                            <li>Upload your <code>server.crt</code> file</li>
+                        </ul>
+                    </li>
+                    <li>Selected OAuth Scopes:
+                        <ul>
+                            <li>Full access (full)</li>
+                            <li>Perform requests on your behalf at any time (refresh_token, offline_access)</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Step 3: Configure Connected App Policies</h3>
+                <p>After creating the Connected App:</p>
+                <ol>
+                    <li>Click <strong>Manage</strong> on your Connected App</li>
+                    <li>Click <strong>Edit Policies</strong></li>
+                    <li>Set "Permitted Users" to <strong>Admin approved users are pre-authorized</strong></li>
+                    <li>Set IP Relaxation to <strong>Relax IP restrictions</strong></li>
+                    <li>Save changes</li>
+                </ol>
+
+                <h3>Step 4: Pre-authorize Users</h3>
+                <ol>
+                    <li>From the Connected App, click <strong>Manage Profiles</strong></li>
+                    <li>Select profiles that will use this integration (e.g., System Administrator)</li>
+                    <li>Save</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>📝 Note:</strong> Save the Consumer Key (Client ID) from the Connected App - you'll need it for MuleSoft configuration.
+                </div>
+
+                <h2 id="mulesoft">⚙️ MuleSoft Configuration</h2>
+                
+                <h3>Step 1: Add Salesforce Connector</h3>
+                <p>In your Mule project, add the Salesforce connector dependency:</p>
+                
+                <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+    &lt;artifactId&gt;mule-salesforce-connector&lt;/artifactId&gt;
+    &lt;version&gt;10.18.0&lt;/version&gt;
+    &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+
+                <h3>Step 2: Configure Global Salesforce Configuration</h3>
+                <p>Create a global configuration with JWT Bearer authentication:</p>
+                
+                <pre><code>&lt;salesforce:sfdc-config name="Salesforce_Config"&gt;
+    &lt;salesforce:jwt-bearer-connection 
+        consumerKey="${sfdc.consumerKey}"
+        keyStore="${sfdc.keystore.path}"
+        storePassword="${sfdc.keystore.password}"
+        principal="${sfdc.username}"
+        tokenEndpoint="${sfdc.token.endpoint}" /&gt;
+&lt;/salesforce:sfdc-config&gt;</code></pre>
+
+                <h3>Step 3: Configure Properties File</h3>
+                <p>Add these properties to your <code>config.yaml</code> or properties file:</p>
+                
+                <pre><code>sfdc:
+  consumerKey: "YOUR_CONSUMER_KEY_FROM_CONNECTED_APP"
+  keystore:
+    path: "certificates/server.key"
+    password: ""
+  username: "your.salesforce.username@company.com"
+  token:
+    endpoint: "https://login.salesforce.com/services/oauth2/token"</code></pre>
+
+                <div class="warning-box">
+                    <strong>⚠️ Security Warning:</strong> Never commit certificates or keys to version control. Use CloudHub properties or secure vaults for production.
+                </div>
+
+                <h3>Step 4: Test the Connection</h3>
+                <p>Create a simple flow to test authentication:</p>
+                
+                <pre><code>&lt;flow name="test-salesforce-auth"&gt;
+    &lt;http:listener config-ref="HTTP_Listener" path="/test"/&gt;
+    
+    &lt;salesforce:query config-ref="Salesforce_Config"&gt;
+        &lt;salesforce:salesforce-query&gt;
+            SELECT Id, Name FROM Account LIMIT 1
+        &lt;/salesforce:salesforce-query&gt;
+    &lt;/salesforce:query&gt;
+    
+    &lt;ee:transform&gt;
+        &lt;ee:message&gt;
+            &lt;ee:set-payload&gt;&lt;![CDATA[
+                %dw 2.0
+                output application/json
+                ---
+                {
+                    message: "Connected successfully!",
+                    accountCount: sizeOf(payload)
+                }
+            ]]&gt;&lt;/ee:set-payload&gt;
+        &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+&lt;/flow&gt;</code></pre>
+
+                <h2 id="testing">🧪 Testing the Integration</h2>
+                <ol>
+                    <li>Deploy your MuleSoft application</li>
+                    <li>Call the test endpoint: <code>http://localhost:8081/test</code></li>
+                    <li>Verify you receive a successful response with account data</li>
+                </ol>
+
+                <h2 id="troubleshooting">🔍 Common Issues & Solutions</h2>
+
+                <h3>Error: "invalid_grant: authentication failure"</h3>
+                <p><strong>Cause:</strong> User not pre-authorized or incorrect certificate.</p>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li>Verify the user is added to the Connected App profile/permission set</li>
+                    <li>Ensure the certificate in Salesforce matches your private key</li>
+                    <li>Check that the username matches exactly (including sandbox suffix)</li>
+                </ul>
+
+                <h3>Error: "invalid_client_id"</h3>
+                <p><strong>Cause:</strong> Incorrect Consumer Key.</p>
+                <p><strong>Solution:</strong> Copy the Consumer Key from Connected App details (not the Consumer Secret).</p>
+
+                <h3>Error: "Failed to convert PEM to DER"</h3>
+                <p><strong>Cause:</strong> Certificate format issue.</p>
+                <p><strong>Solution:</strong> Use the private key (.key file) not the certificate (.crt file) in MuleSoft.</p>
+
+                <h3>Error: "token endpoint returned 400"</h3>
+                <p><strong>Cause:</strong> Wrong token endpoint URL.</p>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li>Production: <code>https://login.salesforce.com/services/oauth2/token</code></li>
+                    <li>Sandbox: <code>https://test.salesforce.com/services/oauth2/token</code></li>
+                </ul>
+
+                <h2 id="best-practices">✨ Best Practices</h2>
+
+                <h3>1. Certificate Management</h3>
+                <ul>
+                    <li>Set certificate expiration reminders (before 365 days)</li>
+                    <li>Store certificates in secure vaults (CloudHub Secrets Manager)</li>
+                    <li>Never commit certificates to Git repositories</li>
+                    <li>Use different certificates for each environment</li>
+                </ul>
+
+                <h3>2. Error Handling</h3>
+                <pre><code>&lt;error-handler&gt;
+    &lt;on-error-propagate type="SALESFORCE:CONNECTIVITY"&gt;
+        &lt;logger level="ERROR" 
+                message="Salesforce authentication failed: #[error.description]"/&gt;
+        &lt;!-- Add retry logic or notification here --&gt;
+    &lt;/on-error-propagate&gt;
+&lt;/error-handler&gt;</code></pre>
+
+                <h3>3. Multiple Environments</h3>
+                <p>Use property files per environment:</p>
+                <pre><code>config-dev.yaml
+config-test.yaml  
+config-prod.yaml</code></pre>
+
+                <h3>4. Monitoring</h3>
+                <ul>
+                    <li>Monitor API call limits in Salesforce</li>
+                    <li>Set up CloudHub alerts for authentication failures</li>
+                    <li>Log all authentication attempts</li>
+                </ul>
+
+                <h3>5. Performance</h3>
+                <ul>
+                    <li>Use connection pooling for high-volume integrations</li>
+                    <li>Implement caching for frequently accessed data</li>
+                    <li>Batch operations when possible to reduce API calls</li>
+                </ul>
+
+                <div class="success-box">
+                    <strong>🎉 Congratulations!</strong> You now have a secure, production-ready OAuth 2.0 authentication setup between MuleSoft and Salesforce.
+                </div>
+
+                <h2>📚 Additional Resources</h2>
+                <ul>
+                    <li><a href="https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm">Salesforce: OAuth 2.0 JWT Bearer Flow</a></li>
+                    <li><a href="https://docs.mulesoft.com/salesforce-connector/latest/">MuleSoft: Salesforce Connector Documentation</a></li>
+                    <li><a href="#">Download Sample Project (GitHub)</a></li>
+                </ul>
+
             </div>
-            
-            <div class="feature-card">
-                <h3>📈 Personal Growth</h3>
-                <p>Resources and insights for continuous learning and self-improvement.</p>
-                <a href="contact.html" class="btn">Get in Touch</a>
+        </article>
+
+        <!-- Related Posts -->
+        <section class="related-posts">
+            <h2>Related Articles</h2>
+            <div class="related-grid">
+                <div class="related-card">
+                    <h4>Error Handling in Salesforce Integrations</h4>
+                    <p>Build robust error handling with retry mechanisms and notifications.</p>
+                    <a href="#">Read More →</a>
+                </div>
+                <div class="related-card">
+                    <h4>Bulk Data Migration Best Practices</h4>
+                    <p>Learn how to handle large-scale data migrations efficiently.</p>
+                    <a href="#">Read More →</a>
+                </div>
+                <div class="related-card">
+                    <h4>Platform Events with MuleSoft</h4>
+                    <p>Implement real-time event-driven architecture.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>The Mule Force</h4>
+                    <p>Sharing real-world MuleSoft and Salesforce integration expertise.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="../categories.html">Categories</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 The Mule Force. All rights reserved.</p>
             </div>
         </div>
-    </section>
-</main>
+    </footer>
+</body>
 </html>

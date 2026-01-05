@@ -615,3 +615,85 @@ a:hover {
 .btn-secondary:hover {
     background-color: #e55a2b;
 }
+/* ========================================
+   Google AdSense Ad Containers
+   ======================================== */
+
+/* General Ad Container */
+.ad-container {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.ad-label {
+    font-size: 0.75rem;
+    color: #6a6a6a;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+/* Header Banner Ad */
+.ad-header {
+    max-width: 1200px;
+    margin: 1rem auto;
+    padding: 1rem;
+}
+
+/* Sidebar Ad (for desktop layouts) */
+.ad-sidebar {
+    position: sticky;
+    top: 100px;
+    margin-bottom: 2rem;
+}
+
+/* In-Article Ad */
+.ad-in-article {
+    margin: 2.5rem 0;
+    clear: both;
+}
+
+/* Responsive Ad Sizing */
+@media (max-width: 768px) {
+    .ad-sidebar {
+        position: relative;
+        top: 0;
+    }
+    
+    .ad-container {
+        padding: 0.5rem;
+    }
+}
+
+/* Article Layout with Sidebar for Ads */
+.article-with-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 20px;
+}
+
+.article-main-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.article-sidebar-ads {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media (max-width: 968px) {
+    .article-with-sidebar {
+        grid-template-columns: 1fr;
+    }
+}

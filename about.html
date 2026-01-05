@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Manobala - My Journey in Integration | The Mule Force</title>
+    <meta name="description" content="The story of how I became a dual-certified Salesforce and MuleSoft expert, solving complex enterprise integration challenges.">
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #00A1E0 0%, #0176D3 100%);
+            color: white;
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .about-hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .story-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .story-intro {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-medium);
+        }
+        
+        .story-intro p:first-child::first-letter {
+            font-size: 4rem;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1rem 0.1rem 0 0;
+            color: var(--primary-color);
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            border: 5px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+        
+        .timeline-year {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-year {
+            right: calc(50% + 80px);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-year {
+            left: calc(50% + 80px);
+        }
+        
+        .timeline-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .timeline-content .role {
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .timeline-content p {
+            color: var(--text-medium);
+            line-height: 1.7;
+        }
+        
+        .achievement-tag {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 0.5rem 0.5rem 0 0;
+        }
+        
+        .philosophy-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 4rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .philosophy-box {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-left: 6px solid var(--primary-color);
+        }
+        
+        .philosophy-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .philosophy-box p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+        }
+        
+        .philosophy-box blockquote {
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .value-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .value-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        
+        .value-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+        }
+        
+        .value-card p {
+            font-size: 0.95rem;
+            color: var(--text-medium);
+        }
+        
+        .impact-section {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+        
+        .cta-about {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .cta-about h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-about p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        @media (max-width: 968px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                padding-left: 80px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+                margin-left: 0 !important;
+            }
+            
+            .timeline-marker {
+                left: 30px;
+            }
+            
+            .timeline-year {
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .story-intro {
+                padding: 2rem;
+            }
+            
+            .philosophy-box {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">The Mule Force</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="about.html" style="color: var(--primary-color);">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="about-hero">
+        <h1>The Story Behind The Mule Force</h1>
+        <p class="about-hero-subtitle">
+            How a curious developer became a bridge between two powerful platforms, 
+            solving complex integration challenges that others said were impossible.
+        </p>
+    </header>
+
+    <!-- Story Introduction -->
+    <section class="story-section">
+        <div class="story-intro">
+            <p>
+                Every developer has that moment when they realize that solving complex problems isn't just 
+                about writing code—it's about understanding how different systems communicate, how data flows 
+                across platforms, and how to make enterprise applications work together seamlessly.
+            </p>
+            <p>
+                For me, that moment came when I was tasked with integrating a legacy system with Salesforce. 
+                Everyone said it would take months. I knew there had to be a better way. That's when I discovered 
+                MuleSoft, and my journey into the world of enterprise integration truly began.
+            </p>
+            <p>
+                Today, I'm one of the few developers who carries deep expertise in both Salesforce and MuleSoft—a 
+                combination that has allowed me to solve problems that traditional single-platform developers 
+                struggle with. This is my story.
+            </p>
+        </div>
+
+        <!-- Timeline -->
+        <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">My Journey</h2>
+        
+        <div class="timeline">
+            <!-- 2018 - Beginning -->
+            <div class="timeline-item">
+                <div class="timeline-marker">🚀</div>
+                <div class="timeline-year">2018</div>
+                <div class="timeline-content">
+                    <h3>The Beginning</h3>
+                    <span class="role">Junior Salesforce Developer</span>
+                    <p>
+                        Started my journey in the Salesforce ecosystem. Fell in love with the platform's 
+                        flexibility and power. Within months, I earned my Platform Developer I and 
+                        Administrator certifications.
+                    </p>
+                    <span class="achievement-tag">Platform Developer I</span>
+                    <span class="achievement-tag">Administrator</span>
+                </div>
+            </div>
+
+            <!-- 2019 - The Challenge -->
+            <div class="timeline-item">
+                <div class="timeline-marker">💡</div>
+                <div class="timeline-year">2019</div>
+                <div class="timeline-content">
+                    <h3>The Integration Challenge</h3>
+                    <span class="role">Salesforce Developer</span>
+                    <p>
+                        Faced my first major integration project: connecting Salesforce to a complex 
+                        SAP system. Traditional point-to-point integration wasn't scalable. This 
+                        introduced me to MuleSoft and the concept of API-led connectivity. I was hooked.
+                    </p>
+                    <span class="achievement-tag">First MuleSoft Project</span>
+                    <span class="achievement-tag">API-Led Architecture</span>
+                </div>
+            </div>
+
+            <!-- 2020 - Dual Expertise -->
+            <div class="timeline-item">
+                <div class="timeline-marker">🎯</div>
+                <div class="timeline-year">2020</div>
+                <div class="timeline-content">
+                    <h3>Building Dual Expertise</h3>
+                    <span class="role">Integration Specialist</span>
+                    <p>
+                        Achieved Platform Developer II and Service Cloud Consultant certifications. 
+                        Simultaneously deepened my MuleSoft skills, learning DataWeave, error handling 
+                        patterns, and CloudHub deployment strategies. Became the go-to person for 
+                        complex integrations.
+                    </p>
+                    <span class="achievement-tag">Platform Developer II</span>
+                    <span class="achievement-tag">Service Cloud Consultant</span>
+                </div>
+            </div>
+
+            <!-- 2021-2022 - Experience Cloud & Azure -->
+            <div class="timeline-item">
+                <div class="timeline-marker">🌐</div>
+                <div class="timeline-year">2022</div>
+                <div class="timeline-content">
+                    <h3>Expanding Horizons</h3>
+                    <span class="role">Senior Integration Developer</span>
+                    <p>
+                        Led Experience Cloud implementations, creating custom portals that seamlessly 
+                        integrated with backend systems via MuleSoft. Started working with Azure DevOps 
+                        to build robust CI/CD pipelines for both Salesforce and MuleSoft deployments.
+                    </p>
+                    <span class="achievement-tag">Experience Cloud Expert</span>
+                    <span class="achievement-tag">Azure CI/CD</span>
+                </div>
+            </div>
+
+            <!-- 2023-2024 - Data Cloud -->
+            <div class="timeline-item">
+                <div class="timeline-marker">💾</div>
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <h3>Data Cloud Pioneer</h3>
+                    <span class="role">Integration Architect</span>
+                    <p>
+                        Specialized in Salesforce Data Cloud integrations, particularly connecting 
+                        Snowflake data warehouses to create unified customer profiles. Implemented 
+                        complex identity resolution strategies and real-time data activation patterns.
+                    </p>
+                    <span class="achievement-tag">Data Cloud Integration</span>
+                    <span class="achievement-tag">Snowflake Expert</span>
+                </div>
+            </div>
+
+            <!-- 2025-Present - Trailblazer -->
+            <div class="timeline-item">
+                <div class="timeline-marker">🏔️</div>
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <h3>Giving Back</h3>
+                    <span class="role">Trailblazer & Mentor</span>
+                    <p>
+                        Achieved Agentblazer Champion and Ranger status. Started "The Mule Force" to 
+                        share real-world integration scenarios and help others navigate the complex 
+                        world of enterprise integrations. 142+ badges, 116K+ points, and counting.
+                    </p>
+                    <span class="achievement-tag">Agentblazer Champion</span>
+                    <span class="achievement-tag">Ranger</span>
+                    <span class="achievement-tag">142 Badges</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy-section">
+        <div class="philosophy-box">
+            <h2>💭 My Philosophy</h2>
+            <p>
+                Integration isn't just about connecting systems—it's about understanding business processes, 
+                anticipating edge cases, and building solutions that are both powerful and maintainable.
+            </p>
+            <blockquote>
+                "The best integrations are invisible. Users shouldn't know they're working across multiple 
+                systems—they should just experience seamless functionality."
+            </blockquote>
+            <p>
+                This philosophy guides everything I do. Whether I'm building a MuleSoft API, crafting an 
+                Apex trigger, or designing a Data Cloud integration, I always ask: "How can I make this 
+                simpler, more reliable, and easier to debug?"
+            </p>
+            <p>
+                My dual expertise in Salesforce and MuleSoft isn't just about knowing two platforms—it's 
+                about understanding how they complement each other and where each one shines. It's about 
+                knowing when to use a Platform Event versus a MuleSoft flow, when to process data in 
+                Salesforce versus in the integration layer, and how to build solutions that leverage 
+                the strengths of both.
+            </p>
+        </div>
+
+        <!-- Values -->
+        <div class="container" style="max-width: 1200px; margin-top: 4rem;">
+            <h2 class="section-title">What I Value</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <span class="value-icon">🎯</span>
+                    <h3>Practical Solutions</h3>
+                    <p>Theory is important, but I focus on solutions that work in real-world production environments.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">📚</span>
+                    <h3>Continuous Learning</h3>
+                    <p>Technology evolves rapidly. I stay current with new features, patterns, and best practices.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🤝</span>
+                    <h3>Knowledge Sharing</h3>
+                    <p>The best way to solidify knowledge is to teach others. That's why I write and share openly.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🔍</span>
+                    <h3>Debugging Mastery</h3>
+                    <p>Building features is one thing. Quickly identifying and fixing issues in production is another.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="impact-section">
+        <h2 class="section-title">Impact & Reach</h2>
+        <p style="text-align: center; font-size: 1.15rem; color: var(--text-medium); max-width: 700px; margin: 1rem auto 2rem;">
+            Numbers that reflect my commitment to the Salesforce and MuleSoft community.
+        </p>
+        
+        <div class="impact-stats">
+            <div class="stat-box">
+                <span class="stat-number">142</span>
+                <span class="stat-label">Trailhead Badges</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">116K+</span>
+                <span class="stat-label">Trailhead Points</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Salesforce Certifications</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Integrations Built</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-about">
+        <div class="container">
+            <h2>Let's Connect</h2>
+            <p style="max-width: 700px; margin: 0 auto 2rem;">
+                Whether you're facing a tough integration challenge, want to learn from my experience, 
+                or just want to discuss the latest in Salesforce and MuleSoft—I'd love to hear from you.
+            </p>
+            <div class="cta-buttons">
+                <a href="https://www.salesforce.com/trailblazer/bala11" 
+                   target="_blank" 
+                   class="cta-btn cta-btn-primary">
+                    🏔️ View My Trailblazer Profile
+                </a>
+                <a href="blog.html" class="cta-btn cta-btn-primary">
+                    📚 Read My Blog
+                </a>
+                <a href="contact.html" class="cta-btn cta-btn-primary">
+                    💬 Get In Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>The Mule Force</h4>
+                    <p>Sharing real-world MuleSoft and Salesforce integration expertise.</p>
+                    <p style="margin-top: 1rem;">
+                        <a href="https://www.salesforce.com/trailblazer/bala11" 
+                           target="_blank" 
+                           style="color: rgba(255,255,255,0.8);">
+                            🏔️ Trailblazer Profile
+                        </a>
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="categories.html">Categories</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Expertise</h4>
+                    <ul>
+                        <li><a href="index.html#skills">MuleSoft Development</a></li>
+                        <li><a href="index.html#skills">Salesforce Development</a></li>
+                        <li><a href="index.html#skills">Azure CI/CD</a></li>
+                        <li><a href="index.html#skills">Data Cloud Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 The Mule Force - Manoranjan bala All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

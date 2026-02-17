@@ -517,6 +517,369 @@
   .meta-file { font-size: 10px; color: var(--sf-lightning); font-style: italic; margin-bottom: 6px; }
   .meta-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
 
+  /* DECISION MATRIX */
+  .decision-scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .scenario-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: rgba(0,161,224,0.15);
+    border: 1px solid var(--sf-blue);
+  }
+  .scenario-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .decision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .decision-option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .decision-option:hover {
+    border-color: rgba(0,161,224,0.4);
+    transform: translateY(-2px);
+  }
+  .decision-option.winner {
+    border-color: var(--sf-blue);
+    background: rgba(0,161,224,0.06);
+  }
+  .decision-option.avoid {
+    border-color: rgba(194,57,52,0.4);
+    opacity: 0.6;
+  }
+  .option-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .option-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .option-name.flow { color: #FFB75D; }
+  .option-name.apex { color: var(--sf-blue); }
+  .option-name.mule { color: #00B27C; }
+  .verdict-badge {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-family: var(--display);
+  }
+  .verdict-badge.best {
+    background: rgba(0,161,224,0.2);
+    color: var(--sf-blue);
+    border: 1px solid var(--sf-blue);
+  }
+  .verdict-badge.ok {
+    background: rgba(255,183,93,0.15);
+    color: var(--sf-lightning);
+    border: 1px solid rgba(255,183,93,0.4);
+  }
+  .verdict-badge.avoid {
+    background: rgba(194,57,52,0.15);
+    color: #FF6B6B;
+    border: 1px solid rgba(194,57,52,0.4);
+  }
+  .option-reasons {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+  }
+  .reason {
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .reason-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 10px;
+  }
+  .reason-icon.pro { color: #06D670; }
+  .reason-icon.con { color: #FF6B6B; }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .compare-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-header-cell {
+    background: var(--surface2);
+    padding: 12px 16px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .compare-header-cell:first-child { text-align: left; }
+  .compare-header-cell.flow { color: #FFB75D; }
+  .compare-header-cell.apex { color: var(--sf-blue); }
+  .compare-header-cell.mule { color: #00B27C; }
+  .compare-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-row {
+    display: contents;
+  }
+  .compare-cell {
+    background: var(--surface);
+    padding: 14px 16px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .compare-cell:first-child {
+    justify-content: flex-start;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .compare-cell.rating-high { color: #06D670; }
+  .compare-cell.rating-med { color: var(--sf-lightning); }
+  .compare-cell.rating-low { color: #FF6B6B; }
+
+  /* APEX BUILDER */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .template-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .template-card:hover {
+    border-color: var(--sf-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,161,224,0.15);
+  }
+  .template-card.selected {
+    border-color: var(--sf-blue);
+    background: rgba(0,161,224,0.08);
+  }
+  .template-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  .template-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .template-desc {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .template-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 8px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: rgba(0,161,224,0.15);
+    color: var(--sf-blue);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .config-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .config-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sf-blue);
+    margin-bottom: 16px;
+  }
+  .config-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .config-row.full {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--sf-blue);
+  }
+  .checkbox-item label {
+    font-size: 11px;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .method-list {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .method-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .method-sig {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--sf-blue);
+  }
+  .method-remove {
+    background: transparent;
+    border: 1px solid rgba(194,57,52,0.4);
+    color: #FF6B6B;
+    font-size: 9px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .method-remove:hover {
+    background: rgba(194,57,52,0.15);
+    border-color: #FF6B6B;
+  }
+
+  .add-method-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .add-method-btn:hover {
+    border-color: var(--sf-blue);
+    color: var(--sf-blue);
+    border-style: solid;
+  }
+
+  .generate-btn {
+    background: var(--sf-blue);
+    color: var(--bg);
+    border: none;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .generate-btn:hover {
+    background: #30B8F0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,161,224,0.3);
+  }
+
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -559,8 +922,14 @@
     <div class="nav-item" onclick="showPanel('soql')">
       <span class="nav-dot"></span>SOQL Builder
     </div>
+    <div class="nav-item" onclick="showPanel('apex-builder')">
+      <span class="nav-dot"></span>Apex Builder
+    </div>
 
     <div class="sidebar-section">Architecture</div>
+    <div class="nav-item" onclick="showPanel('decision')">
+      <span class="nav-dot"></span>Decision Matrix
+    </div>
     <div class="nav-item" onclick="showPanel('trigger')">
       <span class="nav-dot"></span>Trigger Framework
     </div>
@@ -707,6 +1076,438 @@ System.<span class="met">debug</span>(<span class="str">'SOQL used: '</span> + L
 System.<span class="met">debug</span>(<span class="str">'DML rows: '</span> + Limits.<span class="met">getDmlRows</span>() +
     <span class="str">' / '</span> + Limits.<span class="met">getLimitDmlRows</span>());</pre>
       </div>
+    </section>
+
+    <!-- DECISION MATRIX -->
+    <section class="panel" id="decision">
+      <div class="panel-header">
+        <div class="panel-eyebrow">Architecture Decisions</div>
+        <div class="panel-title">Flow vs. Apex vs. MuleSoft — Decision Matrix</div>
+        <div class="panel-desc">A practical guide for admins and architects to choose the right tool for automation. This decision tree covers common use cases with clear recommendations based on complexity, maintainability, and scalability.</div>
+      </div>
+
+      <!-- HIGH-LEVEL COMPARISON TABLE -->
+      <div class="compare-table">
+        <div class="compare-header">
+          <div class="compare-header-cell">Criteria</div>
+          <div class="compare-header-cell flow">Flow</div>
+          <div class="compare-header-cell apex">Apex</div>
+          <div class="compare-header-cell mule">MuleSoft</div>
+        </div>
+        <div class="compare-body">
+          <div class="compare-row">
+            <div class="compare-cell">Ease of Development</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>No-code / Low-code</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Requires dev skills</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Integration specialist</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Maintainability</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Can get complex</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Version control + tests</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Reusable components</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Performance</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Good for simple logic</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Optimized code</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Async + batching</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Governor Limit Handling</div>
+            <div class="compare-cell rating-low">⭐<br>Limited control</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Full control</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Bulk API 2.0</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Cross-System Integration</div>
+            <div class="compare-cell rating-low">⭐<br>Limited HTTP callouts</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Callouts + Platform Events</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Built for integration</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Debugging & Troubleshooting</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Flow debug mode</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Full debug logs + tests</div>
+            <div class="compare-cell rating-med">⭐⭐<br>Anypoint monitoring</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Complex Transformations</div>
+            <div class="compare-cell rating-low">⭐<br>Formula limitations</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Full language power</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>DataWeave</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell">Cost</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Included in license</div>
+            <div class="compare-cell rating-high">⭐⭐⭐<br>Included in license</div>
+            <div class="compare-cell rating-low">⭐<br>Separate license</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO 1: FIELD UPDATE AFTER INSERT -->
+      <div class="decision-scenario">
+        <div class="scenario-title">
+          <div class="scenario-icon">1️⃣</div>
+          <div>Update a field on the same record after insert (e.g., set Status based on Amount)</div>
+        </div>
+        <div class="scenario-desc">
+          <strong>Context:</strong> When an Opportunity is created, you need to automatically set the Status__c field to "High Priority" if Amount > $100,000, otherwise "Standard". This is simple field-level logic with no external systems involved.
+        </div>
+        <div class="decision-grid">
+          <div class="decision-option winner">
+            <div class="option-header">
+              <div class="option-name flow">FLOW</div>
+              <div class="verdict-badge best">✓ Best</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Before-save flow runs before record commits — no extra DML</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Simple point-and-click decision logic</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Admin-friendly, no code deployment</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Built-in bulkification</li>
+            </ul>
+          </div>
+          <div class="decision-option">
+            <div class="option-header">
+              <div class="option-name apex">APEX</div>
+              <div class="verdict-badge ok">~ Overkill</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Works perfectly in before trigger</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Requires developer + deployment</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Over-engineered for simple logic</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Test class overhead</li>
+            </ul>
+          </div>
+          <div class="decision-option avoid">
+            <div class="option-header">
+              <div class="option-name mule">MULESOFT</div>
+              <div class="verdict-badge avoid">✗ Avoid</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon con">✗</span>Data must leave Salesforce for enrichment</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Extra round-trip latency (async)</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Adds infrastructure complexity</li>
+              <li class="reason"><span class="reason-icon con">✗</span>No benefit for internal-only logic</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO 2: CROSS-OBJECT FIELD UPDATES -->
+      <div class="decision-scenario">
+        <div class="scenario-title">
+          <div class="scenario-icon">2️⃣</div>
+          <div>Update parent Account when child Opportunity is closed (rollup summary alternative)</div>
+        </div>
+        <div class="scenario-desc">
+          <strong>Context:</strong> When an Opportunity stage changes to "Closed Won", update the parent Account's "Last Win Date" and increment "Total Wins" counter. This is a simple parent-child update pattern.
+        </div>
+        <div class="decision-grid">
+          <div class="decision-option winner">
+            <div class="option-header">
+              <div class="option-name flow">FLOW</div>
+              <div class="verdict-badge best">✓ Best</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>After-save flow can update related records</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Visual logic easy to understand</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Handles bulk correctly with Get/Update Records</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Careful: don't query in loops</li>
+            </ul>
+          </div>
+          <div class="decision-option">
+            <div class="option-header">
+              <div class="option-name apex">APEX</div>
+              <div class="verdict-badge ok">~ OK</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>After-trigger handles this cleanly</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Better if complex aggregation logic</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Requires code for simple updates</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Flow is sufficient for this case</li>
+            </ul>
+          </div>
+          <div class="decision-option avoid">
+            <div class="option-header">
+              <div class="option-name mule">MULESOFT</div>
+              <div class="verdict-badge avoid">✗ Avoid</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon con">✗</span>Unnecessary external orchestration</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Salesforce handles this natively</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Async delay not acceptable here</li>
+              <li class="reason"><span class="reason-icon con">✗</span>No cross-system need</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO 3: COMPLEX BUSINESS LOGIC -->
+      <div class="decision-scenario">
+        <div class="scenario-title">
+          <div class="scenario-icon">3️⃣</div>
+          <div>Complex validation with external credit check API before record creation</div>
+        </div>
+        <div class="scenario-desc">
+          <strong>Context:</strong> Before creating an Account, call a third-party credit scoring API. If credit score < 600, prevent creation with error message. If 600-700, set to "Review Required". If > 700, auto-approve and create related Contract record. This involves external callouts, conditional logic, and multi-object DML.
+        </div>
+        <div class="decision-grid">
+          <div class="decision-option avoid">
+            <div class="option-header">
+              <div class="option-name flow">FLOW</div>
+              <div class="verdict-badge avoid">✗ Avoid</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon con">✗</span>Cannot do callouts in before-save flows</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Screen flow forces manual intervention</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Error handling limited in flows</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Complex branching becomes unmaintainable</li>
+            </ul>
+          </div>
+          <div class="decision-option winner">
+            <div class="option-header">
+              <div class="option-name apex">APEX</div>
+              <div class="verdict-badge best">✓ Best</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Full control over HTTP callout + retry logic</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Can use @future for async callout</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Rich error handling with try-catch</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Easily testable with mock callouts</li>
+            </ul>
+          </div>
+          <div class="decision-option">
+            <div class="option-header">
+              <div class="option-name mule">MULESOFT</div>
+              <div class="verdict-badge ok">~ OK</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>If API enrichment before SF insert is standard pattern</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Mule can validate, enrich, then upsert to SF</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Adds latency — not real-time validation</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Requires data to route through Mule first</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO 4: HIGH-VOLUME DATA SYNC -->
+      <div class="decision-scenario">
+        <div class="scenario-title">
+          <div class="scenario-icon">4️⃣</div>
+          <div>Sync 50,000+ records daily from ERP system to Salesforce (Orders, Products, Inventory)</div>
+        </div>
+        <div class="scenario-desc">
+          <strong>Context:</strong> Every night, a batch job pulls Orders, Products, and Inventory levels from SAP/NetSuite/Oracle ERP and needs to upsert them into Salesforce. Data transformation includes mapping ERP codes to Salesforce External IDs, currency conversion, and splitting single ERP records into multiple SF objects (Order + Line Items).
+        </div>
+        <div class="decision-grid">
+          <div class="decision-option avoid">
+            <div class="option-header">
+              <div class="option-name flow">FLOW</div>
+              <div class="verdict-badge avoid">✗ Avoid</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon con">✗</span>Flows cannot accept external data directly</li>
+              <li class="reason"><span class="reason-icon con">✗</span>No batch processing for 50k+ records</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Governor limits hit quickly at scale</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Not designed for ETL workloads</li>
+            </ul>
+          </div>
+          <div class="decision-option">
+            <div class="option-header">
+              <div class="option-name apex">APEX</div>
+              <div class="verdict-badge ok">~ OK</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Batch Apex can handle large volumes</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Invocable from external systems via REST API</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Transformation logic in Apex = tight coupling</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Batch Apex: 5 jobs queued max, slower</li>
+            </ul>
+          </div>
+          <div class="decision-option winner">
+            <div class="option-header">
+              <div class="option-name mule">MULESOFT</div>
+              <div class="verdict-badge best">✓ Best</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Bulk API 2.0 auto-chunks into 10k batches</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>DataWeave for complex transformations</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Error handling: failed records → retry queue</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Decouples ERP from SF (no tight dependency)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO 5: REAL-TIME CROSS-SYSTEM ORCHESTRATION -->
+      <div class="decision-scenario">
+        <div class="scenario-title">
+          <div class="scenario-icon">5️⃣</div>
+          <div>When Order is placed in Salesforce, create shipment in warehouse system AND send confirmation email</div>
+        </div>
+        <div class="scenario-desc">
+          <strong>Context:</strong> User clicks "Submit Order" button on a Lightning page. This needs to: (1) Create Order record in SF, (2) Call warehouse API to reserve inventory and create shipment, (3) Call email service to send confirmation, (4) Update Order with tracking number from warehouse response. All must happen in real-time.
+        </div>
+        <div class="decision-grid">
+          <div class="decision-option avoid">
+            <div class="option-header">
+              <div class="option-name flow">FLOW</div>
+              <div class="verdict-badge avoid">✗ Avoid</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon con">✗</span>HTTP callouts in flows are limited</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Cannot chain multiple callouts reliably</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Poor error recovery (retry, rollback)</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Mixing DML + callouts causes issues</li>
+            </ul>
+          </div>
+          <div class="decision-option">
+            <div class="option-header">
+              <div class="option-name apex">APEX</div>
+              <div class="verdict-badge ok">~ OK</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>@future(callout=true) for async callouts</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Platform Events for decoupled orchestration</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Complex to coordinate multi-step workflows</li>
+              <li class="reason"><span class="reason-icon con">✗</span>All logic tightly coupled in SF</li>
+            </ul>
+          </div>
+          <div class="decision-option winner">
+            <div class="option-header">
+              <div class="option-name mule">MULESOFT</div>
+              <div class="verdict-badge best">✓ Best</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Built for orchestration workflows</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Saga pattern: rollback on any step failure</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Retry policies + circuit breakers</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>SF publishes event → Mule orchestrates</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO 6: FIELD ENRICHMENT BEFORE INSERT -->
+      <div class="decision-scenario">
+        <div class="scenario-title">
+          <div class="scenario-icon">6️⃣</div>
+          <div>Enrich Contact with company data from Clearbit/ZoomInfo before inserting into Salesforce</div>
+        </div>
+        <div class="scenario-desc">
+          <strong>Context:</strong> Sales team imports leads from a CSV or web form. Before creating Contact records, you want to call Clearbit API to enrich with company name, industry, employee count, and LinkedIn URL. If enrichment fails, still create the Contact with partial data.
+        </div>
+        <div class="decision-grid">
+          <div class="decision-option avoid">
+            <div class="option-header">
+              <div class="option-name flow">FLOW</div>
+              <div class="verdict-badge avoid">✗ Avoid</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon con">✗</span>Before-save flows cannot do callouts</li>
+              <li class="reason"><span class="reason-icon con">✗</span>After-save requires extra update DML</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Poor handling of API failures</li>
+              <li class="reason"><span class="reason-icon con">✗</span>User waits for async enrichment</li>
+            </ul>
+          </div>
+          <div class="decision-option">
+            <div class="option-header">
+              <div class="option-name apex">APEX</div>
+              <div class="verdict-badge ok">~ OK</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Platform Event → async enrichment in trigger</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Queueable Apex for chained callouts</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Still requires record insert before enrichment</li>
+              <li class="reason"><span class="reason-icon con">✗</span>Not ideal for pre-insert enrichment</li>
+            </ul>
+          </div>
+          <div class="decision-option winner">
+            <div class="option-header">
+              <div class="option-name mule">MULESOFT</div>
+              <div class="verdict-badge best">✓ Best</div>
+            </div>
+            <ul class="option-reasons">
+              <li class="reason"><span class="reason-icon pro">✓</span>Data routes through Mule BEFORE SF insert</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Enrich → Transform → Upsert in one flow</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Graceful degradation on API failure</li>
+              <li class="reason"><span class="reason-icon pro">✓</span>Records arrive in SF fully enriched</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECISION TREE SUMMARY -->
+      <div class="code-card">
+        <div class="code-header">
+          <span class="code-label">Quick Decision Tree — When to Use What</span>
+          <span class="code-tag tag-info">Reference</span>
+        </div>
+        <pre><span class="cmt">┌─────────────────────────────────────────────────────────────────┐
+│ START: What are you trying to automate?                        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                    ┌─────────┴─────────┐
+          Does it involve               │
+          external systems?              │
+                    │                    │
+            ┌───────┴───────┐            │
+          YES               NO           │
+            │                │           │
+            ▼                ▼           │
+    ┌───────────────┐  ┌────────────────┤
+    │ EXTERNAL?     │  │ INTERNAL-ONLY? │
+    └───────────────┘  └────────────────┘
+            │                │
+            │                ├── Simple field update (same object)?
+            │                │   → <span class="str">FLOW (before-save)</span>
+            │                │
+            │                ├── Cross-object update (parent/child)?
+            │                │   → <span class="str">FLOW (after-save)</span> OR <span class="str">APEX</span> if complex
+            │                │
+            │                ├── Complex calculations / validation?
+            │                │   → <span class="str">APEX</span>
+            │                │
+            │                ├── Bulk processing (>10k records)?
+            │                    → <span class="str">APEX Batch</span>
+            │
+            ├── Single API call (enrich/validate)?
+            │   │
+            │   ├── Real-time user action?
+            │   │   → <span class="str">APEX (with @future or Platform Event)</span>
+            │   │
+            │   └── Async batch enrichment?
+            │       → <span class="str">MULESOFT</span> (if data comes from outside)
+            │       → <span class="str">APEX Batch</span> (if data already in SF)
+            │
+            ├── Multi-step orchestration (warehouse + email + payment)?
+            │   → <span class="str">MULESOFT</span> (built for workflows)
+            │
+            ├── High-volume ETL (ERP → Salesforce)?
+            │   → <span class="str">MULESOFT</span> with Bulk API 2.0
+            │
+            └── Pre-insert enrichment (data arrives enriched)?
+                → <span class="str">MULESOFT</span> (enrich before upsert)
+
+<span class="cmt">╔══════════════════════════════════════════════════════════════╗
+║ GENERAL RULES OF THUMB                                      ║
+╠══════════════════════════════════════════════════════════════╣
+║ • Start with FLOW when possible (admin-friendly, fast)      ║
+║ • Escalate to APEX when:                                    ║
+║   - Complex logic, loops, or external callouts needed       ║
+║   - Governor limit control required                         ║
+║   - Version control + automated testing critical            ║
+║ • Escalate to MULESOFT when:                                ║
+║   - Multiple systems involved in one workflow               ║
+║   - High-volume data sync (>10k records)                    ║
+║   - Pre-insert enrichment from external APIs                ║
+║   - Reusable integration assets across projects             ║
+╚══════════════════════════════════════════════════════════════╝</span></pre>
+      </div>
+
     </section>
 
     <!-- APEX PATTERNS -->
@@ -937,6 +1738,196 @@ List&lt;<span class="cls">Account</span>&gt; withContacts = [
     <span class="kw">LIMIT</span> <span class="num">200</span>
 ];</pre>
       </div>
+    </section>
+
+    <!-- APEX BUILDER -->
+    <section class="panel" id="apex-builder">
+      <div class="panel-header">
+        <div class="panel-eyebrow">Code Generator</div>
+        <div class="panel-title">Apex Class Builder</div>
+        <div class="panel-desc">Generate production-ready Apex classes from templates. Configure class structure, methods, and best practices — then download or copy to your IDE.</div>
+      </div>
+
+      <!-- TEMPLATE SELECTION -->
+      <div style="margin-bottom: 28px;">
+        <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:700;">Select Template</div>
+        <div class="template-grid">
+          <div class="template-card selected" onclick="selectTemplate('service', this)">
+            <div class="template-icon">🔧</div>
+            <div class="template-name">Service Class</div>
+            <div class="template-desc">Business logic layer with bulkified methods for record processing. Invoked from triggers or controllers.</div>
+            <div class="template-badge">COMMON</div>
+          </div>
+          <div class="template-card" onclick="selectTemplate('batch', this)">
+            <div class="template-icon">📦</div>
+            <div class="template-name">Batch Apex</div>
+            <div class="template-desc">Process large datasets asynchronously. Implements Database.Batchable with start, execute, finish.</div>
+            <div class="template-badge">ASYNC</div>
+          </div>
+          <div class="template-card" onclick="selectTemplate('rest', this)">
+            <div class="template-icon">🌐</div>
+            <div class="template-name">REST Endpoint</div>
+            <div class="template-desc">@RestResource class with GET, POST, PATCH, DELETE methods for custom API.</div>
+            <div class="template-badge">API</div>
+          </div>
+          <div class="template-card" onclick="selectTemplate('queueable', this)">
+            <div class="template-icon">⚡</div>
+            <div class="template-name">Queueable</div>
+            <div class="template-desc">Async job with chaining support. Better than @future for complex workflows.</div>
+            <div class="template-badge">ASYNC</div>
+          </div>
+          <div class="template-card" onclick="selectTemplate('controller', this)">
+            <div class="template-icon">🎮</div>
+            <div class="template-name">LWC Controller</div>
+            <div class="template-desc">Backend Apex class with @AuraEnabled methods for Lightning Web Components.</div>
+            <div class="template-badge">LWC</div>
+          </div>
+          <div class="template-card" onclick="selectTemplate('scheduler', this)">
+            <div class="template-icon">⏰</div>
+            <div class="template-name">Schedulable</div>
+            <div class="template-desc">Scheduled Apex job with cron expression support. Runs on a schedule.</div>
+            <div class="template-badge">ASYNC</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIGURATION -->
+      <div class="config-section">
+        <div class="config-title">Class Configuration</div>
+        <div class="config-row">
+          <div class="field-group">
+            <label class="field-label">Class Name</label>
+            <input class="field-input" id="apex-class-name" value="AccountService" placeholder="e.g., AccountService">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Description</label>
+            <input class="field-input" id="apex-class-desc" value="Handles Account business logic" placeholder="Brief description">
+          </div>
+        </div>
+        <div class="config-row">
+          <div class="field-group">
+            <label class="field-label">Sharing Mode</label>
+            <select class="field-select" id="apex-sharing">
+              <option value="with sharing">with sharing (enforces user permissions)</option>
+              <option value="without sharing">without sharing (system context)</option>
+              <option value="inherited sharing">inherited sharing (defer to caller)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Access Modifier</label>
+            <select class="field-select" id="apex-access">
+              <option value="public">public</option>
+              <option value="global">global (for managed packages / webservices)</option>
+            </select>
+          </div>
+        </div>
+        <div class="config-row full">
+          <div class="field-group">
+            <label class="field-label">Features</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="feat-error" checked>
+                <label for="feat-error">Error Handling</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="feat-limits" checked>
+                <label for="feat-limits">Governor Limit Checks</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="feat-logging">
+                <label for="feat-logging">Debug Logging</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="feat-test">
+                <label for="feat-test">Generate Test Class</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- METHOD BUILDER (for Service Class template) -->
+      <div class="config-section" id="method-config" style="display:block;">
+        <div class="config-title">Methods</div>
+        <div class="method-list" id="method-list">
+          <div class="method-item">
+            <div class="method-sig">public static void enrichAccounts(List&lt;Account&gt; accounts)</div>
+            <button class="method-remove" onclick="removeMethod(this)">REMOVE</button>
+          </div>
+        </div>
+        <button class="add-method-btn" onclick="addMethod()">+ Add Method</button>
+      </div>
+
+      <!-- OBJECT SELECTION (for Batch template) -->
+      <div class="config-section" id="batch-config" style="display:none;">
+        <div class="config-title">Batch Configuration</div>
+        <div class="config-row">
+          <div class="field-group">
+            <label class="field-label">Target Object</label>
+            <select class="field-select" id="batch-object">
+              <option value="Account">Account</option>
+              <option value="Contact">Contact</option>
+              <option value="Opportunity">Opportunity</option>
+              <option value="Lead">Lead</option>
+              <option value="Case">Case</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Batch Size</label>
+            <input class="field-input" type="number" id="batch-size" value="200" min="1" max="2000">
+          </div>
+        </div>
+      </div>
+
+      <!-- REST ENDPOINT CONFIG -->
+      <div class="config-section" id="rest-config" style="display:none;">
+        <div class="config-title">REST Endpoint Configuration</div>
+        <div class="config-row full">
+          <div class="field-group">
+            <label class="field-label">URL Mapping</label>
+            <input class="field-input" id="rest-url" value="/v1/accounts/*" placeholder="/v1/resource/*">
+          </div>
+        </div>
+        <div class="config-row full">
+          <div class="field-group">
+            <label class="field-label">HTTP Methods</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="http-get" checked>
+                <label for="http-get">GET</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="http-post" checked>
+                <label for="http-post">POST</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="http-patch">
+                <label for="http-patch">PATCH</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="http-delete">
+                <label for="http-delete">DELETE</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATE BUTTON -->
+      <button class="generate-btn" onclick="generateApexClass()">Generate Apex Class →</button>
+
+      <!-- OUTPUT -->
+      <div class="code-card" style="margin-top:24px;">
+        <div class="code-header">
+          <span class="code-label">Generated Apex Code</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="code-tag tag-apex">Apex</span>
+            <button class="copy-btn" id="copy-apex-btn" onclick="copyApexCode()">COPY</button>
+          </div>
+        </div>
+        <pre id="apex-output" style="max-height:500px;overflow-y:auto;"><span class="cmt">// Click "Generate Apex Class →" to create your code</span></pre>
+      </div>
+
     </section>
 
     <!-- TRIGGER FRAMEWORK -->
@@ -2002,6 +2993,298 @@ System.<span class="met">debug</span>(<span class="str">'Flow output: '</span> +
     panel.querySelectorAll('.tab-pill').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     el.classList.add('active');
+  }
+
+  // ── APEX BUILDER ──
+  let currentTemplate = 'service';
+  let methodCounter = 1;
+
+  function selectTemplate(type, el) {
+    currentTemplate = type;
+    document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    
+    // Show/hide relevant config sections
+    document.getElementById('method-config').style.display = type === 'service' || type === 'controller' ? 'block' : 'none';
+    document.getElementById('batch-config').style.display = type === 'batch' ? 'block' : 'none';
+    document.getElementById('rest-config').style.display = type === 'rest' ? 'block' : 'none';
+  }
+
+  function addMethod() {
+    methodCounter++;
+    const methodList = document.getElementById('method-list');
+    const methodItem = document.createElement('div');
+    methodItem.className = 'method-item';
+    methodItem.innerHTML = `
+      <div class="method-sig">public static void processRecords${methodCounter}(List&lt;SObject&gt; records)</div>
+      <button class="method-remove" onclick="removeMethod(this)">REMOVE</button>
+    `;
+    methodList.appendChild(methodItem);
+  }
+
+  function removeMethod(btn) {
+    btn.parentElement.remove();
+  }
+
+  function generateApexClass() {
+    const className = document.getElementById('apex-class-name').value || 'MyClass';
+    const desc = document.getElementById('apex-class-desc').value || 'Generated Apex class';
+    const sharing = document.getElementById('apex-sharing').value;
+    const access = document.getElementById('apex-access').value;
+    const errorHandling = document.getElementById('feat-error').checked;
+    const limitChecks = document.getElementById('feat-limits').checked;
+    const logging = document.getElementById('feat-logging').checked;
+
+    let code = '';
+
+    // Header comment
+    code += `<span class="cmt">/**\n * ${desc}\n * @author ${new Date().toLocaleDateString()}\n */</span>\n`;
+
+    // Template-specific generation
+    if (currentTemplate === 'service') {
+      code += generateServiceClass(className, sharing, access, errorHandling, limitChecks, logging);
+    } else if (currentTemplate === 'batch') {
+      code += generateBatchClass(className, sharing, access, errorHandling, logging);
+    } else if (currentTemplate === 'rest') {
+      code += generateRestClass(className, errorHandling, logging);
+    } else if (currentTemplate === 'queueable') {
+      code += generateQueueableClass(className, sharing, access, errorHandling, logging);
+    } else if (currentTemplate === 'controller') {
+      code += generateControllerClass(className, sharing, access, errorHandling, logging);
+    } else if (currentTemplate === 'scheduler') {
+      code += generateSchedulerClass(className, errorHandling, logging);
+    }
+
+    document.getElementById('apex-output').innerHTML = code;
+  }
+
+  function generateServiceClass(className, sharing, access, errorHandling, limitChecks, logging) {
+    const methods = Array.from(document.querySelectorAll('#method-list .method-sig')).map(m => m.textContent);
+    
+    let code = `<span class="ann">${access} ${sharing} class</span> <span class="cls">${className}</span> {\n\n`;
+    
+    methods.forEach(methodSig => {
+      const methodName = methodSig.match(/void (\w+)/)?.[1] || 'processRecords';
+      const paramMatch = methodSig.match(/List<(\\w+)>/);
+      const objType = paramMatch ? paramMatch[1] : 'SObject';
+      
+      code += `    <span class="cmt">/**\n     * Process ${objType} records with business logic\n     * @param records List of ${objType} to process\n     */</span>\n`;
+      code += `    <span class="ann">${methodSig.replace(/&lt;/g, '<').replace(/&gt;/g, '>')}</span> {\n`;
+      
+      if (errorHandling) {
+        code += `        <span class="kw">try</span> {\n`;
+      }
+      
+      if (limitChecks) {
+        code += `            <span class="cmt">// Check governor limits before processing</span>\n`;
+        code += `            <span class="kw">if</span> (Limits.getDmlStatements() >= Limits.getLimitDmlStatements() - <span class="num">10</span>) {\n`;
+        code += `                <span class="kw">throw new</span> <span class="cls">LimitException</span>(<span class="str">'Approaching DML limit'</span>);\n`;
+        code += `            }\n\n`;
+      }
+      
+      if (logging) {
+        code += `            System.<span class="met">debug</span>(<span class="str">'Processing '</span> + records.<span class="met">size</span>() + <span class="str">' records'</span>);\n`;
+      }
+      
+      code += `            <span class="cmt">// TODO: Implement business logic here</span>\n`;
+      code += `            List<${objType}> toUpdate = <span class="kw">new</span> List<${objType}>();\n`;
+      code += `            <span class="kw">for</span> (${objType} record : records) {\n`;
+      code += `                <span class="cmt">// Process each record</span>\n`;
+      code += `                toUpdate.<span class="met">add</span>(record);\n`;
+      code += `            }\n\n`;
+      code += `            <span class="kw">if</span> (!toUpdate.<span class="met">isEmpty</span>()) {\n`;
+      code += `                <span class="met">update</span> toUpdate;\n`;
+      code += `            }\n`;
+      
+      if (errorHandling) {
+        code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+        code += `            System.<span class="met">debug</span>(<span class="cls">LoggingLevel</span>.ERROR, <span class="str">'Error in ${methodName}: '</span> + e.getMessage());\n`;
+        code += `            <span class="kw">throw</span> e;\n`;
+        code += `        }\n`;
+      }
+      
+      code += `    }\n\n`;
+    });
+    
+    code += `}`;
+    return code;
+  }
+
+  function generateBatchClass(className, sharing, access, errorHandling, logging) {
+    const obj = document.getElementById('batch-object').value;
+    const batchSize = document.getElementById('batch-size').value;
+    
+    let code = `<span class="ann">${access} ${sharing} class</span> <span class="cls">${className}</span> <span class="kw">implements</span> Database.<span class="cls">Batchable</span><&lt;<span class="cls">sObject</span>&gt;>, Database.<span class="cls">Stateful</span> {\n\n`;
+    code += `    <span class="kw">private</span> Integer recordsProcessed = <span class="num">0</span>;\n\n`;
+    code += `    <span class="ann">public</span> Database.<span class="cls">QueryLocator</span> <span class="met">start</span>(Database.<span class="cls">BatchableContext</span> bc) {\n`;
+    if (logging) code += `        System.<span class="met">debug</span>(<span class="str">'Batch starting'</span>);\n`;
+    code += `        <span class="kw">return</span> Database.<span class="met">getQueryLocator</span>([\n`;
+    code += `            <span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> ${obj}\n`;
+    code += `            <span class="kw">WHERE</span> CreatedDate = TODAY\n`;
+    code += `        ]);\n`;
+    code += `    }\n\n`;
+    code += `    <span class="ann">public void</span> <span class="met">execute</span>(Database.<span class="cls">BatchableContext</span> bc, List&lt;<span class="cls">${obj}</span>&gt; scope) {\n`;
+    if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+    if (logging) code += `            System.<span class="met">debug</span>(<span class="str">'Processing batch of '</span> + scope.<span class="met">size</span>() + <span class="str">' records'</span>);\n`;
+    code += `            <span class="cmt">// TODO: Process records in scope</span>\n`;
+    code += `            recordsProcessed += scope.<span class="met">size</span>();\n`;
+    if (errorHandling) {
+      code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+      code += `            System.<span class="met">debug</span>(<span class="cls">LoggingLevel</span>.ERROR, <span class="str">'Batch error: '</span> + e.getMessage());\n`;
+      code += `        }\n`;
+    }
+    code += `    }\n\n`;
+    code += `    <span class="ann">public void</span> <span class="met">finish</span>(Database.<span class="cls">BatchableContext</span> bc) {\n`;
+    if (logging) code += `        System.<span class="met">debug</span>(<span class="str">'Batch complete. Processed: '</span> + recordsProcessed);\n`;
+    code += `        <span class="cmt">// TODO: Send notification, chain another batch, etc.</span>\n`;
+    code += `    }\n`;
+    code += `}\n\n`;
+    code += `<span class="cmt">// Execute: Database.executeBatch(new ${className}(), ${batchSize});</span>`;
+    return code;
+  }
+
+  function generateRestClass(className, errorHandling, logging) {
+    const urlMapping = document.getElementById('rest-url').value;
+    const hasGet = document.getElementById('http-get').checked;
+    const hasPost = document.getElementById('http-post').checked;
+    const hasPatch = document.getElementById('http-patch').checked;
+    const hasDelete = document.getElementById('http-delete').checked;
+    
+    let code = `<span class="ann">@RestResource</span>(urlMapping=<span class="str">'${urlMapping}'</span>)\n`;
+    code += `<span class="ann">global with sharing class</span> <span class="cls">${className}</span> {\n\n`;
+    
+    if (hasGet) {
+      code += `    <span class="ann">@HttpGet</span>\n`;
+      code += `    <span class="ann">global static</span> <span class="cls">Response</span> <span class="met">doGet</span>() {\n`;
+      if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+      code += `            <span class="cls">RestRequest</span> req = RestContext.request;\n`;
+      code += `            String recordId = req.requestURI.<span class="met">substringAfterLast</span>(<span class="str">'/'</span>);\n`;
+      if (logging) code += `            System.<span class="met">debug</span>(<span class="str">'GET request for: '</span> + recordId);\n`;
+      code += `            <span class="cmt">// TODO: Query and return data</span>\n`;
+      code += `            RestContext.response.statusCode = <span class="num">200</span>;\n`;
+      code += `            <span class="kw">return new</span> <span class="cls">Response</span>(<span class="kw">true</span>, <span class="str">'Success'</span>, <span class="kw">null</span>);\n`;
+      if (errorHandling) {
+        code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+        code += `            RestContext.response.statusCode = <span class="num">500</span>;\n`;
+        code += `            <span class="kw">return new</span> <span class="cls">Response</span>(<span class="kw">false</span>, <span class="kw">null</span>, e.getMessage());\n`;
+        code += `        }\n`;
+      }
+      code += `    }\n\n`;
+    }
+    
+    if (hasPost) {
+      code += `    <span class="ann">@HttpPost</span>\n`;
+      code += `    <span class="ann">global static</span> <span class="cls">Response</span> <span class="met">doPost</span>() {\n`;
+      if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+      code += `            <span class="cls">RestRequest</span> req = RestContext.request;\n`;
+      code += `            <span class="cmt">// TODO: Deserialize payload and create record</span>\n`;
+      code += `            RestContext.response.statusCode = <span class="num">201</span>;\n`;
+      code += `            <span class="kw">return new</span> <span class="cls">Response</span>(<span class="kw">true</span>, <span class="str">'Created'</span>, <span class="kw">null</span>);\n`;
+      if (errorHandling) {
+        code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+        code += `            RestContext.response.statusCode = <span class="num">500</span>;\n`;
+        code += `            <span class="kw">return new</span> <span class="cls">Response</span>(<span class="kw">false</span>, <span class="kw">null</span>, e.getMessage());\n`;
+        code += `        }\n`;
+      }
+      code += `    }\n\n`;
+    }
+    
+    code += `    <span class="ann">global class</span> <span class="cls">Response</span> {\n`;
+    code += `        <span class="ann">global</span> Boolean success;\n`;
+    code += `        <span class="ann">global</span> String data;\n`;
+    code += `        <span class="ann">global</span> String error;\n`;
+    code += `        <span class="ann">global</span> <span class="cls">Response</span>(Boolean s, String d, String e) {\n`;
+    code += `            this.success = s; this.data = d; this.error = e;\n`;
+    code += `        }\n`;
+    code += `    }\n`;
+    code += `}`;
+    return code;
+  }
+
+  function generateQueueableClass(className, sharing, access, errorHandling, logging) {
+    let code = `<span class="ann">${access} ${sharing} class</span> <span class="cls">${className}</span> <span class="kw">implements</span> Queueable {\n\n`;
+    code += `    <span class="kw">private</span> List&lt;Id&gt; recordIds;\n\n`;
+    code += `    <span class="ann">public</span> <span class="cls">${className}</span>(List&lt;Id&gt; ids) {\n`;
+    code += `        this.recordIds = ids;\n`;
+    code += `    }\n\n`;
+    code += `    <span class="ann">public void</span> <span class="met">execute</span>(QueueableContext context) {\n`;
+    if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+    if (logging) code += `            System.<span class="met">debug</span>(<span class="str">'Queueable processing '</span> + recordIds.<span class="met">size</span>() + <span class="str">' records'</span>);\n`;
+    code += `            <span class="cmt">// TODO: Implement async logic here</span>\n\n`;
+    code += `            <span class="cmt">// Optional: Chain another queueable</span>\n`;
+    code += `            <span class="cmt">// System.enqueueJob(new AnotherQueueable());</span>\n`;
+    if (errorHandling) {
+      code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+      code += `            System.<span class="met">debug</span>(<span class="cls">LoggingLevel</span>.ERROR, <span class="str">'Queueable error: '</span> + e.getMessage());\n`;
+      code += `        }\n`;
+    }
+    code += `    }\n`;
+    code += `}\n\n`;
+    code += `<span class="cmt">// Execute: System.enqueueJob(new ${className}(recordIdList));</span>`;
+    return code;
+  }
+
+  function generateControllerClass(className, sharing, access, errorHandling, logging) {
+    let code = `<span class="ann">${access} ${sharing} class</span> <span class="cls">${className}</span> {\n\n`;
+    code += `    <span class="ann">@AuraEnabled(cacheable=true)</span>\n`;
+    code += `    <span class="ann">public static</span> List&lt;Account&gt; <span class="met">getAccounts</span>() {\n`;
+    if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+    code += `            <span class="kw">return</span> [<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Account <span class="kw">LIMIT</span> <span class="num">10</span>];\n`;
+    if (errorHandling) {
+      code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+      code += `            <span class="kw">throw new</span> <span class="cls">AuraHandledException</span>(e.getMessage());\n`;
+      code += `        }\n`;
+    }
+    code += `    }\n\n`;
+    code += `    <span class="ann">@AuraEnabled</span>\n`;
+    code += `    <span class="ann">public static</span> String <span class="met">updateRecord</span>(Id recordId, String newValue) {\n`;
+    if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+    code += `            <span class="cmt">// TODO: Update logic</span>\n`;
+    code += `            <span class="kw">return</span> <span class="str">'Success'</span>;\n`;
+    if (errorHandling) {
+      code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+      code += `            <span class="kw">throw new</span> <span class="cls">AuraHandledException</span>(e.getMessage());\n`;
+      code += `        }\n`;
+    }
+    code += `    }\n`;
+    code += `}`;
+    return code;
+  }
+
+  function generateSchedulerClass(className, errorHandling, logging) {
+    let code = `<span class="ann">public class</span> <span class="cls">${className}</span> <span class="kw">implements</span> Schedulable {\n\n`;
+    code += `    <span class="ann">public void</span> <span class="met">execute</span>(SchedulableContext sc) {\n`;
+    if (errorHandling) code += `        <span class="kw">try</span> {\n`;
+    if (logging) code += `            System.<span class="met">debug</span>(<span class="str">'Scheduled job running'</span>);\n`;
+    code += `            <span class="cmt">// TODO: Implement scheduled logic</span>\n`;
+    code += `            <span class="cmt">// Typically executes a batch or queueable</span>\n`;
+    code += `            Database.<span class="met">executeBatch</span>(<span class="kw">new</span> <span class="cls">MyBatchClass</span>(), <span class="num">200</span>);\n`;
+    if (errorHandling) {
+      code += `        } <span class="kw">catch</span> (<span class="cls">Exception</span> e) {\n`;
+      code += `            System.<span class="met">debug</span>(<span class="cls">LoggingLevel</span>.ERROR, <span class="str">'Scheduler error: '</span> + e.getMessage());\n`;
+      code += `        }\n`;
+    }
+    code += `    }\n`;
+    code += `}\n\n`;
+    code += `<span class="cmt">// Schedule: System.schedule('Job Name', '0 0 2 * * ?', new ${className}());</span>\n`;
+    code += `<span class="cmt">// Cron: '0 0 2 * * ?' = Daily at 2:00 AM</span>`;
+    return code;
+  }
+
+  function copyApexCode() {
+    const output = document.getElementById('apex-output');
+    const text = output.innerText || output.textContent;
+    if (text && !text.includes('Click "Generate')) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-apex-btn');
+        btn.textContent = 'COPIED!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'COPY';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
   }
 </script>
 </body>

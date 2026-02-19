@@ -880,6 +880,250 @@
     box-shadow: 0 4px 12px rgba(0,161,224,0.3);
   }
 
+  /* MULESOFT HANDBOOK */
+  .edge-case-card {
+    background: var(--surface);
+    border-left: 4px solid var(--sf-lightning);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .edge-case-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .edge-case-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    background: rgba(255,183,93,0.15);
+    border: 1px solid var(--sf-lightning);
+  }
+  .edge-case-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .edge-case-scenario {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .solution-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .solution-tab {
+    padding: 8px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .solution-tab:hover { color: var(--text); }
+  .solution-tab.active { color: var(--sf-blue); border-bottom-color: var(--sf-blue); }
+  .solution-content { display: none; padding: 16px 0; }
+  .solution-content.active { display: block; }
+  .solution-content h4 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--sf-blue);
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .solution-content p {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .solution-content ul {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .solution-content li {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .solution-content li::before {
+    content: '→';
+    color: var(--sf-blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .best-practice-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .bp-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bp-icon {
+    font-size: 24px;
+  }
+  .bp-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .bp-list {
+    display: grid;
+    gap: 12px;
+  }
+  .bp-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .bp-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: rgba(6,214,112,0.15);
+    color: #06D670;
+    border: 1px solid #06D670;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .bp-text {
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .bp-detail {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .warning-box {
+    background: rgba(194,57,52,0.08);
+    border-left: 3px solid var(--sf-red);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .warning-box-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    color: #FF6B6B;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .warning-box-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .info-box {
+    background: rgba(0,161,224,0.06);
+    border-left: 3px solid var(--sf-blue);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .info-box-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--sf-blue);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .info-box-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* LWC LIFECYCLE GRID */
+  .lifecycle-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .lifecycle-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .lifecycle-card:hover { border-color: rgba(0,161,224,0.4); }
+  .lifecycle-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--sf-blue);
+    margin-bottom: 8px;
+  }
+  .lifecycle-when {
+    font-size: 10px;
+    color: var(--sf-lightning);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .lifecycle-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .lifecycle-use {
+    font-size: 10px;
+    color: var(--text);
+    background: rgba(0,161,224,0.06);
+    padding: 8px 12px;
+    border-radius: 3px;
+    border-left: 2px solid var(--sf-blue);
+  }
+
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -946,6 +1190,9 @@
     </div>
     <div class="nav-item" onclick="showPanel('integrations')">
       <span class="nav-dot"></span>Integration Patterns
+    </div>
+    <div class="nav-item" onclick="showPanel('mule-handbook')">
+      <span class="nav-dot"></span>MuleSoft Handbook
     </div>
 
     <div class="sidebar-section">Quality</div>
@@ -2009,100 +2256,306 @@ List&lt;<span class="cls">Account</span>&gt; withContacts = [
     <section class="panel" id="lwc">
       <div class="panel-header">
         <div class="panel-eyebrow">Lightning Web Components</div>
-        <div class="panel-title">LWC Patterns</div>
-        <div class="panel-desc">Modern LWC patterns for wiring, events, and reactive properties.</div>
+        <div class="panel-title">LWC Patterns & Lifecycle</div>
+        <div class="panel-desc">Modern LWC patterns covering lifecycle hooks, wire adapters, reactive properties, events, and performance optimization.</div>
       </div>
 
+      <!-- LIFECYCLE HOOKS -->
+      <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:700;">Component Lifecycle Hooks</div>
+      <div class="lifecycle-grid">
+        <div class="lifecycle-card">
+          <div class="lifecycle-name">constructor()</div>
+          <div class="lifecycle-when">Called when: Component is created (before inserted into DOM)</div>
+          <div class="lifecycle-desc">
+            First hook fired. Component not yet attached to DOM — no access to host element, attributes, or public properties. Cannot access child elements. Must call super() first. Use for initializing component state only.
+          </div>
+          <div class="lifecycle-use">
+            <strong>Use for:</strong> Initialize non-reactive class properties, set default values<br>
+            <strong>Don't:</strong> Access this.template, modify DOM, or call external APIs
+          </div>
+        </div>
+
+        <div class="lifecycle-card">
+          <div class="lifecycle-name">connectedCallback()</div>
+          <div class="lifecycle-when">Called when: Component inserted into DOM</div>
+          <div class="lifecycle-desc">
+            Most important hook for initialization. Component is now in DOM but not yet rendered. Fires every time component is inserted (can fire multiple times if component is moved). Safe to access host element via this.template. Perfect for subscriptions, event listeners, and data fetching.
+          </div>
+          <div class="lifecycle-use">
+            <strong>Use for:</strong> Subscribe to events, fetch initial data, register message channel subscribers, set up event listeners<br>
+            <strong>Example:</strong> Subscribe to Platform Events, Lightning Message Service
+          </div>
+        </div>
+
+        <div class="lifecycle-card">
+          <div class="lifecycle-name">renderedCallback()</div>
+          <div class="lifecycle-when">Called when: Component finishes rendering (after every render)</div>
+          <div class="lifecycle-desc">
+            Fires after every render cycle — can fire multiple times. Component and children are fully rendered. Use sparingly — infinite loops possible if you mutate reactive properties here. Ideal for DOM manipulation, focusing elements, or initializing third-party libraries that require rendered DOM.
+          </div>
+          <div class="lifecycle-use">
+            <strong>Use for:</strong> Focus an input, initialize third-party JS libraries (charts, maps), measure DOM element dimensions<br>
+            <strong>Warning:</strong> Don't update @track/@api properties here (causes re-render loop)
+          </div>
+        </div>
+
+        <div class="lifecycle-card">
+          <div class="lifecycle-name">disconnectedCallback()</div>
+          <div class="lifecycle-when">Called when: Component removed from DOM</div>
+          <div class="lifecycle-desc">
+            Cleanup hook. Fires when component is removed from DOM (navigation, conditional rendering). Essential for preventing memory leaks — unsubscribe from events, clear intervals/timeouts, cancel pending async operations. Does not fire on page refresh (entire page unloads).
+          </div>
+          <div class="lifecycle-use">
+            <strong>Use for:</strong> Unsubscribe from Platform Events, LMS channels, remove event listeners, clear setInterval/setTimeout<br>
+            <strong>Critical:</strong> Always pair connectedCallback subscriptions with disconnectedCallback cleanup
+          </div>
+        </div>
+
+        <div class="lifecycle-card">
+          <div class="lifecycle-name">errorCallback(error, stack)</div>
+          <div class="lifecycle-when">Called when: Error in child component's lifecycle hook or event handler</div>
+          <div class="lifecycle-desc">
+            Error boundary for child components. Catches errors from descendant components, not from the component itself. Use to display fallback UI or log errors to external service. Error propagates up tree — parent's errorCallback catches if child doesn't handle it.
+          </div>
+          <div class="lifecycle-use">
+            <strong>Use for:</strong> Log errors to analytics, display error messages to users, render fallback UI<br>
+            <strong>Note:</strong> Only catches errors in children, not in own component
+          </div>
+        </div>
+      </div>
+
+      <!-- WIRE VS IMPERATIVE -->
       <div class="code-card">
         <div class="code-header">
-          <span class="code-label">accountCard.js — Wire + Custom Events</span>
+          <span class="code-label">@wire vs Imperative Apex — When to Use Each</span>
+          <span class="code-tag tag-lwc">Best Practices</span>
+        </div>
+        <pre><span class="cmt">// ── @wire: Use for REACTIVE data that auto-refreshes ──</span>
+<span class="kw">import</span> { wire } <span class="kw">from</span> <span class="str">'lwc'</span>;
+<span class="kw">import</span> getAccounts <span class="kw">from</span> <span class="str">'@salesforce/apex/AccountController.getAccounts'</span>;
+
+<span class="ann">@wire</span>(getAccounts, { status: <span class="str">'$filterStatus'</span> })
+wiredAccounts({ error, data }) {
+    <span class="kw">if</span> (data) {
+        this.accounts = data;
+        this.error = <span class="kw">undefined</span>;
+    } <span class="kw">else if</span> (error) {
+        this.error = error;
+        this.accounts = <span class="kw">undefined</span>;
+    }
+}
+
+<span class="cmt">// When filterStatus changes, @wire automatically re-fetches data
+// Use @wire for: read-only data, lists that update based on filters, dashboard widgets</span>
+
+<span class="cmt">// ── Imperative: Use for USER-TRIGGERED actions (button clicks) ──</span>
+<span class="kw">import</span> createAccount <span class="kw">from</span> <span class="str">'@salesforce/apex/AccountController.createAccount'</span>;
+
+<span class="kw">async</span> <span class="met">handleSave</span>() {
+    this.isLoading = <span class="kw">true</span>;
+    <span class="kw">try</span> {
+        <span class="kw">const</span> result = <span class="kw">await</span> <span class="met">createAccount</span>({ name: this.accountName });
+        this.<span class="met">dispatchEvent</span>(<span class="kw">new</span> ShowToastEvent({ 
+            title: <span class="str">'Success'</span>, 
+            message: <span class="str">'Account created'</span>, 
+            variant: <span class="str">'success'</span> 
+        }));
+        <span class="cmt">// Refresh wire adapter data after mutation</span>
+        <span class="kw">await</span> <span class="met">refreshApex</span>(this.wiredAccountsResult);
+    } <span class="kw">catch</span> (error) {
+        this.<span class="met">handleError</span>(error);
+    } <span class="kw">finally</span> {
+        this.isLoading = <span class="kw">false</span>;
+    }
+}
+
+<span class="cmt">// Use imperative for: DML operations, user-triggered actions, one-time fetches</span></pre>
+      </div>
+
+      <!-- @track DEPRECATION -->
+      <div class="warning-box">
+        <div class="warning-box-title">⚠ @track is Deprecated</div>
+        <div class="warning-box-text">
+          As of Winter '23, <code>@track</code> is no longer needed for primitive reactivity. All fields are reactive by default. Only use <code>@track</code> for objects/arrays when you need to trigger re-render on nested property mutation: <code>this.account.name = 'New'</code> (won't re-render without @track on the object). Best practice: use spread operator to create new object instead of mutating: <code>this.account = {...this.account, name: 'New'}</code> (triggers reactivity without @track).
+        </div>
+      </div>
+
+      <!-- FULL EXAMPLE WITH LIFECYCLE -->
+      <div class="code-card">
+        <div class="code-header">
+          <span class="code-label">accountManager.js — Complete Lifecycle Example</span>
           <span class="code-tag tag-lwc">LWC</span>
         </div>
-        <pre><span class="kw">import</span> { LightningElement, api, wire, track } <span class="kw">from</span> <span class="str">'lwc'</span>;
-<span class="kw">import</span> { getRecord, getFieldValue } <span class="kw">from</span> <span class="str">'lightning/uiRecordApi'</span>;
-<span class="kw">import</span> { ShowToastEvent } <span class="kw">from</span> <span class="str">'lightning/platformShowToastEvent'</span>;
+        <pre><span class="kw">import</span> { LightningElement, api, wire } <span class="kw">from</span> <span class="str">'lwc'</span>;
+<span class="kw">import</span> { getRecord, getFieldValue, updateRecord } <span class="kw">from</span> <span class="str">'lightning/uiRecordApi'</span>;
 <span class="kw">import</span> { refreshApex } <span class="kw">from</span> <span class="str">'@salesforce/apex'</span>;
+<span class="kw">import</span> { ShowToastEvent } <span class="kw">from</span> <span class="str">'lightning/platformShowToastEvent'</span>;
+<span class="kw">import</span> { 
+    subscribe, unsubscribe, onError 
+} <span class="kw">from</span> <span class="str">'lightning/empApi'</span>;
+
 <span class="kw">import</span> NAME_FIELD <span class="kw">from</span> <span class="str">'@salesforce/schema/Account.Name'</span>;
 <span class="kw">import</span> REVENUE_FIELD <span class="kw">from</span> <span class="str">'@salesforce/schema/Account.AnnualRevenue'</span>;
-<span class="kw">import</span> enrichAccount <span class="kw">from</span> <span class="str">'@salesforce/apex/AccountService.enrichAccount'</span>;
 
-<span class="kw">export default class</span> <span class="cls">AccountCard</span> <span class="kw">extends</span> LightningElement {
-    <span class="ann">@api</span> recordId;        <span class="cmt">// Passed from parent / record page</span>
-    <span class="ann">@track</span> isLoading = <span class="kw">false</span>;
-    wiredAccountResult;   <span class="cmt">// Store for refreshApex</span>
+<span class="kw">export default class</span> <span class="cls">AccountManager</span> <span class="kw">extends</span> LightningElement {
+    <span class="ann">@api</span> recordId;
+    wiredAccountResult;
+    platformEventSubscription;
+    isLoading = <span class="kw">false</span>;
+    error;
 
+    <span class="cmt">// ── CONSTRUCTOR: Initialize non-reactive state ──</span>
+    <span class="met">constructor</span>() {
+        <span class="kw">super</span>();
+        <span class="cmt">// Can't access this.template yet</span>
+        this.hasInitialized = <span class="kw">false</span>;
+    }
+
+    <span class="cmt">// ── CONNECTED: Subscribe to Platform Events ──</span>
+    <span class="met">connectedCallback</span>() {
+        this.<span class="met">subscribeToPlatformEvents</span>();
+        this.<span class="met">registerErrorListener</span>();
+    }
+
+    <span class="cmt">// ── WIRE: Reactive data fetching ──</span>
     <span class="ann">@wire</span>(getRecord, {
-        recordId: <span class="str">'$recordId'</span>,        <span class="cmt">// Reactive — re-wires on change</span>
+        recordId: <span class="str">'$recordId'</span>,
         fields: [NAME_FIELD, REVENUE_FIELD]
     })
     wiredAccount(result) {
         this.wiredAccountResult = result;
         <span class="kw">if</span> (result.error) {
-            this.<span class="met">showError</span>(result.error);
+            this.error = result.error.body.message;
         }
     }
 
+    <span class="cmt">// ── RENDERED: DOM is ready, focus input if first render ──</span>
+    <span class="met">renderedCallback</span>() {
+        <span class="kw">if</span> (!this.hasInitialized) {
+            <span class="kw">const</span> input = this.template.<span class="met">querySelector</span>(<span class="str">'lightning-input'</span>);
+            <span class="kw">if</span> (input) {
+                input.<span class="met">focus</span>();
+                this.hasInitialized = <span class="kw">true</span>;
+            }
+        }
+    }
+
+    <span class="cmt">// ── DISCONNECTED: Cleanup subscriptions ──</span>
+    <span class="met">disconnectedCallback</span>() {
+        <span class="kw">if</span> (this.platformEventSubscription) {
+            <span class="met">unsubscribe</span>(this.platformEventSubscription, response => {
+                console.<span class="met">log</span>(<span class="str">'Unsubscribed from Platform Event'</span>);
+            });
+        }
+    }
+
+    <span class="cmt">// ── ERROR BOUNDARY: Catch errors from child components ──</span>
+    <span class="met">errorCallback</span>(error, stack) {
+        console.<span class="met">error</span>(<span class="str">'Error from child component:'</span>, error, stack);
+        this.error = <span class="str">'Something went wrong. Please refresh.'</span>;
+    }
+
+    <span class="cmt">// ── GETTERS: Computed properties ──</span>
     <span class="kw">get</span> accountName() {
         <span class="kw">return</span> <span class="met">getFieldValue</span>(this.wiredAccountResult.data, NAME_FIELD);
     }
 
-    <span class="kw">async</span> <span class="met">handleEnrich</span>() {
+    <span class="kw">get</span> hasError() {
+        <span class="kw">return</span> !!this.error;
+    }
+
+    <span class="cmt">// ── PLATFORM EVENTS: Subscribe in connected, unsubscribe in disconnected ──</span>
+    <span class="met">subscribeToPlatformEvents</span>() {
+        <span class="kw">const</span> channelName = <span class="str">'/event/Account_Updated__e'</span>;
+        <span class="met">subscribe</span>(channelName, -<span class="num">1</span>, response => {
+            <span class="kw">const</span> payload = response.data.payload;
+            <span class="kw">if</span> (payload.Account_Id__c === this.recordId) {
+                <span class="met">refreshApex</span>(this.wiredAccountResult);
+            }
+        }).<span class="met">then</span>(subscription => {
+            this.platformEventSubscription = subscription;
+        });
+    }
+
+    <span class="met">registerErrorListener</span>() {
+        <span class="met">onError</span>(error => {
+            console.<span class="met">error</span>(<span class="str">'Platform Event Error:'</span>, error);
+        });
+    }
+
+    <span class="cmt">// ── USER ACTIONS: Imperative Apex calls ──</span>
+    <span class="kw">async</span> <span class="met">handleSave</span>() {
         this.isLoading = <span class="kw">true</span>;
         <span class="kw">try</span> {
-            <span class="kw">await</span> <span class="met">enrichAccount</span>({ accountId: this.recordId });
+            <span class="kw">const</span> fields = { Id: this.recordId, Name: this.accountName };
+            <span class="kw">await</span> <span class="met">updateRecord</span>({ fields });
             <span class="kw">await</span> <span class="met">refreshApex</span>(this.wiredAccountResult);
-            this.template.<span class="met">querySelector</span>(<span class="str">'c-account-details'</span>)?.<span class="met">refresh</span>();
-            this.<span class="met">dispatchEvent</span>(<span class="kw">new</span> CustomEvent(<span class="str">'enriched'</span>, {
-                detail: { recordId: this.recordId },
-                bubbles: <span class="kw">true</span>, composed: <span class="kw">true</span>  <span class="cmt">// Cross shadow boundary</span>
-            }));
-            this.<span class="met">dispatchEvent</span>(<span class="kw">new</span> <span class="cls">ShowToastEvent</span>({
-                title: <span class="str">'Success'</span>, message: <span class="str">'Account enriched!'</span>,
+            this.<span class="met">dispatchEvent</span>(<span class="kw">new</span> ShowToastEvent({
+                title: <span class="str">'Success'</span>,
+                message: <span class="str">'Account updated'</span>,
                 variant: <span class="str">'success'</span>
             }));
-        } <span class="kw">catch</span> (err) {
-            this.<span class="met">showError</span>(err);
+        } <span class="kw">catch</span> (error) {
+            this.error = error.body.message;
         } <span class="kw">finally</span> {
             this.isLoading = <span class="kw">false</span>;
         }
     }
+}</pre>
+      </div>
 
-    <span class="met">showError</span>(err) {
-        this.<span class="met">dispatchEvent</span>(<span class="kw">new</span> <span class="cls">ShowToastEvent</span>({
-            title: <span class="str">'Error'</span>,
-            message: err?.body?.message ?? err?.message ?? <span class="str">'Unknown error'</span>,
-            variant: <span class="str">'error'</span>, mode: <span class="str">'sticky'</span>
-        }));
+      <!-- PERFORMANCE BEST PRACTICES -->
+      <div class="code-card">
+        <div class="code-header">
+          <span class="code-label">Performance & Memory Best Practices</span>
+          <span class="code-tag tag-info">Optimization</span>
+        </div>
+        <pre><span class="cmt">// ── 1. Use getters for computed properties (cached until dependency changes) ──</span>
+<span class="kw">get</span> filteredAccounts() {
+    <span class="kw">return</span> this.accounts.filter(a => a.AnnualRevenue > <span class="num">1000000</span>);
+}
+<span class="cmt">// Better than computing in template: {filteredAccounts} vs {accounts.filter(...)}</span>
+
+<span class="cmt">// ── 2. Debounce user input to reduce server calls ──</span>
+<span class="met">handleSearchChange</span>(event) {
+    window.<span class="met">clearTimeout</span>(this.delayTimeout);
+    <span class="kw">const</span> searchKey = event.target.value;
+    this.delayTimeout = <span class="met">setTimeout</span>(() => {
+        this.searchKey = searchKey;  <span class="cmt">// This triggers @wire re-fetch</span>
+    }, <span class="num">300</span>);
+}
+
+<span class="cmt">// ── 3. Use if:true/if:false for conditional rendering (not display: none) ──</span>
+<span class="cmt">// ✓ GOOD: Component not created at all if condition false</span>
+<span class="op">&lt;</span><span class="cls">template</span> lwc:if={showDetails}<span class="op">&gt;</span>
+    <span class="op">&lt;</span>c-expensive-component<span class="op">&gt;&lt;/</span>c-expensive-component<span class="op">&gt;</span>
+<span class="op">&lt;/</span><span class="cls">template</span><span class="op">&gt;</span>
+<span class="cmt">// ✗ BAD: Component created but hidden (wastes memory)</span>
+<span class="op">&lt;</span><span class="kw">div</span> style={hideStyle}<span class="op">&gt;</span><span class="op">&lt;</span>c-expensive-component<span class="op">&gt;&lt;/</span>c-expensive-component<span class="op">&gt;&lt;/</span><span class="kw">div</span><span class="op">&gt;</span>
+
+<span class="cmt">// ── 4. Avoid renderedCallback infinite loops ──</span>
+<span class="met">renderedCallback</span>() {
+    <span class="cmt">// ✗ BAD: Causes infinite re-render</span>
+    <span class="cmt">// this.count++;</span>
+    
+    <span class="cmt">// ✓ GOOD: Use flag to run only once</span>
+    <span class="kw">if</span> (!this.chartInitialized) {
+        this.<span class="met">initializeChart</span>();
+        this.chartInitialized = <span class="kw">true</span>;
+    }
+}
+
+<span class="cmt">// ── 5. Clean up in disconnectedCallback to prevent memory leaks ──</span>
+<span class="met">connectedCallback</span>() {
+    this.intervalId = <span class="met">setInterval</span>(() => this.<span class="met">refreshData</span>(), <span class="num">5000</span>);
+}
+<span class="met">disconnectedCallback</span>() {
+    <span class="kw">if</span> (this.intervalId) {
+        <span class="met">clearInterval</span>(this.intervalId);
     }
 }</pre>
       </div>
 
-      <div class="code-card">
-        <div class="code-header">
-          <span class="code-label">accountCard.html</span>
-          <span class="code-tag tag-lwc">LWC</span>
-        </div>
-        <pre><span class="op">&lt;</span><span class="cls">template</span><span class="op">&gt;</span>
-    <span class="op">&lt;</span><span class="cls">lightning-card</span> title=<span class="str">{accountName}</span><span class="op">&gt;</span>
-        <span class="op">&lt;</span><span class="cls">template</span> lwc:if=<span class="str">{isLoading}</span><span class="op">&gt;</span>
-            <span class="op">&lt;</span><span class="cls">lightning-spinner</span> alternative-text=<span class="str">"Loading"</span><span class="op">&gt;&lt;/</span><span class="cls">lightning-spinner</span><span class="op">&gt;</span>
-        <span class="op">&lt;/</span><span class="cls">template</span><span class="op">&gt;</span>
-
-        <span class="op">&lt;</span><span class="cls">template</span> lwc:elseif=<span class="str">{wiredAccountResult.error}</span><span class="op">&gt;</span>
-            <span class="op">&lt;</span>p class=<span class="str">"slds-text-color_error"</span><span class="op">&gt;</span>Failed to load account<span class="op">&lt;</span>/p<span class="op">&gt;</span>
-        <span class="op">&lt;/</span><span class="cls">template</span><span class="op">&gt;</span>
-
-        <span class="op">&lt;</span><span class="cls">template</span> lwc:else<span class="op">&gt;</span>
-            <span class="op">&lt;</span>c-account-details record-id=<span class="str">{recordId}</span><span class="op">&gt;&lt;/</span>c-account-details<span class="op">&gt;</span>
-            <span class="op">&lt;</span><span class="cls">lightning-button</span>
-                label=<span class="str">"Enrich"</span>
-                variant=<span class="str">"brand"</span>
-                onclick=<span class="str">{handleEnrich}</span><span class="op">&gt;</span>
-            <span class="op">&lt;/</span><span class="cls">lightning-button</span><span class="op">&gt;</span>
-        <span class="op">&lt;/</span><span class="cls">template</span><span class="op">&gt;</span>
-    <span class="op">&lt;/</span><span class="cls">lightning-card</span><span class="op">&gt;</span>
-<span class="op">&lt;/</span><span class="cls">template</span><span class="op">&gt;</span></pre>
-      </div>
     </section>
 
     <!-- CODE REVIEW -->
@@ -2237,6 +2690,413 @@ List&lt;<span class="cls">Account</span>&gt; withContacts = [
     }
 }</pre>
       </div>
+    </section>
+
+    <!-- MULESOFT HANDBOOK -->
+    <section class="panel" id="mule-handbook">
+      <div class="panel-header">
+        <div class="panel-eyebrow">Integration Deep Dive</div>
+        <div class="panel-title">MuleSoft ↔ Salesforce Handbook</div>
+        <div class="panel-desc">Edge cases, pitfalls, and battle-tested patterns for MuleSoft-Salesforce integrations. What to solve in Mule vs. Salesforce, and how to avoid the common traps.</div>
+      </div>
+
+      <!-- EDGE CASE 1 -->
+      <div class="edge-case-card">
+        <div class="edge-case-header">
+          <div class="edge-case-icon">⚠️</div>
+          <div>
+            <div class="edge-case-title">Edge Case: Platform Event Replay After Mule Downtime</div>
+            <div class="edge-case-scenario">
+              Scenario: MuleSoft subscriber goes offline for 30 minutes. When it reconnects, it misses 200 events published during downtime. Platform Events only retain events for 24-72 hours depending on event type. How do you guarantee no data loss?
+            </div>
+          </div>
+        </div>
+        <div class="solution-tabs">
+          <div class="solution-tab active" onclick="toggleSolution(this, 'replay-mule')">Solve in Mule</div>
+          <div class="solution-tab" onclick="toggleSolution(this, 'replay-sf')">Solve in Salesforce</div>
+        </div>
+        <div class="solution-content active" data-solution="replay-mule">
+          <h4>MuleSoft Solution: Pub/Sub API with Durable Subscription</h4>
+          <p>Use the Salesforce Pub/Sub API (gRPC) with a durable subscription. Each subscriber maintains a replay ID cursor. When Mule reconnects, it automatically resumes from the last processed event.</p>
+          <ul>
+            <li>Configure MuleSoft to use gRPC Pub/Sub API instead of CometD Streaming API</li>
+            <li>Store the last successful replay ID in a persistent store (database, Redis)</li>
+            <li>On reconnect, resume from stored replay ID</li>
+            <li>Set replay preset to CUSTOM and pass the stored replay ID</li>
+          </ul>
+          <div class="info-box">
+            <div class="info-box-title">Why This Works</div>
+            <div class="info-box-text">Pub/Sub API maintains event retention for 24-72 hours. Durable subscriptions survive Mule restarts. You can replay missed events as long as they're within retention window.</div>
+          </div>
+        </div>
+        <div class="solution-content" data-solution="replay-sf">
+          <h4>Salesforce Solution: Change Data Capture + Batch Recovery</h4>
+          <p>Instead of Platform Events, use Change Data Capture. CDC provides a guaranteed replay buffer. Combine with a nightly batch job as safety net.</p>
+          <ul>
+            <li>Enable Change Data Capture on critical objects instead of Platform Events</li>
+            <li>CDC retains all changes for 3 days minimum (up to 30 days with Event Relay)</li>
+            <li>Build an Apex Batch job that runs hourly to sync any records updated in last 2 hours</li>
+            <li>Batch job acts as reconciliation — catches anything Mule missed</li>
+          </ul>
+          <div class="warning-box">
+            <div class="warning-box-title">Trade-off</div>
+            <div class="warning-box-text">CDC has longer retention but higher licensing cost. Batch job adds complexity. Use this when missing events has severe business impact (financial transactions, compliance data).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDGE CASE 2 -->
+      <div class="edge-case-card">
+        <div class="edge-case-header">
+          <div class="edge-case-icon">🔄</div>
+          <div>
+            <div class="edge-case-title">Edge Case: Circular Update Loop (SF → Mule → SF)</div>
+            <div class="edge-case-scenario">
+              Scenario: Opportunity update in Salesforce triggers Platform Event → MuleSoft enriches data from ERP → Mule upserts back to SF → this triggers another Platform Event → infinite loop crashes both systems.
+            </div>
+          </div>
+        </div>
+        <div class="solution-tabs">
+          <div class="solution-tab active" onclick="toggleSolution(this, 'loop-mule')">Solve in Mule</div>
+          <div class="solution-tab" onclick="toggleSolution(this, 'loop-sf')">Solve in Salesforce</div>
+        </div>
+        <div class="solution-content active" data-solution="loop-mule">
+          <h4>MuleSoft Solution: Idempotency Header + Correlation ID</div>
+          <p>Add a custom header to every Mule → SF upsert request. Salesforce trigger checks this header and skips Platform Event publish if present.</p>
+          <ul>
+            <li>Mule sets HTTP header: <code>X-Integration-Source: MuleSoft</code></li>
+            <li>Mule sets unique correlation ID: <code>X-Correlation-Id: uuid</code></li>
+            <li>Salesforce trigger checks <code>Request.getCurrent().getHeader('X-Integration-Source')</code></li>
+            <li>If header equals 'MuleSoft', skip Platform Event publish</li>
+          </ul>
+          <div class="warning-box">
+            <div class="warning-box-title">Limitation</div>
+            <div class="warning-box-text">This only works for API-based updates. If Mule uses Bulk API 2.0, headers are not available in triggers. Use Salesforce solution instead.</div>
+          </div>
+        </div>
+        <div class="solution-content" data-solution="loop-sf">
+          <h4>Salesforce Solution: Integration User + Bypass Flag</h4>
+          <p>Create a dedicated Integration User for Mule. Trigger checks running user and skips Platform Event publish if it's the integration user.</p>
+          <ul>
+            <li>Create Salesforce user: <code>mulesoft.integration@yourcompany.com</code></li>
+            <li>Grant this user a custom Permission Set: <code>Integration_User_Bypass</code></li>
+            <li>In trigger: <code>if (!FeatureManagement.checkPermission('Integration_User_Bypass')) { publishEvent(); }</code></li>
+            <li>All Mule API calls authenticate as this user</li>
+          </ul>
+          <div class="info-box">
+            <div class="info-box-title">Best Practice</div>
+            <div class="info-box-text">This pattern scales well. Works with Bulk API, REST API, and SOAP API. Easy to audit — all integration updates show as single user in field history.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDGE CASE 3 -->
+      <div class="edge-case-card">
+        <div class="edge-case-header">
+          <div class="edge-case-icon">⏱️</div>
+          <div>
+            <div class="edge-case-title">Edge Case: Bulk API Job Exceeds 24-Hour Processing Time</div>
+            <div class="edge-case-scenario">
+              Scenario: MuleSoft submits a Bulk API 2.0 job with 5 million records. Salesforce takes 26 hours to process it. Job times out. You lose partial results and can't easily identify which records failed.
+            </div>
+          </div>
+        </div>
+        <div class="solution-tabs">
+          <div class="solution-tab active" onclick="toggleSolution(this, 'bulk-mule')">Solve in Mule</div>
+          <div class="solution-tab" onclick="toggleSolution(this, 'bulk-sf')">Solve in Salesforce</div>
+        </div>
+        <div class="solution-content active" data-solution="bulk-mule">
+          <h4>MuleSoft Solution: Chunking + Parallel Job Submission</h4>
+          <p>Split the 5M records into 50 separate Bulk API jobs of 100k each. Submit them in parallel with max concurrency of 10 jobs at a time.</p>
+          <ul>
+            <li>Use DataWeave to split CSV into 100k-row chunks</li>
+            <li>Submit each chunk as separate Bulk API job</li>
+            <li>Use Scatter-Gather pattern with 10 parallel routes</li>
+            <li>Poll each job independently until complete</li>
+            <li>Aggregate failed records from all jobs into single retry file</li>
+          </ul>
+          <div class="info-box">
+            <div class="info-box-title">Performance Gain</div>
+            <div class="info-box-text">10 parallel jobs finish in ~3 hours vs. 1 massive job taking 26+ hours. Easier to retry small failed chunks. Each job stays well under 24hr limit.</div>
+          </div>
+        </div>
+        <div class="solution-content" data-solution="bulk-sf">
+          <h4>Salesforce Solution: Apex Batch + Platform Events for Progress</h4>
+          <p>Don't use Bulk API for data already in Salesforce. Use Apex Batch to process in chunks with progress tracking via Platform Events.</p>
+          <ul>
+            <li>Mule triggers an Apex REST endpoint to initiate batch job</li>
+            <li>Apex Batch processes records in 200-record chunks (well under governor limits)</li>
+            <li>Each chunk publishes a Progress Platform Event with success/failure count</li>
+            <li>Mule subscribes to progress events and monitors completion</li>
+            <li>No 24-hour timeout risk — Batch Apex has separate limits</li>
+          </ul>
+          <div class="warning-box">
+            <div class="warning-box-title">When to Use</div>
+            <div class="warning-box-text">Only use this if data is already in Salesforce. For external → SF data loads, Mule chunking is faster. Apex Batch max: 5 jobs queued at once.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDGE CASE 4 -->
+      <div class="edge-case-card">
+        <div class="edge-case-header">
+          <div class="edge-case-icon">🔐</div>
+          <div>
+            <div class="edge-case-title">Edge Case: OAuth Token Expires Mid-Job (15-minute Expiry)</div>
+            <div class="edge-case-scenario">
+              Scenario: MuleSoft starts a long-running process that makes incremental Salesforce API calls over 2 hours. After 15 minutes, the OAuth access token expires. Subsequent API calls fail with 401 Unauthorized. Entire process crashes.
+            </div>
+          </div>
+        </div>
+        <div class="solution-tabs">
+          <div class="solution-tab active" onclick="toggleSolution(this, 'token-mule')">Solve in Mule</div>
+          <div class="solution-tab" onclick="toggleSolution(this, 'token-sf')">Solve in Salesforce</div>
+        </div>
+        <div class="solution-content active" data-solution="token-mule">
+          <h4>MuleSoft Solution: Proactive Token Refresh with Interceptor</h4>
+          <p>Implement a custom Mule interceptor that checks token expiry before each API call and refreshes proactively.</p>
+          <ul>
+            <li>Store token metadata: <code>{ access_token, issued_at, expires_in }</code></li>
+            <li>Before each SF API call, check: <code>if (now - issued_at > expires_in - 60s) refresh()</code></li>
+            <li>Refresh 60 seconds before actual expiry (safety buffer)</li>
+            <li>Use OAuth refresh token flow: <code>POST /services/oauth2/token</code> with <code>grant_type=refresh_token</code></li>
+            <li>Update stored access_token and issued_at atomically</li>
+          </ul>
+          <div class="info-box">
+            <div class="info-box-title">Recommended Approach</div>
+            <div class="info-box-text">This prevents all 401 errors. MuleSoft Salesforce Connector handles this automatically, but if using HTTP Request connector, implement this manually.</div>
+          </div>
+        </div>
+        <div class="solution-content" data-solution="token-sf">
+          <h4>Salesforce Solution: Use Session ID with Connected App</h4>
+          <p>Instead of OAuth access tokens (15-min expiry), use Salesforce Session ID which lasts 2+ hours (configurable up to 12 hours).</p>
+          <ul>
+            <li>Mule authenticates via SOAP login() call instead of OAuth</li>
+            <li>SOAP login returns sessionId with much longer expiry</li>
+            <li>Configure Session Settings in Salesforce: Setup → Session Settings → Timeout = 12 hours</li>
+            <li>sessionId valid for entire session duration</li>
+          </ul>
+          <div class="warning-box">
+            <div class="warning-box-title">Security Trade-off</div>
+            <div class="warning-box-text">Session IDs are less secure than short-lived OAuth tokens. Only use for trusted internal integrations. Not recommended for public-facing APIs.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEST PRACTICES SECTION -->
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin:40px 0 20px;font-weight:700;border-top:1px solid var(--border);padding-top:24px;">📋 MuleSoft ↔ Salesforce Best Practices</div>
+
+      <div class="best-practice-section">
+        <div class="bp-header">
+          <div class="bp-icon">🔐</div>
+          <div class="bp-title">Authentication & Security</div>
+        </div>
+        <div class="bp-list">
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Use OAuth 2.0 JWT Bearer flow (not username-password)</div>
+              <div class="bp-detail">Server-to-server auth without user interaction. Rotate certificates annually. Store private keys in secure vault (Anypoint Secrets Manager).</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Create dedicated Integration User with minimal permissions</div>
+              <div class="bp-detail">Never use admin credentials. Grant only necessary object/field permissions via Permission Set. Easier to audit and revoke access.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Implement IP whitelisting on both sides</div>
+              <div class="bp-detail">Salesforce: Restrict Connected App to Mule's IP range. Mule: Use Anypoint VPC to lock down egress IPs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="best-practice-section">
+        <div class="bp-header">
+          <div class="bp-icon">📊</div>
+          <div class="bp-title">Data Sync & Idempotency</div>
+        </div>
+        <div class="bp-list">
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Always upsert by External ID — never query-then-insert</div>
+              <div class="bp-detail">Mark Integration_Id__c field as externalId=true and unique=true. Mule upserts using this field. Eliminates race conditions and duplicate records.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Design all endpoints to be idempotent</div>
+              <div class="bp-detail">Same request processed multiple times produces same result. Use correlation IDs to detect duplicate requests. Store processed IDs in Redis/database with 24hr TTL.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Use Bulk API 2.0 for >2,000 records</div>
+              <div class="bp-detail">Bulk API 2.0 is faster and more reliable than REST API for large data volumes. Auto-batches into 10k chunks. Provides per-record success/failure tracking.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Implement delta sync with Last Modified Date</div>
+              <div class="bp-detail">Don't sync full dataset every run. Query: <code>WHERE LastModifiedDate > :lastSyncTime</code>. Store last sync timestamp in persistent store. Reduces API consumption by 95%+.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="best-practice-section">
+        <div class="bp-header">
+          <div class="bp-icon">🚨</div>
+          <div class="bp-title">Error Handling & Monitoring</div>
+        </div>
+        <div class="bp-list">
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Never lose data — implement DLQ (Dead Letter Queue)</div>
+              <div class="bp-detail">Failed records → DLQ (persistent queue). Separate process retries DLQ records hourly with exponential backoff. Alert if DLQ size > threshold.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Distinguish transient vs. permanent failures</div>
+              <div class="bp-detail">Transient (network timeout, 503): Retry with backoff. Permanent (400 validation error, duplicate): Don't retry, log to error table for manual review.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Set up proactive alerting on key metrics</div>
+              <div class="bp-detail">Alert on: API call failures > 5%, Bulk job processing time > 2hr, Platform Event lag > 5 min, OAuth token refresh failures. Use Anypoint Monitoring + PagerDuty.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Log correlation IDs end-to-end for traceability</div>
+              <div class="bp-detail">Generate UUID in Mule entry point. Pass as <code>X-Correlation-Id</code> header to all downstream calls. Log it in Salesforce triggers. Enables tracing request across both systems.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="best-practice-section">
+        <div class="bp-header">
+          <div class="bp-icon">⚡</div>
+          <div class="bp-title">Performance & Scalability</div>
+        </div>
+        <div class="bp-list">
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Use Parallel Processing for independent operations</div>
+              <div class="bp-detail">Scatter-Gather pattern: Query 3 objects in parallel vs. sequentially. Reduces total latency by 60%+. Max 10 parallel routes to avoid overwhelming SF.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Cache reference data (RecordTypes, Picklists) in Mule</div>
+              <div class="bp-detail">Don't query RecordTypeId on every record. Cache in Object Store with 24hr TTL. Refresh cache daily via scheduled flow. Saves 1000s of SOQL queries.</div>
+            </div>
+          </div>
+          <div class="bp-item">
+            <div class="bp-check">✓</div>
+            <div>
+              <div class="bp-text">Throttle API calls to stay under rate limits</div>
+              <div class="bp-detail">SF rate limit: 100 API calls/user/20s. Use Rate Limiting policy in Anypoint to enforce 80 calls/20s per user. Prevents 503 errors during peak load.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-card">
+        <div class="code-header">
+          <span class="code-label">Complete Mule Flow Example — Idempotent Upsert with Error Handling</span>
+          <span class="code-tag tag-info">Mule DSL</span>
+        </div>
+        <pre><span class="op">&lt;</span><span class="cls">flow</span> name=<span class="str">"sync-accounts-to-salesforce"</span><span class="op">&gt;</span>
+  <span class="cmt">&lt;!-- 1. Generate correlation ID for tracing --&gt;</span>
+  <span class="op">&lt;</span><span class="cls">set-variable</span> variableName=<span class="str">"correlationId"</span> 
+                value=<span class="str">"#[uuid()]"</span> /&gt;
+  
+  <span class="cmt">&lt;!-- 2. Transform ERP data to Salesforce format --&gt;</span>
+  <span class="op">&lt;</span><span class="cls">ee:transform</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">ee:message</span><span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="cls">ee:set-payload</span><span class="op">&gt;</span>
+        %dw 2.0
+        output application/json
+        ---
+        payload map {
+          Integration_Id__c: $.erpAccountId,
+          Name: $.accountName,
+          BillingStreet: $.address.street,
+          AnnualRevenue: $.revenue as Number,
+          <span class="cmt">// Correlation ID for idempotency check in SF</span>
+          Correlation_Id__c: vars.correlationId
+        }
+      <span class="op">&lt;/</span><span class="cls">ee:set-payload</span><span class="op">&gt;</span>
+    <span class="op">&lt;/</span><span class="cls">ee:message</span><span class="op">&gt;</span>
+  <span class="op">&lt;/</span><span class="cls">ee:transform</span><span class="op">&gt;</span>
+  
+  <span class="cmt">&lt;!-- 3. Upsert with External ID --&gt;</span>
+  <span class="op">&lt;</span><span class="cls">try</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">salesforce:upsert</span>
+      config-ref=<span class="str">"Salesforce_Config"</span>
+      type=<span class="str">"Account"</span>
+      externalIdFieldName=<span class="str">"Integration_Id__c"</span><span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="cls">salesforce:records</span><span class="op">&gt;</span>#[payload]<span class="op">&lt;/</span><span class="cls">salesforce:records</span><span class="op">&gt;</span>
+    <span class="op">&lt;/</span><span class="cls">salesforce:upsert</span><span class="op">&gt;</span>
+    
+    <span class="cmt">&lt;!-- 4. Log success --&gt;</span>
+    <span class="op">&lt;</span><span class="cls">logger</span> level=<span class="str">"INFO"</span> 
+             message=<span class="str">"#['Upserted ' ++ sizeOf(payload) ++ ' accounts. Correlation: ' ++ vars.correlationId]"</span> /&gt;
+    
+    <span class="cmt">&lt;!-- 5. Error handling --&gt;</span>
+    <span class="op">&lt;</span><span class="cls">error-handler</span><span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="cls">on-error-propagate</span> type=<span class="str">"SALESFORCE:CONNECTIVITY"</span><span class="op">&gt;</span>
+        <span class="cmt">&lt;!-- Transient error - send to retry queue --&gt;</span>
+        <span class="op">&lt;</span><span class="cls">jms:publish</span> destination=<span class="str">"salesforce-retry-queue"</span><span class="op">&gt;</span>
+          <span class="op">&lt;</span><span class="cls">jms:message</span><span class="op">&gt;</span>
+            <span class="op">&lt;</span><span class="cls">jms:body</span><span class="op">&gt;</span>#[payload]<span class="op">&lt;/</span><span class="cls">jms:body</span><span class="op">&gt;</span>
+            <span class="op">&lt;</span><span class="cls">jms:properties</span><span class="op">&gt;</span>
+              #[{ correlationId: vars.correlationId, retryCount: 0 }]
+            <span class="op">&lt;/</span><span class="cls">jms:properties</span><span class="op">&gt;</span>
+          <span class="op">&lt;/</span><span class="cls">jms:message</span><span class="op">&gt;</span>
+        <span class="op">&lt;/</span><span class="cls">jms:publish</span><span class="op">&gt;</span>
+      <span class="op">&lt;/</span><span class="cls">on-error-propagate</span><span class="op">&gt;</span>
+      
+      <span class="op">&lt;</span><span class="cls">on-error-propagate</span> type=<span class="str">"SALESFORCE:INVALID_DATA"</span><span class="op">&gt;</span>
+        <span class="cmt">&lt;!-- Permanent error - log to DLQ for manual review --&gt;</span>
+        <span class="op">&lt;</span><span class="cls">db:insert</span> config-ref=<span class="str">"Database_Config"</span><span class="op">&gt;</span>
+          <span class="op">&lt;</span><span class="cls">db:sql</span><span class="op">&gt;</span>
+            INSERT INTO error_log (correlation_id, error_type, payload, timestamp)
+            VALUES (:correlationId, :errorType, :payload, NOW())
+          <span class="op">&lt;/</span><span class="cls">db:sql</span><span class="op">&gt;</span>
+          <span class="op">&lt;</span><span class="cls">db:input-parameters</span><span class="op">&gt;</span>
+            #[{
+              correlationId: vars.correlationId,
+              errorType: 'VALIDATION_ERROR',
+              payload: write(payload, 'application/json')
+            }]
+          <span class="op">&lt;/</span><span class="cls">db:input-parameters</span><span class="op">&gt;</span>
+        <span class="op">&lt;/</span><span class="cls">db:insert</span><span class="op">&gt;</span>
+      <span class="op">&lt;/</span><span class="cls">on-error-propagate</span><span class="op">&gt;</span>
+    <span class="op">&lt;/</span><span class="cls">error-handler</span><span class="op">&gt;</span>
+  <span class="op">&lt;/</span><span class="cls">try</span><span class="op">&gt;</span>
+<span class="op">&lt;/</span><span class="cls">flow</span><span class="op">&gt;</span></pre>
+      </div>
+
     </section>
 
     <!-- METADATA API -->
@@ -3285,6 +4145,15 @@ System.<span class="met">debug</span>(<span class="str">'Flow output: '</span> +
         }, 2000);
       });
     }
+  }
+
+  // ── MULESOFT HANDBOOK: Toggle solutions ──
+  function toggleSolution(tabEl, solutionId) {
+    const card = tabEl.closest('.edge-case-card');
+    card.querySelectorAll('.solution-tab').forEach(t => t.classList.remove('active'));
+    card.querySelectorAll('.solution-content').forEach(c => c.classList.remove('active'));
+    tabEl.classList.add('active');
+    card.querySelector(`[data-solution="${solutionId}"]`).classList.add('active');
   }
 </script>
 </body>

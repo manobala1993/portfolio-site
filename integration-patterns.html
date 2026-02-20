@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integration Patterns - SF Dev Toolkit</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@300;700;900&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --sf-blue: #00A1E0;
+    --sf-cloud: #032D60;
+    --sf-lightning: #FFB75D;
+    --sf-green: #04844B;
+    --sf-red: #C23934;
+    --sf-purple: #7B5EA7;
+    --bg: #050E1A;
+    --surface: #0A1929;
+    --surface2: #0D2137;
+    --border: rgba(0,161,224,0.18);
+    --text: #E8F4FD;
+    --muted: #7BA6BF;
+    --mono: 'Space Mono', monospace;
+    --display: 'Unbounded', sans-serif;
+  }
+
+  /* LIGHT THEME */
+  body.light-theme {
+    --bg: #F8FAFB;
+    --surface: #FFFFFF;
+    --surface2: #F3F6F8;
+    --border: rgba(0,161,224,0.2);
+    --text: #0A1929;
+    --muted: #4A6D84;
+  }
+
+  body.light-theme {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,161,224,0.08) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,161,224,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,161,224,0.03) 40px);
+  }
+
+  /* THEME TOGGLE BUTTON */
+  .theme-toggle {
+    background: rgba(0,161,224,0.1);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: auto;
+    margin-right: 16px;
+  }
+  .theme-toggle:hover {
+    background: rgba(0,161,224,0.2);
+    border-color: var(--sf-blue);
+    transform: rotate(180deg);
+  }
+  .theme-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,161,224,0.12) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,161,224,0.04) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,161,224,0.04) 40px);
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(5,14,26,0.9);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo-ring {
+    width: 38px; height: 38px;
+    border: 2px solid var(--sf-blue);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    animation: pulse-ring 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,161,224,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(0,161,224,0); }
+  }
+
+  .header-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--sf-blue);
+  }
+  .header-sub { color: var(--muted); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .version-badge {
+    margin-left: auto;
+    background: rgba(0,161,224,0.1);
+    border: 1px solid var(--border);
+    color: var(--sf-blue);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* MAIN LAYOUT */
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 70px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    background: rgba(10,25,41,0.7);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
+
+  .sidebar-section {
+    padding: 6px 16px 2px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 16px;
+  }
+  .sidebar-section:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 12px;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    letter-spacing: 0.02em;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(0,161,224,0.06); }
+  .nav-item.active {
+    color: var(--sf-blue);
+    border-left-color: var(--sf-blue);
+    background: rgba(0,161,224,0.1);
+  }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* CONTENT */
+  .content { padding: 36px 40px; max-width: 960px; }
+
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .panel-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--sf-blue);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .panel-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .panel-desc { color: var(--muted); margin-top: 10px; line-height: 1.7; font-size: 12px; }
+
+  /* CODE BLOCKS */
+  .code-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sf-blue);
+    font-family: var(--display);
+    font-weight: 700;
+  }
+
+  .code-tag {
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
+  .tag-apex { background: rgba(0,161,224,0.15); color: var(--sf-blue); border: 1px solid rgba(0,161,224,0.3); }
+  .tag-soql { background: rgba(4,132,75,0.15); color: #06D670; border: 1px solid rgba(4,132,75,0.3); }
+  .tag-lwc { background: rgba(255,183,93,0.15); color: var(--sf-lightning); border: 1px solid rgba(255,183,93,0.3); }
+  .tag-warn { background: rgba(194,57,52,0.15); color: #FF6B6B; border: 1px solid rgba(194,57,52,0.3); }
+  .tag-good { background: rgba(4,132,75,0.15); color: #06D670; border: 1px solid rgba(4,132,75,0.3); }
+  .tag-info { background: rgba(123,94,167,0.15); color: #B89DDF; border: 1px solid rgba(123,94,167,0.3); }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    line-height: 1.75;
+    font-size: 12px;
+    font-family: var(--mono);
+  }
+
+  .kw { color: #7FD1FF; }
+  .str { color: #A8FF78; }
+  .num { color: var(--sf-lightning); }
+  .cmt { color: #4A6D84; font-style: italic; }
+  .cls { color: #FFB3E6; }
+  .met { color: #79D9F8; }
+  .ann { color: #B89DDF; }
+  .op { color: var(--muted); }
+
+  /* GOVERNOR LIMITS TABLE */
+  .limits-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .limit-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  .limit-row:hover { border-color: rgba(0,161,224,0.4); }
+
+  .limit-name { font-size: 12px; color: var(--text); }
+  .limit-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .limit-val {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 15px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .limit-bar-wrap { width: 80px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; }
+  .limit-bar { height: 100%; border-radius: 2px; }
+
+  /* PATTERN CARDS */
+  .pattern-grid { display: grid; gap: 20px; }
+
+  .pattern-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .pattern-card:hover { border-color: rgba(0,161,224,0.4); transform: translateY(-2px); }
+
+  .pattern-top {
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pattern-name { font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--text); }
+  .pattern-why { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; display: grid; gap: 8px; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .check-icon { flex-shrink: 0; margin-top: 1px; }
+  .check-icon.pass { color: #06D670; }
+  .check-icon.warn { color: var(--sf-lightning); }
+  .check-icon.fail { color: #FF6B6B; }
+
+  /* SEARCH BAR */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 12px 16px 12px 40px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .search-input:focus { border-color: var(--sf-blue); }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+
+  /* SOQL BUILDER */
+  .soql-builder {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .soql-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .field-select, .field-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 9px 12px;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .field-select:focus, .field-input:focus { border-color: var(--sf-blue); }
+  .field-select option { background: var(--bg); }
+
+  .soql-output {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    font-size: 12px;
+    color: var(--sf-blue);
+    letter-spacing: 0.05em;
+    min-height: 48px;
+    transition: all 0.3s;
+    word-break: break-all;
+  }
+
+  .gen-btn {
+    margin-top: 16px;
+    background: var(--sf-blue);
+    color: var(--bg);
+    border: none;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 11px 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gen-btn:hover { background: #30B8F0; transform: translateY(-1px); }
+
+  /* TRIGGER FRAMEWORK */
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.1em;
+  }
+  .copy-btn:hover { border-color: var(--sf-blue); color: var(--sf-blue); }
+  .copy-btn.copied { border-color: #06D670; color: #06D670; }
+
+  /* STATUS INDICATOR */
+  .status-strip {
+    display: flex;
+    gap: 24px;
+    padding: 12px 20px;
+    background: rgba(0,161,224,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 28px;
+  }
+  .status-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #06D670; box-shadow: 0 0 6px #06D670; animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* INTEGRATION DIAGRAM */
+  .int-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .int-node {
+    flex-shrink: 0;
+    min-width: 110px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 11px;
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border: 1px solid;
+  }
+  .int-node.sf { background: rgba(0,161,224,0.12); border-color: var(--sf-blue); color: var(--sf-blue); }
+  .int-node.mule { background: rgba(0,178,124,0.12); border-color: #00B27C; color: #00B27C; }
+  .int-node.ext { background: rgba(255,183,93,0.12); border-color: var(--sf-lightning); color: var(--sf-lightning); }
+  .int-node.heroku { background: rgba(123,94,167,0.12); border-color: #7B5EA7; color: #B89DDF; }
+  .int-node.kafka { background: rgba(194,57,52,0.12); border-color: var(--sf-red); color: #FF8A8A; }
+  .int-node-label { font-size: 9px; font-weight: 400; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: 0.1em; }
+  .int-arrow {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 4px;
+    gap: 3px;
+    min-width: 60px;
+  }
+  .int-arrow-line {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--border), rgba(0,161,224,0.4), var(--border));
+    position: relative;
+  }
+  .int-arrow-line::after { content: '▶'; position: absolute; right: -5px; top: -7px; font-size: 9px; color: var(--muted); }
+  .int-arrow-label { font-size: 9px; color: var(--muted); letter-spacing: 0.06em; text-align: center; white-space: nowrap; }
+  .int-arrow.bi .int-arrow-line::before { content: '◀'; position: absolute; left: -5px; top: -7px; font-size: 9px; color: var(--muted); }
+
+  /* TAB PILLS */
+  .tab-pills { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+  .tab-pill {
+    padding: 8px 18px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+    font-family: var(--display);
+    font-weight: 700;
+  }
+  .tab-pill:hover { color: var(--text); }
+  .tab-pill.active { color: var(--sf-blue); border-bottom-color: var(--sf-blue); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+
+  /* FLOW DEBUG STEPS */
+  .flow-steps { display: grid; gap: 12px; margin-bottom: 24px; }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  .flow-step:hover { border-color: rgba(0,161,224,0.35); }
+  .flow-step-num {
+    width: 36px; height: 36px;
+    border: 1px solid var(--sf-blue);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--sf-blue);
+    flex-shrink: 0;
+  }
+  .flow-step-title { font-family: var(--display); font-weight: 700; font-size: 12px; color: var(--text); margin-bottom: 4px; }
+  .flow-step-desc { font-size: 11px; color: var(--muted); line-height: 1.65; }
+  .flow-step-tip { margin-top: 8px; padding: 8px 12px; background: rgba(255,183,93,0.08); border-left: 2px solid var(--sf-lightning); font-size: 10px; color: var(--sf-lightning); line-height: 1.6; }
+
+  /* METADATA GRID */
+  .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .meta-card:hover { border-color: rgba(0,161,224,0.4); transform: translateY(-2px); }
+  .meta-type { font-family: var(--display); font-weight: 700; font-size: 11px; color: var(--sf-blue); margin-bottom: 4px; letter-spacing: 0.05em; }
+  .meta-file { font-size: 10px; color: var(--sf-lightning); font-style: italic; margin-bottom: 6px; }
+  .meta-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+  /* DECISION MATRIX */
+  .decision-scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .scenario-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: rgba(0,161,224,0.15);
+    border: 1px solid var(--sf-blue);
+  }
+  .scenario-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .decision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .decision-option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .decision-option:hover {
+    border-color: rgba(0,161,224,0.4);
+    transform: translateY(-2px);
+  }
+  .decision-option.winner {
+    border-color: var(--sf-blue);
+    background: rgba(0,161,224,0.06);
+  }
+  .decision-option.avoid {
+    border-color: rgba(194,57,52,0.4);
+    opacity: 0.6;
+  }
+  .option-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .option-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .option-name.flow { color: #FFB75D; }
+  .option-name.apex { color: var(--sf-blue); }
+  .option-name.mule { color: #00B27C; }
+  .verdict-badge {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-family: var(--display);
+  }
+  .verdict-badge.best {
+    background: rgba(0,161,224,0.2);
+    color: var(--sf-blue);
+    border: 1px solid var(--sf-blue);
+  }
+  .verdict-badge.ok {
+    background: rgba(255,183,93,0.15);
+    color: var(--sf-lightning);
+    border: 1px solid rgba(255,183,93,0.4);
+  }
+  .verdict-badge.avoid {
+    background: rgba(194,57,52,0.15);
+    color: #FF6B6B;
+    border: 1px solid rgba(194,57,52,0.4);
+  }
+  .option-reasons {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+  }
+  .reason {
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .reason-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 10px;
+  }
+  .reason-icon.pro { color: #06D670; }
+  .reason-icon.con { color: #FF6B6B; }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .compare-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-header-cell {
+    background: var(--surface2);
+    padding: 12px 16px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .compare-header-cell:first-child { text-align: left; }
+  .compare-header-cell.flow { color: #FFB75D; }
+  .compare-header-cell.apex { color: var(--sf-blue); }
+  .compare-header-cell.mule { color: #00B27C; }
+  .compare-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-row {
+    display: contents;
+  }
+  .compare-cell {
+    background: var(--surface);
+    padding: 14px 16px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .compare-cell:first-child {
+    justify-content: flex-start;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .compare-cell.rating-high { color: #06D670; }
+  .compare-cell.rating-med { color: var(--sf-lightning); }
+  .compare-cell.rating-low { color: #FF6B6B; }
+
+  /* APEX BUILDER */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .template-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .template-card:hover {
+    border-color: var(--sf-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,161,224,0.15);
+  }
+  .template-card.selected {
+    border-color: var(--sf-blue);
+    background: rgba(0,161,224,0.08);
+  }
+  .template-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  .template-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .template-desc {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .template-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 8px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: rgba(0,161,224,0.15);
+    color: var(--sf-blue);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .config-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .config-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sf-blue);
+    margin-bottom: 16px;
+  }
+  .config-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .config-row.full {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--sf-blue);
+  }
+  .checkbox-item label {
+    font-size: 11px;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .method-list {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .method-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .method-sig {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--sf-blue);
+  }
+  .method-remove {
+    background: transparent;
+    border: 1px solid rgba(194,57,52,0.4);
+    color: #FF6B6B;
+    font-size: 9px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .method-remove:hover {
+    background: rgba(194,57,52,0.15);
+    border-color: #FF6B6B;
+  }
+
+  .add-method-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .add-method-btn:hover {
+    border-color: var(--sf-blue);
+    color: var(--sf-blue);
+    border-style: solid;
+  }
+
+  .generate-btn {
+    background: var(--sf-blue);
+    color: var(--bg);
+    border: none;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .generate-btn:hover {
+    background: #30B8F0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,161,224,0.3);
+  }
+
+  /* MULESOFT HANDBOOK */
+  .edge-case-card {
+    background: var(--surface);
+    border-left: 4px solid var(--sf-lightning);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .edge-case-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .edge-case-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    background: rgba(255,183,93,0.15);
+    border: 1px solid var(--sf-lightning);
+  }
+  .edge-case-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .edge-case-scenario {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .solution-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .solution-tab {
+    padding: 8px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .solution-tab:hover { color: var(--text); }
+  .solution-tab.active { color: var(--sf-blue); border-bottom-color: var(--sf-blue); }
+  .solution-content { display: none; padding: 16px 0; }
+  .solution-content.active { display: block; }
+  .solution-content h4 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--sf-blue);
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .solution-content p {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .solution-content ul {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .solution-content li {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .solution-content li::before {
+    content: '→';
+    color: var(--sf-blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .best-practice-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .bp-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bp-icon {
+    font-size: 24px;
+  }
+  .bp-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .bp-list {
+    display: grid;
+    gap: 12px;
+  }
+  .bp-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .bp-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: rgba(6,214,112,0.15);
+    color: #06D670;
+    border: 1px solid #06D670;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .bp-text {
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .bp-detail {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .warning-box {
+    background: rgba(194,57,52,0.08);
+    border-left: 3px solid var(--sf-red);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .warning-box-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    color: #FF6B6B;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .warning-box-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .info-box {
+    background: rgba(0,161,224,0.06);
+    border-left: 3px solid var(--sf-blue);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .info-box-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--sf-blue);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .info-box-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* LWC LIFECYCLE GRID */
+  .lifecycle-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .lifecycle-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .lifecycle-card:hover { border-color: rgba(0,161,224,0.4); }
+  .lifecycle-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--sf-blue);
+    margin-bottom: 8px;
+  }
+  .lifecycle-when {
+    font-size: 10px;
+    color: var(--sf-lightning);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .lifecycle-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .lifecycle-use {
+    font-size: 10px;
+    color: var(--text);
+    background: rgba(0,161,224,0.06);
+    padding: 8px 12px;
+    border-radius: 3px;
+    border-left: 2px solid var(--sf-blue);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; display: flex; flex-wrap: wrap; padding: 12px; gap: 4px; }
+    .nav-item { padding: 8px 12px; border-left: none; border-bottom: 2px solid transparent; }
+    .nav-item.active { border-left: none; border-bottom-color: var(--sf-blue); }
+    .content { padding: 24px 20px; }
+    .soql-row { grid-template-columns: 1fr; }
+    .limit-row { grid-template-columns: 1fr auto; }
+    .limit-bar-wrap { display: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-ring">⚡</div>
+  <div>
+    <div class="header-title">SF DEV TOOLKIT</div>
+    <div class="header-sub">Apex · SOQL · LWC · Patterns</div>
+  </div>
+  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+    <span class="theme-icon" id="theme-icon">☀️</span>
+  </button>
+  <div class="version-badge">API v62.0</div>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-section">Core</div>
+    <a href="governor-limits.html" class="nav-item">
+      <span class="nav-dot"></span>Governor Limits
+    </a>
+    <a href="apex-patterns.html" class="nav-item">
+      <span class="nav-dot"></span>Apex Patterns
+    </a>
+    <a href="soql-builder.html" class="nav-item">
+      <span class="nav-dot"></span>SOQL Builder
+    </a>
+    <a href="apex-builder.html" class="nav-item">
+      <span class="nav-dot"></span>Apex Builder
+    </a>
+    <div class="sidebar-section">Architecture</div>
+    <a href="decision-matrix.html" class="nav-item">
+      <span class="nav-dot"></span>Decision Matrix
+    </a>
+    <a href="trigger-framework.html" class="nav-item">
+      <span class="nav-dot"></span>Trigger Framework
+    </a>
+    <a href="lwc-patterns.html" class="nav-item">
+      <span class="nav-dot"></span>LWC Patterns
+    </a>
+    <div class="sidebar-section">Quality</div>
+    <a href="code-review.html" class="nav-item">
+      <span class="nav-dot"></span>Code Review
+    </a>
+    <a href="test-patterns.html" class="nav-item">
+      <span class="nav-dot"></span>Test Patterns
+    </a>
+    <div class="sidebar-section">Integrations</div>
+    <a href="mulesoft-handbook.html" class="nav-item">
+      <span class="nav-dot"></span>MuleSoft Handbook
+    </a>
+    <a href="metadata-api.html" class="nav-item">
+      <span class="nav-dot"></span>Metadata API
+    </a>
+    <a href="flow-debugging.html" class="nav-item">
+      <span class="nav-dot"></span>Flow Debugging
+    </a>
+    <a href="integration-patterns.html" class="nav-item active">
+      <span class="nav-dot"></span>Integration Patterns
+    </a>
+  </nav>
+
+  <main class="content">
+    <section class="panel active" id="integrations">
+
+      <div class="panel-header">
+        <div class="panel-eyebrow">Enterprise Integration</div>
+        <div class="panel-title">Integration Patterns</div>
+        <div class="panel-desc">Patterns for connecting Salesforce with MuleSoft, REST/SOAP APIs, ETL tools, and event-driven third-party systems.</div>
+      </div>
+
+      <div class="tab-pills">
+        <div class="tab-pill active" onclick="showTab('mulesoft', this)">MuleSoft</div>
+        <div class="tab-pill" onclick="showTab('rest', this)">REST / SOAP</div>
+        <div class="tab-pill" onclick="showTab('events', this)">Platform Events</div>
+        <div class="tab-pill" onclick="showTab('etl', this)">ETL / 3rd Party</div>
+      </div>
+
+      <!-- MULESOFT TAB -->
+      <div class="tab-content active" id="tab-mulesoft">
+        <div class="int-diagram">
+          <div class="int-node mule">MULESOFT<br><div class="int-node-label">Anypoint Platform</div></div>
+          <div class="int-arrow bi">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">Connected App<br>OAuth 2.0</div>
+          </div>
+          <div class="int-node sf">SALESFORCE<br><div class="int-node-label">REST / Bulk API</div></div>
+          <div class="int-arrow">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">Outbound Msg<br>/ Platform Event</div>
+          </div>
+          <div class="int-node ext">ERP / EXT SYS<br><div class="int-node-label">SAP · NetSuite · etc</div></div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Salesforce Connector — Mule 4 Config</span>
+            <span class="code-tag tag-info">XML / Mule DSL</span>
+          </div>
+          <pre><span class="op">&lt;</span><span class="cls">salesforce:config</span> name=<span class="str">"Salesforce_Config"</span><span class="op">&gt;</span>
+  <span class="op">&lt;</span><span class="cls">salesforce:oauth-jwt-connection</span>
+    consumerKey=<span class="str">"${sf.consumerKey}"</span>        <span class="cmt">&lt;!-- Connected App Client ID --&gt;</span>
+    keyStorePath=<span class="str">"${sf.keystore.path}"</span>    <span class="cmt">&lt;!-- JWT signing cert --&gt;</span>
+    storePassword=<span class="str">"${sf.keystore.pass}"</span>
+    principal=<span class="str">"${sf.username}"</span>
+    tokenEndpoint=<span class="str">"https://login.salesforce.com/services/oauth2/token"</span> /&gt;
+<span class="op">&lt;/</span><span class="cls">salesforce:config</span><span class="op">&gt;</span>
+
+<span class="cmt">&lt;!-- Upsert records using External ID (no SOQL needed in Mule) --&gt;</span>
+<span class="op">&lt;</span><span class="cls">salesforce:upsert</span>
+  config-ref=<span class="str">"Salesforce_Config"</span>
+  type=<span class="str">"Account"</span>
+  externalIdFieldName=<span class="str">"Integration_Id__c"</span><span class="op">&gt;</span>
+  <span class="op">&lt;</span><span class="cls">salesforce:records</span><span class="op">&gt;</span>#[payload]<span class="op">&lt;/</span><span class="cls">salesforce:records</span><span class="op">&gt;</span>
+<span class="op">&lt;/</span><span class="cls">salesforce:upsert</span><span class="op">&gt;</span>
+
+<span class="cmt">&lt;!-- Subscribe to Platform Events from Salesforce --&gt;</span>
+<span class="op">&lt;</span><span class="cls">salesforce:subscribe-topic-listener</span>
+  config-ref=<span class="str">"Salesforce_Config"</span>
+  topic=<span class="str">"/event/Order_Created__e"</span><span class="op">&gt;</span>
+  <span class="op">&lt;</span><span class="cls">flow</span> name=<span class="str">"handleOrderCreated"</span><span class="op">&gt;</span>
+    <span class="cmt">&lt;!-- Transform + route to ERP --&gt;</span>
+    <span class="op">&lt;</span><span class="cls">ee:transform</span> doc:name=<span class="str">"Map to ERP format"</span><span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="cls">ee:message</span><span class="op">&gt;&lt;</span><span class="cls">ee:set-payload</span><span class="op">&gt;</span>
+        %dw 2.0
+        output application/json
+        ---
+        { orderId: payload.Order_Id__c, amount: payload.Amount__c }
+      <span class="op">&lt;/</span><span class="cls">ee:set-payload</span><span class="op">&gt;&lt;/</span><span class="cls">ee:message</span><span class="op">&gt;</span>
+    <span class="op">&lt;/</span><span class="cls">ee:transform</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">http:request</span> method=<span class="str">"POST"</span> url=<span class="str">"${erp.endpoint}/orders"</span> /&gt;
+  <span class="op">&lt;/</span><span class="cls">flow</span><span class="op">&gt;</span>
+<span class="op">&lt;/</span><span class="cls">salesforce:subscribe-topic-listener</span><span class="op">&gt;</span></pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">MuleSoft Integration — Best Practices</span>
+            <span class="code-tag tag-info">Architecture</span>
+          </div>
+          <pre><span class="cmt">// ── 1. Always use External IDs for upsert — avoids SOQL in Mule ──
+// Mark Integration_Id__c as externalId=true in field metadata
+
+// ── 2. Use Bulk API 2.0 for large data volumes ──
+// Mule's salesforce:bulk-operation auto-batches into 10k-row chunks:
+//   salesforce:bulk-insert-v2 / salesforce:bulk-upsert-v2
+
+// ── 3. Handle partial success from Bulk API ──
+// Bulk API returns per-record success/failure
+// Always process salesforce:failed-records for retry logic
+
+// ── 4. JWT Bearer Token flow (no user interaction, server-to-server) ──
+// Steps:
+// a) Create Connected App with "Use digital signatures"
+// b) Upload server certificate to Connected App
+// c) Grant "Admin approved users are pre-authorized" OAuth policy
+// d) Pre-authorize your integration user in Connected App settings
+
+// ── 5. Idempotency — always design for replay ──
+// Mule may replay events on failure. Your Apex endpoint must be
+// idempotent: upsert by External ID, not insert-then-update.</pre>
+        </div>
+      </div>
+
+      <!-- REST / SOAP TAB -->
+      <div class="tab-content" id="tab-rest">
+        <div class="int-diagram">
+          <div class="int-node ext">3RD PARTY<br><div class="int-node-label">Any System</div></div>
+          <div class="int-arrow bi">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">REST API<br>JSON/XML</div>
+          </div>
+          <div class="int-node sf">SALESFORCE<br><div class="int-node-label">REST API v62.0</div></div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Inbound: Custom REST Endpoint (@RestResource)</span>
+            <span class="code-tag tag-apex">Apex</span>
+          </div>
+          <pre><span class="ann">@RestResource</span>(urlMapping=<span class="str">'/v1/accounts/*'</span>)
+<span class="kw">global with sharing class</span> <span class="cls">AccountRestService</span> {
+
+    <span class="ann">@HttpGet</span>
+    <span class="kw">global static</span> <span class="cls">AccountResponse</span> <span class="met">getAccount</span>() {
+        <span class="cls">RestRequest</span> req = RestContext.request;
+        String extId = req.requestURI.<span class="met">substringAfterLast</span>(<span class="str">'/'</span>);
+
+        <span class="kw">try</span> {
+            Account acc = [
+                <span class="kw">SELECT</span> Id, Name, AnnualRevenue, BillingCity
+                <span class="kw">FROM</span> Account
+                <span class="kw">WHERE</span> Integration_Id__c = :extId
+                <span class="kw">LIMIT</span> 1
+            ];
+            RestContext.response.statusCode = <span class="num">200</span>;
+            <span class="kw">return new</span> <span class="cls">AccountResponse</span>(<span class="kw">true</span>, acc, <span class="kw">null</span>);
+        } <span class="kw">catch</span> (<span class="cls">QueryException</span> e) {
+            RestContext.response.statusCode = <span class="num">404</span>;
+            <span class="kw">return new</span> <span class="cls">AccountResponse</span>(<span class="kw">false</span>, <span class="kw">null</span>, <span class="str">'Not found: '</span> + extId);
+        }
+    }
+
+    <span class="ann">@HttpPost</span>
+    <span class="kw">global static</span> <span class="cls">AccountResponse</span> <span class="met">upsertAccount</span>() {
+        <span class="cls">RestRequest</span> req = RestContext.request;
+        <span class="cmt">// Deserialize strongly typed — never parse JSON manually</span>
+        <span class="cls">AccountPayload</span> payload = (<span class="cls">AccountPayload</span>)
+            JSON.<span class="met">deserialize</span>(req.requestBody.<span class="met">toString</span>(), <span class="cls">AccountPayload</span>.<span class="kw">class</span>);
+
+        Account acc = <span class="kw">new</span> <span class="cls">Account</span>(
+            Name = payload.name,
+            Integration_Id__c = payload.externalId,
+            AnnualRevenue = payload.revenue
+        );
+
+        Database.<span class="cls">UpsertResult</span> result =
+            Database.<span class="met">upsert</span>(acc, <span class="cls">Account</span>.Integration_Id__c, <span class="kw">false</span>);
+
+        RestContext.response.statusCode = result.isCreated() ? <span class="num">201</span> : <span class="num">200</span>;
+        <span class="kw">return new</span> <span class="cls">AccountResponse</span>(result.isSuccess(), acc, <span class="kw">null</span>);
+    }
+
+    <span class="kw">global class</span> <span class="cls">AccountPayload</span> {
+        <span class="kw">public</span> String name, externalId;
+        <span class="kw">public</span> Decimal revenue;
+    }
+    <span class="kw">global class</span> <span class="cls">AccountResponse</span> {
+        <span class="kw">public</span> Boolean success;
+        <span class="kw">public</span> Account record;
+        <span class="kw">public</span> String error;
+        <span class="kw">public</span> <span class="cls">AccountResponse</span>(Boolean s, Account r, String e) {
+            this.success=s; this.record=r; this.error=e;
+        }
+    }
+}</pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Outbound: Apex HTTP Callout with Named Credential</span>
+            <span class="code-tag tag-apex">Apex</span>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">ErpIntegrationService</span> {
+
+    <span class="cmt">// Named Credential handles auth — no secrets in code</span>
+    <span class="kw">private static final</span> String ENDPOINT =
+        <span class="str">'callout:ERP_API/api/v2/orders'</span>;
+
+    <span class="ann">@future(callout=true)</span>  <span class="cmt">// Required if called from trigger</span>
+    <span class="kw">public static void</span> <span class="met">syncOrderAsync</span>(String orderId) {
+        <span class="cls">Order__c</span> ord = [
+            <span class="kw">SELECT</span> Id, Name, Total__c, Status__c
+            <span class="kw">FROM</span> Order__c <span class="kw">WHERE</span> Id = :orderId
+        ];
+
+        HttpRequest req = <span class="kw">new</span> <span class="cls">HttpRequest</span>();
+        req.<span class="met">setEndpoint</span>(ENDPOINT);
+        req.<span class="met">setMethod</span>(<span class="str">'POST'</span>);
+        req.<span class="met">setHeader</span>(<span class="str">'Content-Type'</span>, <span class="str">'application/json'</span>);
+        req.<span class="met">setHeader</span>(<span class="str">'X-Idempotency-Key'</span>, ord.Id);  <span class="cmt">// Prevent duplicates</span>
+        req.<span class="met">setTimeout</span>(<span class="num">30000</span>);  <span class="cmt">// 30s — always set explicit timeout</span>
+
+        Map&lt;String, Object&gt; body = <span class="kw">new</span> Map&lt;String, Object&gt;{
+            <span class="str">'sfId'</span>    => ord.Id,
+            <span class="str">'name'</span>    => ord.Name,
+            <span class="str">'total'</span>   => ord.Total__c,
+            <span class="str">'status'</span>  => ord.Status__c
+        };
+        req.<span class="met">setBody</span>(JSON.<span class="met">serialize</span>(body));
+
+        HttpResponse res = <span class="kw">new</span> Http().<span class="met">send</span>(req);
+
+        <span class="kw">if</span> (res.<span class="met">getStatusCode</span>() == <span class="num">200</span> || res.<span class="met">getStatusCode</span>() == <span class="num">201</span>) {
+            Map&lt;String, Object&gt; resp =
+                (Map&lt;String, Object&gt;) JSON.<span class="met">deserializeUntyped</span>(res.<span class="met">getBody</span>());
+            ord.ERP_Order_Id__c = (String) resp.<span class="met">get</span>(<span class="str">'erpId'</span>);
+            <span class="met">update</span> ord;
+        } <span class="kw">else</span> {
+            <span class="cmt">// Log to custom Error_Log__c object for monitoring</span>
+            <span class="cls">ErrorLogger</span>.<span class="met">log</span>(<span class="str">'ERP Sync'</span>, res.<span class="met">getStatus</span>(), res.<span class="met">getBody</span>(), orderId);
+        }
+    }
+}</pre>
+        </div>
+      </div>
+
+      <!-- PLATFORM EVENTS TAB -->
+      <div class="tab-content" id="tab-events">
+        <div class="int-diagram">
+          <div class="int-node sf">SALESFORCE<br><div class="int-node-label">Publisher</div></div>
+          <div class="int-arrow">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">Platform Event<br>Order_Created__e</div>
+          </div>
+          <div class="int-node heroku">EVENT BUS<br><div class="int-node-label">Pub/Sub API (gRPC)</div></div>
+          <div class="int-arrow">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">Subscribe<br>Any language</div>
+          </div>
+          <div class="int-node ext">CONSUMERS<br><div class="int-node-label">MuleSoft · Node · Python</div></div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Publish Platform Event from Apex</span>
+            <span class="code-tag tag-apex">Apex</span>
+          </div>
+          <pre><span class="cmt">// Platform Events: decoupled, reliable, cross-system messaging
+// EventBus.publish() does NOT consume DML statement limits
+// Events are committed only if transaction succeeds</span>
+
+<span class="kw">public class</span> <span class="cls">OrderEventService</span> {
+
+    <span class="kw">public static void</span> <span class="met">publishOrderCreated</span>(List&lt;<span class="cls">Order__c</span>&gt; orders) {
+        List&lt;<span class="cls">Order_Created__e</span>&gt; events = <span class="kw">new</span> List&lt;<span class="cls">Order_Created__e</span>&gt;();
+        <span class="kw">for</span> (<span class="cls">Order__c</span> ord : orders) {
+            events.<span class="met">add</span>(<span class="kw">new</span> <span class="cls">Order_Created__e</span>(
+                Order_Id__c     = ord.Id,
+                Account_Id__c   = ord.AccountId,
+                Total_Amount__c = ord.Total__c,
+                Currency__c     = ord.CurrencyIsoCode,
+                Created_By__c   = UserInfo.<span class="met">getUserId</span>()
+            ));
+        }
+
+        List&lt;<span class="cls">Database.SaveResult</span>&gt; results =
+            EventBus.<span class="met">publish</span>(events);
+
+        <span class="kw">for</span> (Integer i = <span class="num">0</span>; i &lt; results.<span class="met">size</span>(); i++) {
+            <span class="kw">if</span> (!results[i].isSuccess()) {
+                System.<span class="met">debug</span>(<span class="str">'Event publish failed: '</span> +
+                    results[i].getErrors()[<span class="num">0</span>].getMessage());
+            }
+        }
+    }
+
+    <span class="cmt">// Subscribe in Apex trigger on the Platform Event object</span>
+    <span class="cmt">// trigger OrderCreatedTrigger on Order_Created__e (after insert) {</span>
+    <span class="cmt">//     for (Order_Created__e evt : Trigger.new) {</span>
+    <span class="cmt">//         ErpIntegrationService.syncOrderAsync(evt.Order_Id__c);</span>
+    <span class="cmt">//     }                                                            }</span>
+}</pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Subscribe via Pub/Sub API (Python gRPC client)</span>
+            <span class="code-tag tag-info">Python</span>
+          </div>
+          <pre><span class="cmt"># Salesforce Pub/Sub API — real-time event stream via gRPC
+# pip install salesforce-pubsub-client grpcio</span>
+
+<span class="kw">import</span> grpc
+<span class="kw">from</span> pubsub_api_pb2_grpc <span class="kw">import</span> PubSubStub
+<span class="kw">from</span> pubsub_api_pb2 <span class="kw">import</span> FetchRequest
+
+<span class="kw">def</span> <span class="met">subscribe_to_orders</span>(access_token: str, instance_url: str):
+    channel = grpc.<span class="met">secure_channel</span>(
+        <span class="str">'api.pubsub.salesforce.com:7443'</span>,
+        grpc.<span class="met">ssl_channel_credentials</span>()
+    )
+    stub = <span class="cls">PubSubStub</span>(channel)
+
+    <span class="kw">def</span> <span class="met">fetch_req_stream</span>():
+        <span class="kw">yield</span> <span class="cls">FetchRequest</span>(
+            topic_name=<span class="str">'/event/Order_Created__e'</span>,
+            replay_preset=<span class="num">2</span>,         <span class="cmt"># LATEST = 2, EARLIEST = 0</span>
+            num_requested=<span class="num">100</span>
+        )
+
+    metadata = [
+        (<span class="str">'accesstoken'</span>, access_token),
+        (<span class="str">'instanceurl'</span>, instance_url),
+        (<span class="str">'tenantid'</span>, <span class="str">'your-org-id'</span>)
+    ]
+
+    <span class="kw">for</span> event <span class="kw">in</span> stub.<span class="met">Subscribe</span>(<span class="met">fetch_req_stream</span>(), metadata=metadata):
+        <span class="cmt"># Decode Avro-encoded payload</span>
+        decoded = avro.<span class="met">decode</span>(event.events[<span class="num">0</span>].event.payload)
+        print(<span class="str">f"Order received: {decoded['Order_Id__c']}"</span>)
+        <span class="cmt"># Route to ERP, warehouse, etc.</span>
+        route_to_erp(decoded)</pre>
+        </div>
+      </div>
+
+      <!-- ETL / 3RD PARTY TAB -->
+      <div class="tab-content" id="tab-etl">
+        <div class="int-diagram">
+          <div class="int-node ext">DATA SOURCE<br><div class="int-node-label">DB · S3 · SaaS API</div></div>
+          <div class="int-arrow">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">Extract<br>Transform</div>
+          </div>
+          <div class="int-node kafka">MIDDLEWARE<br><div class="int-node-label">Informatica · Boomi · Fivetran</div></div>
+          <div class="int-arrow">
+            <div class="int-arrow-line"></div>
+            <div class="int-arrow-label">Bulk API 2.0<br>Upsert by Ext ID</div>
+          </div>
+          <div class="int-node sf">SALESFORCE<br><div class="int-node-label">Load Target</div></div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Bulk API 2.0 — Direct HTTP (Python)</span>
+            <span class="code-tag tag-info">Python</span>
+          </div>
+          <pre><span class="kw">import</span> requests, time
+
+<span class="kw">class</span> <span class="cls">BulkAPIClient</span>:
+    <span class="kw">def</span> <span class="met">__init__</span>(self, instance_url: str, access_token: str):
+        self.base = <span class="str">f"{instance_url}/services/data/v62.0/jobs/ingest"</span>
+        self.headers = {
+            <span class="str">'Authorization'</span>: <span class="str">f'Bearer {access_token}'</span>,
+            <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>
+        }
+
+    <span class="kw">def</span> <span class="met">upsert_records</span>(self, obj: str, ext_id_field: str, csv_data: str):
+        <span class="cmt"># 1. Create Bulk Job</span>
+        job = requests.<span class="met">post</span>(self.base, json={
+            <span class="str">'object'</span>: obj,
+            <span class="str">'operation'</span>: <span class="str">'upsert'</span>,
+            <span class="str">'externalIdFieldName'</span>: ext_id_field,
+            <span class="str">'lineEnding'</span>: <span class="str">'LF'</span>,
+            <span class="str">'contentType'</span>: <span class="str">'CSV'</span>
+        }, headers=self.headers).<span class="met">json</span>()
+        job_id = job[<span class="str">'id'</span>]
+
+        <span class="cmt"># 2. Upload CSV data</span>
+        requests.<span class="met">put</span>(
+            <span class="str">f"{self.base}/{job_id}/batches"</span>,
+            data=csv_data,
+            headers={**self.headers, <span class="str">'Content-Type'</span>: <span class="str">'text/csv'</span>}
+        )
+
+        <span class="cmt"># 3. Close job to start processing</span>
+        requests.<span class="met">patch</span>(<span class="str">f"{self.base}/{job_id}"</span>,
+            json={<span class="str">'state'</span>: <span class="str">'UploadComplete'</span>}, headers=self.headers)
+
+        <span class="cmt"># 4. Poll until complete</span>
+        <span class="kw">while True</span>:
+            status = requests.<span class="met">get</span>(
+                <span class="str">f"{self.base}/{job_id}"</span>, headers=self.headers).<span class="met">json</span>()
+            <span class="kw">if</span> status[<span class="str">'state'</span>] <span class="kw">in</span> [<span class="str">'JobComplete'</span>, <span class="str">'Failed'</span>, <span class="str">'Aborted'</span>]:
+                <span class="kw">break</span>
+            time.<span class="met">sleep</span>(<span class="num">5</span>)
+
+        <span class="cmt"># 5. Get failed records for retry</span>
+        failed = requests.<span class="met">get</span>(
+            <span class="str">f"{self.base}/{job_id}/failedResults"</span>,
+            headers={**self.headers, <span class="str">'Accept'</span>: <span class="str">'text/csv'</span>})
+        <span class="kw">return</span> {<span class="str">'status'</span>: status, <span class="str">'failed_csv'</span>: failed.text}</pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">3rd-Party Integration Checklist</span>
+            <span class="code-tag tag-info">Architecture</span>
+          </div>
+          <pre><span class="cmt">// ── Authentication ──────────────────────────────────────────────
+// ✅ Use Connected App + OAuth 2.0 JWT Bearer for server-to-server
+// ✅ Store tokens in Named Credentials — never in Custom Settings
+// ✅ Rotate certificates annually; use short-lived access tokens
+// ✅ Grant minimum required OAuth scopes (api, refresh_token, etc.)
+
+// ── Data Sync Strategy ──────────────────────────────────────────
+// ✅ Always upsert by External ID — never query-then-insert
+// ✅ External ID fields: set externalId=true + unique=true in metadata
+// ✅ Use Bulk API 2.0 for > 2,000 records (not REST /sobjects/...)
+// ✅ Implement retry with exponential backoff for transient failures
+
+// ── Error Handling & Observability ──────────────────────────────
+// ✅ Log all API requests/responses to Integration_Log__c object
+// ✅ Use Platform Events to signal failures to monitoring systems
+// ✅ Never lose data: failed records → retry queue → dead letter queue
+// ✅ Alert on error rate > threshold via flow or Apex Batch
+
+// ── Common 3rd-Party Patterns ───────────────────────────────────
+// Informatica Cloud: Use Salesforce V2 connector; enable bulk mode
+// Boomi AtomSphere:  Use Dynamic Document Properties for Ext IDs
+// Fivetran / Census: Read-only Connected App; SF as sync destination
+// Heroku Connect:    Bidirectional DB sync; set "Write to Salesforce"
+// MuleSoft Anypoint: Use DataWeave for transform; streaming for events
+
+// ── Rate Limits to Know ─────────────────────────────────────────
+// REST API: 1,000 req/user/hour (Enterprise), burst to ~5x
+// Bulk API 2.0: 150MB/job, 15,000 batches/day
+// Streaming/Events: 200,000 event deliveries/24hr (Enterprise)</pre>
+        </div>
+      </div>
+    
+    </section>
+  </main>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>

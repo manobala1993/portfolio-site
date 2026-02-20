@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Patterns - SF Dev Toolkit</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@300;700;900&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --sf-blue: #00A1E0;
+    --sf-cloud: #032D60;
+    --sf-lightning: #FFB75D;
+    --sf-green: #04844B;
+    --sf-red: #C23934;
+    --sf-purple: #7B5EA7;
+    --bg: #050E1A;
+    --surface: #0A1929;
+    --surface2: #0D2137;
+    --border: rgba(0,161,224,0.18);
+    --text: #E8F4FD;
+    --muted: #7BA6BF;
+    --mono: 'Space Mono', monospace;
+    --display: 'Unbounded', sans-serif;
+  }
+
+  /* LIGHT THEME */
+  body.light-theme {
+    --bg: #F8FAFB;
+    --surface: #FFFFFF;
+    --surface2: #F3F6F8;
+    --border: rgba(0,161,224,0.2);
+    --text: #0A1929;
+    --muted: #4A6D84;
+  }
+
+  body.light-theme {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,161,224,0.08) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,161,224,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,161,224,0.03) 40px);
+  }
+
+  /* THEME TOGGLE BUTTON */
+  .theme-toggle {
+    background: rgba(0,161,224,0.1);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: auto;
+    margin-right: 16px;
+  }
+  .theme-toggle:hover {
+    background: rgba(0,161,224,0.2);
+    border-color: var(--sf-blue);
+    transform: rotate(180deg);
+  }
+  .theme-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,161,224,0.12) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,161,224,0.04) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,161,224,0.04) 40px);
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(5,14,26,0.9);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo-ring {
+    width: 38px; height: 38px;
+    border: 2px solid var(--sf-blue);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    animation: pulse-ring 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,161,224,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(0,161,224,0); }
+  }
+
+  .header-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--sf-blue);
+  }
+  .header-sub { color: var(--muted); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .version-badge {
+    margin-left: auto;
+    background: rgba(0,161,224,0.1);
+    border: 1px solid var(--border);
+    color: var(--sf-blue);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* MAIN LAYOUT */
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 70px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    background: rgba(10,25,41,0.7);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
+
+  .sidebar-section {
+    padding: 6px 16px 2px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 16px;
+  }
+  .sidebar-section:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 12px;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    letter-spacing: 0.02em;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(0,161,224,0.06); }
+  .nav-item.active {
+    color: var(--sf-blue);
+    border-left-color: var(--sf-blue);
+    background: rgba(0,161,224,0.1);
+  }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* CONTENT */
+  .content { padding: 36px 40px; max-width: 960px; }
+
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .panel-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--sf-blue);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .panel-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .panel-desc { color: var(--muted); margin-top: 10px; line-height: 1.7; font-size: 12px; }
+
+  /* CODE BLOCKS */
+  .code-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sf-blue);
+    font-family: var(--display);
+    font-weight: 700;
+  }
+
+  .code-tag {
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
+  .tag-apex { background: rgba(0,161,224,0.15); color: var(--sf-blue); border: 1px solid rgba(0,161,224,0.3); }
+  .tag-soql { background: rgba(4,132,75,0.15); color: #06D670; border: 1px solid rgba(4,132,75,0.3); }
+  .tag-lwc { background: rgba(255,183,93,0.15); color: var(--sf-lightning); border: 1px solid rgba(255,183,93,0.3); }
+  .tag-warn { background: rgba(194,57,52,0.15); color: #FF6B6B; border: 1px solid rgba(194,57,52,0.3); }
+  .tag-good { background: rgba(4,132,75,0.15); color: #06D670; border: 1px solid rgba(4,132,75,0.3); }
+  .tag-info { background: rgba(123,94,167,0.15); color: #B89DDF; border: 1px solid rgba(123,94,167,0.3); }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    line-height: 1.75;
+    font-size: 12px;
+    font-family: var(--mono);
+  }
+
+  .kw { color: #7FD1FF; }
+  .str { color: #A8FF78; }
+  .num { color: var(--sf-lightning); }
+  .cmt { color: #4A6D84; font-style: italic; }
+  .cls { color: #FFB3E6; }
+  .met { color: #79D9F8; }
+  .ann { color: #B89DDF; }
+  .op { color: var(--muted); }
+
+  /* GOVERNOR LIMITS TABLE */
+  .limits-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .limit-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  .limit-row:hover { border-color: rgba(0,161,224,0.4); }
+
+  .limit-name { font-size: 12px; color: var(--text); }
+  .limit-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .limit-val {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 15px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .limit-bar-wrap { width: 80px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; }
+  .limit-bar { height: 100%; border-radius: 2px; }
+
+  /* PATTERN CARDS */
+  .pattern-grid { display: grid; gap: 20px; }
+
+  .pattern-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .pattern-card:hover { border-color: rgba(0,161,224,0.4); transform: translateY(-2px); }
+
+  .pattern-top {
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pattern-name { font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--text); }
+  .pattern-why { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; display: grid; gap: 8px; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .check-icon { flex-shrink: 0; margin-top: 1px; }
+  .check-icon.pass { color: #06D670; }
+  .check-icon.warn { color: var(--sf-lightning); }
+  .check-icon.fail { color: #FF6B6B; }
+
+  /* SEARCH BAR */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 12px 16px 12px 40px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .search-input:focus { border-color: var(--sf-blue); }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+
+  /* SOQL BUILDER */
+  .soql-builder {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .soql-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .field-select, .field-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 9px 12px;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .field-select:focus, .field-input:focus { border-color: var(--sf-blue); }
+  .field-select option { background: var(--bg); }
+
+  .soql-output {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    font-size: 12px;
+    color: var(--sf-blue);
+    letter-spacing: 0.05em;
+    min-height: 48px;
+    transition: all 0.3s;
+    word-break: break-all;
+  }
+
+  .gen-btn {
+    margin-top: 16px;
+    background: var(--sf-blue);
+    color: var(--bg);
+    border: none;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 11px 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gen-btn:hover { background: #30B8F0; transform: translateY(-1px); }
+
+  /* TRIGGER FRAMEWORK */
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.1em;
+  }
+  .copy-btn:hover { border-color: var(--sf-blue); color: var(--sf-blue); }
+  .copy-btn.copied { border-color: #06D670; color: #06D670; }
+
+  /* STATUS INDICATOR */
+  .status-strip {
+    display: flex;
+    gap: 24px;
+    padding: 12px 20px;
+    background: rgba(0,161,224,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 28px;
+  }
+  .status-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #06D670; box-shadow: 0 0 6px #06D670; animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* INTEGRATION DIAGRAM */
+  .int-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .int-node {
+    flex-shrink: 0;
+    min-width: 110px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 11px;
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border: 1px solid;
+  }
+  .int-node.sf { background: rgba(0,161,224,0.12); border-color: var(--sf-blue); color: var(--sf-blue); }
+  .int-node.mule { background: rgba(0,178,124,0.12); border-color: #00B27C; color: #00B27C; }
+  .int-node.ext { background: rgba(255,183,93,0.12); border-color: var(--sf-lightning); color: var(--sf-lightning); }
+  .int-node.heroku { background: rgba(123,94,167,0.12); border-color: #7B5EA7; color: #B89DDF; }
+  .int-node.kafka { background: rgba(194,57,52,0.12); border-color: var(--sf-red); color: #FF8A8A; }
+  .int-node-label { font-size: 9px; font-weight: 400; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: 0.1em; }
+  .int-arrow {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 4px;
+    gap: 3px;
+    min-width: 60px;
+  }
+  .int-arrow-line {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--border), rgba(0,161,224,0.4), var(--border));
+    position: relative;
+  }
+  .int-arrow-line::after { content: '▶'; position: absolute; right: -5px; top: -7px; font-size: 9px; color: var(--muted); }
+  .int-arrow-label { font-size: 9px; color: var(--muted); letter-spacing: 0.06em; text-align: center; white-space: nowrap; }
+  .int-arrow.bi .int-arrow-line::before { content: '◀'; position: absolute; left: -5px; top: -7px; font-size: 9px; color: var(--muted); }
+
+  /* TAB PILLS */
+  .tab-pills { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+  .tab-pill {
+    padding: 8px 18px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+    font-family: var(--display);
+    font-weight: 700;
+  }
+  .tab-pill:hover { color: var(--text); }
+  .tab-pill.active { color: var(--sf-blue); border-bottom-color: var(--sf-blue); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+
+  /* FLOW DEBUG STEPS */
+  .flow-steps { display: grid; gap: 12px; margin-bottom: 24px; }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  .flow-step:hover { border-color: rgba(0,161,224,0.35); }
+  .flow-step-num {
+    width: 36px; height: 36px;
+    border: 1px solid var(--sf-blue);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--sf-blue);
+    flex-shrink: 0;
+  }
+  .flow-step-title { font-family: var(--display); font-weight: 700; font-size: 12px; color: var(--text); margin-bottom: 4px; }
+  .flow-step-desc { font-size: 11px; color: var(--muted); line-height: 1.65; }
+  .flow-step-tip { margin-top: 8px; padding: 8px 12px; background: rgba(255,183,93,0.08); border-left: 2px solid var(--sf-lightning); font-size: 10px; color: var(--sf-lightning); line-height: 1.6; }
+
+  /* METADATA GRID */
+  .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .meta-card:hover { border-color: rgba(0,161,224,0.4); transform: translateY(-2px); }
+  .meta-type { font-family: var(--display); font-weight: 700; font-size: 11px; color: var(--sf-blue); margin-bottom: 4px; letter-spacing: 0.05em; }
+  .meta-file { font-size: 10px; color: var(--sf-lightning); font-style: italic; margin-bottom: 6px; }
+  .meta-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+  /* DECISION MATRIX */
+  .decision-scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .scenario-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: rgba(0,161,224,0.15);
+    border: 1px solid var(--sf-blue);
+  }
+  .scenario-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .decision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .decision-option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .decision-option:hover {
+    border-color: rgba(0,161,224,0.4);
+    transform: translateY(-2px);
+  }
+  .decision-option.winner {
+    border-color: var(--sf-blue);
+    background: rgba(0,161,224,0.06);
+  }
+  .decision-option.avoid {
+    border-color: rgba(194,57,52,0.4);
+    opacity: 0.6;
+  }
+  .option-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .option-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .option-name.flow { color: #FFB75D; }
+  .option-name.apex { color: var(--sf-blue); }
+  .option-name.mule { color: #00B27C; }
+  .verdict-badge {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-family: var(--display);
+  }
+  .verdict-badge.best {
+    background: rgba(0,161,224,0.2);
+    color: var(--sf-blue);
+    border: 1px solid var(--sf-blue);
+  }
+  .verdict-badge.ok {
+    background: rgba(255,183,93,0.15);
+    color: var(--sf-lightning);
+    border: 1px solid rgba(255,183,93,0.4);
+  }
+  .verdict-badge.avoid {
+    background: rgba(194,57,52,0.15);
+    color: #FF6B6B;
+    border: 1px solid rgba(194,57,52,0.4);
+  }
+  .option-reasons {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+  }
+  .reason {
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .reason-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 10px;
+  }
+  .reason-icon.pro { color: #06D670; }
+  .reason-icon.con { color: #FF6B6B; }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .compare-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-header-cell {
+    background: var(--surface2);
+    padding: 12px 16px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .compare-header-cell:first-child { text-align: left; }
+  .compare-header-cell.flow { color: #FFB75D; }
+  .compare-header-cell.apex { color: var(--sf-blue); }
+  .compare-header-cell.mule { color: #00B27C; }
+  .compare-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-row {
+    display: contents;
+  }
+  .compare-cell {
+    background: var(--surface);
+    padding: 14px 16px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .compare-cell:first-child {
+    justify-content: flex-start;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .compare-cell.rating-high { color: #06D670; }
+  .compare-cell.rating-med { color: var(--sf-lightning); }
+  .compare-cell.rating-low { color: #FF6B6B; }
+
+  /* APEX BUILDER */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .template-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .template-card:hover {
+    border-color: var(--sf-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,161,224,0.15);
+  }
+  .template-card.selected {
+    border-color: var(--sf-blue);
+    background: rgba(0,161,224,0.08);
+  }
+  .template-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  .template-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .template-desc {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .template-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 8px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: rgba(0,161,224,0.15);
+    color: var(--sf-blue);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .config-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .config-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sf-blue);
+    margin-bottom: 16px;
+  }
+  .config-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .config-row.full {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--sf-blue);
+  }
+  .checkbox-item label {
+    font-size: 11px;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .method-list {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .method-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .method-sig {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--sf-blue);
+  }
+  .method-remove {
+    background: transparent;
+    border: 1px solid rgba(194,57,52,0.4);
+    color: #FF6B6B;
+    font-size: 9px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .method-remove:hover {
+    background: rgba(194,57,52,0.15);
+    border-color: #FF6B6B;
+  }
+
+  .add-method-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .add-method-btn:hover {
+    border-color: var(--sf-blue);
+    color: var(--sf-blue);
+    border-style: solid;
+  }
+
+  .generate-btn {
+    background: var(--sf-blue);
+    color: var(--bg);
+    border: none;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .generate-btn:hover {
+    background: #30B8F0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,161,224,0.3);
+  }
+
+  /* MULESOFT HANDBOOK */
+  .edge-case-card {
+    background: var(--surface);
+    border-left: 4px solid var(--sf-lightning);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .edge-case-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .edge-case-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    background: rgba(255,183,93,0.15);
+    border: 1px solid var(--sf-lightning);
+  }
+  .edge-case-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .edge-case-scenario {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .solution-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .solution-tab {
+    padding: 8px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .solution-tab:hover { color: var(--text); }
+  .solution-tab.active { color: var(--sf-blue); border-bottom-color: var(--sf-blue); }
+  .solution-content { display: none; padding: 16px 0; }
+  .solution-content.active { display: block; }
+  .solution-content h4 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--sf-blue);
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .solution-content p {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .solution-content ul {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .solution-content li {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .solution-content li::before {
+    content: '→';
+    color: var(--sf-blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .best-practice-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .bp-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bp-icon {
+    font-size: 24px;
+  }
+  .bp-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .bp-list {
+    display: grid;
+    gap: 12px;
+  }
+  .bp-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .bp-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: rgba(6,214,112,0.15);
+    color: #06D670;
+    border: 1px solid #06D670;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .bp-text {
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .bp-detail {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .warning-box {
+    background: rgba(194,57,52,0.08);
+    border-left: 3px solid var(--sf-red);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .warning-box-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    color: #FF6B6B;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .warning-box-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .info-box {
+    background: rgba(0,161,224,0.06);
+    border-left: 3px solid var(--sf-blue);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .info-box-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--sf-blue);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .info-box-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* LWC LIFECYCLE GRID */
+  .lifecycle-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .lifecycle-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .lifecycle-card:hover { border-color: rgba(0,161,224,0.4); }
+  .lifecycle-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--sf-blue);
+    margin-bottom: 8px;
+  }
+  .lifecycle-when {
+    font-size: 10px;
+    color: var(--sf-lightning);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .lifecycle-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .lifecycle-use {
+    font-size: 10px;
+    color: var(--text);
+    background: rgba(0,161,224,0.06);
+    padding: 8px 12px;
+    border-radius: 3px;
+    border-left: 2px solid var(--sf-blue);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; display: flex; flex-wrap: wrap; padding: 12px; gap: 4px; }
+    .nav-item { padding: 8px 12px; border-left: none; border-bottom: 2px solid transparent; }
+    .nav-item.active { border-left: none; border-bottom-color: var(--sf-blue); }
+    .content { padding: 24px 20px; }
+    .soql-row { grid-template-columns: 1fr; }
+    .limit-row { grid-template-columns: 1fr auto; }
+    .limit-bar-wrap { display: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-ring">⚡</div>
+  <div>
+    <div class="header-title">SF DEV TOOLKIT</div>
+    <div class="header-sub">Apex · SOQL · LWC · Patterns</div>
+  </div>
+  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+    <span class="theme-icon" id="theme-icon">☀️</span>
+  </button>
+  <div class="version-badge">API v62.0</div>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-section">Core</div>
+    <a href="governor-limits.html" class="nav-item">
+      <span class="nav-dot"></span>Governor Limits
+    </a>
+    <a href="apex-patterns.html" class="nav-item active">
+      <span class="nav-dot"></span>Apex Patterns
+    </a>
+    <a href="soql-builder.html" class="nav-item">
+      <span class="nav-dot"></span>SOQL Builder
+    </a>
+    <a href="apex-builder.html" class="nav-item">
+      <span class="nav-dot"></span>Apex Builder
+    </a>
+    <div class="sidebar-section">Architecture</div>
+    <a href="decision-matrix.html" class="nav-item">
+      <span class="nav-dot"></span>Decision Matrix
+    </a>
+    <a href="trigger-framework.html" class="nav-item">
+      <span class="nav-dot"></span>Trigger Framework
+    </a>
+    <a href="lwc-patterns.html" class="nav-item">
+      <span class="nav-dot"></span>LWC Patterns
+    </a>
+    <div class="sidebar-section">Quality</div>
+    <a href="code-review.html" class="nav-item">
+      <span class="nav-dot"></span>Code Review
+    </a>
+    <a href="test-patterns.html" class="nav-item">
+      <span class="nav-dot"></span>Test Patterns
+    </a>
+    <div class="sidebar-section">Integrations</div>
+    <a href="mulesoft-handbook.html" class="nav-item">
+      <span class="nav-dot"></span>MuleSoft Handbook
+    </a>
+    <a href="metadata-api.html" class="nav-item">
+      <span class="nav-dot"></span>Metadata API
+    </a>
+    <a href="flow-debugging.html" class="nav-item">
+      <span class="nav-dot"></span>Flow Debugging
+    </a>
+    <a href="integration-patterns.html" class="nav-item">
+      <span class="nav-dot"></span>Integration Patterns
+    </a>
+  </nav>
+
+  <main class="content">
+    <section class="panel active" id="apex">
+
+      <div class="panel-header">
+        <div class="panel-eyebrow">Best Practices</div>
+        <div class="panel-title">Apex Design Patterns</div>
+        <div class="panel-desc">Production-grade patterns for bulkification, error handling, and scalable architecture.</div>
+      </div>
+
+      <div class="pattern-grid">
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">✅ Bulkified Service Class</span>
+            <div style="display:flex;gap:8px">
+              <span class="code-tag tag-good">GOOD</span>
+              <span class="code-tag tag-apex">Apex</span>
+            </div>
+          </div>
+          <pre><span class="ann">public class</span> <span class="cls">AccountService</span> {
+
+    <span class="cmt">// One SOQL for the entire batch — never query inside a loop</span>
+    <span class="kw">public static void</span> <span class="met">enrichAccounts</span>(List&lt;<span class="cls">Account</span>&gt; accounts) {
+        Set&lt;<span class="cls">Id</span>&gt; accountIds = <span class="kw">new</span> <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt;();
+        <span class="kw">for</span> (<span class="cls">Account</span> acc : accounts) {
+            accountIds.<span class="met">add</span>(acc.Id);
+        }
+
+        <span class="cmt">// Aggregate child data in one query</span>
+        Map&lt;<span class="cls">Id</span>, <span class="cls">AggregateResult</span>[]&gt; oppMap = <span class="kw">new</span> Map&lt;<span class="cls">Id</span>, <span class="cls">AggregateResult</span>[]&gt;();
+        <span class="kw">for</span> (<span class="cls">AggregateResult</span> ar : [
+            <span class="kw">SELECT</span> AccountId, <span class="kw">COUNT</span>(Id) cnt, <span class="kw">SUM</span>(Amount) total
+            <span class="kw">FROM</span> <span class="cls">Opportunity</span>
+            <span class="kw">WHERE</span> AccountId <span class="kw">IN</span> :accountIds
+            <span class="kw">AND</span> StageName = <span class="str">'Closed Won'</span>
+            <span class="kw">GROUP BY</span> AccountId
+        ]) {
+            <span class="cls">Id</span> accId = (<span class="cls">Id</span>) ar.<span class="met">get</span>(<span class="str">'AccountId'</span>);
+            <span class="kw">if</span> (!oppMap.<span class="met">containsKey</span>(accId)) {
+                oppMap.<span class="met">put</span>(accId, <span class="kw">new</span> <span class="cls">AggregateResult</span>[]{});
+            }
+            oppMap.<span class="met">get</span>(accId).<span class="met">add</span>(ar);
+        }
+
+        List&lt;<span class="cls">Account</span>&gt; toUpdate = <span class="kw">new</span> List&lt;<span class="cls">Account</span>&gt;();
+        <span class="kw">for</span> (<span class="cls">Account</span> acc : accounts) {
+            <span class="kw">if</span> (oppMap.<span class="met">containsKey</span>(acc.Id)) {
+                <span class="cls">AggregateResult</span> ar = oppMap.<span class="met">get</span>(acc.Id)[<span class="num">0</span>];
+                acc.NumberOfEmployees = (Integer) ar.<span class="met">get</span>(<span class="str">'cnt'</span>);
+                toUpdate.<span class="met">add</span>(acc);
+            }
+        }
+
+        <span class="cmt">// Database.update with allOrNone=false for partial success</span>
+        List&lt;<span class="cls">Database.SaveResult</span>&gt; results =
+            Database.<span class="met">update</span>(toUpdate, <span class="kw">false</span>);
+
+        <span class="cls">ErrorHandler</span>.<span class="met">logSaveResults</span>(results, toUpdate);
+    }
+}</pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">❌ Anti-Pattern: SOQL In Loop</span>
+            <div style="display:flex;gap:8px">
+              <span class="code-tag tag-warn">AVOID</span>
+              <span class="code-tag tag-apex">Apex</span>
+            </div>
+          </div>
+          <pre><span class="cmt">// ❌ This hits governor limits at just 101 records!</span>
+<span class="kw">for</span> (<span class="cls">Account</span> acc : accounts) {
+    List&lt;<span class="cls">Contact</span>&gt; contacts = [
+        <span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Contact
+        <span class="kw">WHERE</span> AccountId = :acc.Id   <span class="cmt">// SOQL inside a loop!</span>
+    ];
+    acc.Description = <span class="str">'Has '</span> + contacts.<span class="met">size</span>() + <span class="str">' contacts'</span>;
+}
+
+<span class="cmt">// ✅ Fix: query once, use a Map for O(1) lookups</span>
+Map&lt;<span class="cls">Id</span>, List&lt;<span class="cls">Contact</span>&gt;&gt; contactsByAccount = <span class="kw">new</span> Map&lt;<span class="cls">Id</span>, List&lt;<span class="cls">Contact</span>&gt;&gt;();
+<span class="kw">for</span> (<span class="cls">Contact</span> c : [
+    <span class="kw">SELECT</span> Id, AccountId <span class="kw">FROM</span> Contact
+    <span class="kw">WHERE</span> AccountId <span class="kw">IN</span> :accountIds
+]) {
+    <span class="kw">if</span> (!contactsByAccount.<span class="met">containsKey</span>(c.AccountId))
+        contactsByAccount.<span class="met">put</span>(c.AccountId, <span class="kw">new</span> List&lt;<span class="cls">Contact</span>&gt;());
+    contactsByAccount.<span class="met">get</span>(c.AccountId).<span class="met">add</span>(c);
+}</pre>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-label">Batch Apex — Chunked Processing</span>
+            <div style="display:flex;gap:8px">
+              <span class="code-tag tag-info">Pattern</span>
+              <span class="code-tag tag-apex">Apex</span>
+            </div>
+          </div>
+          <pre><span class="ann">global class</span> <span class="cls">AccountBatch</span> <span class="kw">implements</span> Database.<span class="cls">Batchable</span>&lt;<span class="cls">sObject</span>&gt;,
+                                                    Database.<span class="cls">Stateful</span> {
+
+    <span class="kw">global</span> Integer processedCount = <span class="num">0</span>;  <span class="cmt">// Stateful across chunks</span>
+
+    <span class="kw">global</span> Database.<span class="cls">QueryLocator</span> <span class="met">start</span>(Database.<span class="cls">BatchableContext</span> bc) {
+        <span class="kw">return</span> Database.<span class="met">getQueryLocator</span>([
+            <span class="kw">SELECT</span> Id, Name, AnnualRevenue
+            <span class="kw">FROM</span> Account
+            <span class="kw">WHERE</span> AnnualRevenue &gt; <span class="num">0</span>
+        ]);
+    }
+
+    <span class="kw">global void</span> <span class="met">execute</span>(Database.<span class="cls">BatchableContext</span> bc,
+                          List&lt;<span class="cls">Account</span>&gt; scope) {
+        <span class="cmt">// scope size = batchSize (default 200, max 2000)</span>
+        List&lt;<span class="cls">Account</span>&gt; toUpdate = <span class="kw">new</span> List&lt;<span class="cls">Account</span>&gt;();
+        <span class="kw">for</span> (<span class="cls">Account</span> acc : scope) {
+            acc.Rating = acc.AnnualRevenue > <span class="num">1000000</span> ? <span class="str">'Hot'</span> : <span class="str">'Warm'</span>;
+            toUpdate.<span class="met">add</span>(acc);
+        }
+        <span class="met">update</span> toUpdate;
+        processedCount += scope.<span class="met">size</span>();
+    }
+
+    <span class="kw">global void</span> <span class="met">finish</span>(Database.<span class="cls">BatchableContext</span> bc) {
+        System.<span class="met">debug</span>(<span class="str">'Processed: '</span> + processedCount + <span class="str">' records'</span>);
+        <span class="cmt">// Chain another batch or send notification</span>
+    }
+}
+
+<span class="cmt">// Execute: Database.executeBatch(new AccountBatch(), 200);</span></pre>
+        </div>
+
+      </div>
+    
+    </section>
+  </main>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>

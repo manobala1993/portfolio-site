@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Order of Execution</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeIn 0.8s ease;
+  }
+  
+  .header h1 {
+    font-size: 52px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  .header h1 .salesforce { color: #00A1E0; }
+  .header h1 .order { color: #FFB75D; }
+  .header h1 .execution { color: #1a1a1a; }
+  
+  .header p {
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .diagram-container {
+    background: white;
+    border-radius: 20px;
+    padding: 60px 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.8s ease;
+  }
+  
+  .timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #00A1E0, #764ba2);
+    transform: translateX(-50%);
+  }
+  
+  .step {
+    position: relative;
+    margin-bottom: 60px;
+    animation: fadeInStep 0.6s ease backwards;
+  }
+  
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.15s; }
+  .step:nth-child(3) { animation-delay: 0.2s; }
+  .step:nth-child(4) { animation-delay: 0.25s; }
+  .step:nth-child(5) { animation-delay: 0.3s; }
+  .step:nth-child(6) { animation-delay: 0.35s; }
+  .step:nth-child(7) { animation-delay: 0.4s; }
+  .step:nth-child(8) { animation-delay: 0.45s; }
+  .step:nth-child(9) { animation-delay: 0.5s; }
+  .step:nth-child(10) { animation-delay: 0.55s; }
+  .step:nth-child(11) { animation-delay: 0.6s; }
+  .step:nth-child(12) { animation-delay: 0.65s; }
+  .step:nth-child(13) { animation-delay: 0.7s; }
+  .step:nth-child(14) { animation-delay: 0.75s; }
+  .step:nth-child(15) { animation-delay: 0.8s; }
+  .step:nth-child(16) { animation-delay: 0.85s; }
+  .step:nth-child(17) { animation-delay: 0.9s; }
+  .step:nth-child(18) { animation-delay: 0.95s; }
+  .step:nth-child(19) { animation-delay: 1s; }
+  .step:nth-child(20) { animation-delay: 1.05s; }
+  
+  .step.left .step-content {
+    margin-right: calc(50% + 40px);
+    text-align: right;
+  }
+  
+  .step.right .step-content {
+    margin-left: calc(50% + 40px);
+    text-align: left;
+  }
+  
+  .step-content {
+    background: white;
+    padding: 24px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  
+  .step-content:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border-color: #00A1E0;
+  }
+  
+  .step-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  
+  .step-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  .step-icon {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 4px solid #00A1E0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,161,224,0.3);
+  }
+  
+  /* Color coding by phase */
+  .step.phase-init .step-number { background: linear-gradient(135deg, #00A1E0, #0080B8); }
+  .step.phase-init .step-icon { border-color: #00A1E0; }
+  
+  .step.phase-before .step-number { background: linear-gradient(135deg, #10b981, #059669); }
+  .step.phase-before .step-icon { border-color: #10b981; }
+  
+  .step.phase-validation .step-number { background: linear-gradient(135deg, #FFB75D, #FF9500); }
+  .step.phase-validation .step-icon { border-color: #FFB75D; }
+  
+  .step.phase-save .step-number { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  .step.phase-save .step-icon { border-color: #ef4444; }
+  
+  .step.phase-after .step-number { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .step.phase-after .step-icon { border-color: #8b5cf6; }
+  
+  .step.phase-commit .step-number { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+  .step.phase-commit .step-icon { border-color: #06b6d4; }
+  
+  .step.phase-post .step-number { background: linear-gradient(135deg, #ec4899, #db2777); }
+  .step.phase-post .step-icon { border-color: #ec4899; }
+  
+  .legend {
+    margin-top: 60px;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .legend-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .legend-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .note {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff9e6;
+    border-left: 4px solid #FFB75D;
+    border-radius: 8px;
+  }
+  
+  .note-title {
+    font-weight: 700;
+    color: #FF9500;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .note-text {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInStep {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  @media (max-width: 768px) {
+    .header h1 { font-size: 36px; }
+    .diagram-container { padding: 30px 20px; }
+    .timeline::before { left: 30px; }
+    .step.left .step-content,
+    .step.right .step-content {
+      margin-left: 60px;
+      margin-right: 0;
+      text-align: left;
+    }
+    .step-icon {
+      left: 30px;
+      transform: translateX(0);
+    }
+    .legend { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>
+      <span class="salesforce">SALESFORCE</span> 
+      <span class="order">ORDER</span> 
+      <span class="execution">OF EXECUTION</span>
+    </h1>
+    <p>Understanding the complete transaction lifecycle</p>
+  </div>
+  
+  <div class="diagram-container">
+    <div class="timeline">
+      
+      <!-- Step 1 -->
+      <div class="step left phase-init">
+        <div class="step-icon">🗄️</div>
+        <div class="step-content">
+          <div class="step-number">Step 1</div>
+          <div class="step-title">Retrieve or Initialize Record</div>
+          <div class="step-description">Load record from database or initialize new record with default values from object definition.</div>
+        </div>
+      </div>
+      
+      <!-- Step 2 -->
+      <div class="step right phase-init">
+        <div class="step-icon">📝</div>
+        <div class="step-content">
+          <div class="step-number">Step 2</div>
+          <div class="step-title">Overwrite Existing Field Values</div>
+          <div class="step-description">System overwrites old values with values submitted in the request (from UI, API, or code).</div>
+        </div>
+      </div>
+      
+      <!-- Step 3 -->
+      <div class="step left phase-before">
+        <div class="step-icon">⚡</div>
+        <div class="step-content">
+          <div class="step-number">Step 3</div>
+          <div class="step-title">Run Before-Save Flows</div>
+          <div class="step-description">Execute record-triggered flows configured to run "before save". Can modify field values without DML.</div>
+        </div>
+      </div>
+      
+      <!-- Step 4 -->
+      <div class="step right phase-before">
+        <div class="step-icon">🔧</div>
+        <div class="step-content">
+          <div class="step-number">Step 4</div>
+          <div class="step-title">Execute Before Triggers</div>
+          <div class="step-description">Run all before insert/update triggers. Can modify record fields before they're saved to database.</div>
+        </div>
+      </div>
+      
+      <!-- Step 5 -->
+      <div class="step left phase-validation">
+        <div class="step-icon">✅</div>
+        <div class="step-content">
+          <div class="step-number">Step 5</div>
+          <div class="step-title">Perform System Validation</div>
+          <div class="step-description">Validate required fields, field formats, length limits, and standard picklist values. Throws error if validation fails.</div>
+        </div>
+      </div>
+      
+      <!-- Step 6 -->
+      <div class="step right phase-validation">
+        <div class="step-icon">🚫</div>
+        <div class="step-content">
+          <div class="step-number">Step 6</div>
+          <div class="step-title">Check for Duplicate Rules</div>
+          <div class="step-description">Run duplicate rules to identify potential duplicate records. Can block save or alert user based on configuration.</div>
+        </div>
+      </div>
+      
+      <!-- Step 7 -->
+      <div class="step left phase-save">
+        <div class="step-icon">💾</div>
+        <div class="step-content">
+          <div class="step-number">Step 7</div>
+          <div class="step-title">Save Record to Database</div>
+          <div class="step-description">Commit record to database but don't commit transaction yet. Record gets an ID if new insert.</div>
+        </div>
+      </div>
+      
+      <!-- Step 8 -->
+      <div class="step right phase-after">
+        <div class="step-icon">🔨</div>
+        <div class="step-content">
+          <div class="step-number">Step 8</div>
+          <div class="step-title">Execute After Triggers</div>
+          <div class="step-description">Run all after insert/update triggers. Record is read-only; use for creating related records or callouts.</div>
+        </div>
+      </div>
+      
+      <!-- Step 9 -->
+      <div class="step left phase-after">
+        <div class="step-icon">👥</div>
+        <div class="step-content">
+          <div class="step-number">Step 9</div>
+          <div class="step-title">Apply Assignment Rules</div>
+          <div class="step-description">Execute assignment rules for Cases and Leads to assign owner based on criteria.</div>
+        </div>
+      </div>
+      
+      <!-- Step 10 -->
+      <div class="step right phase-after">
+        <div class="step-icon">📧</div>
+        <div class="step-content">
+          <div class="step-number">Step 10</div>
+          <div class="step-title">Trigger Auto-Response Rules</div>
+          <div class="step-description">Send auto-response emails for Cases and Leads if configured.</div>
+        </div>
+      </div>
+      
+      <!-- Step 11 -->
+      <div class="step left phase-after">
+        <div class="step-icon">📋</div>
+        <div class="step-content">
+          <div class="step-number">Step 11</div>
+          <div class="step-title">Execute Workflow Rules</div>
+          <div class="step-description">Evaluate and execute workflow rules. Can trigger field updates, which may cause re-evaluation.</div>
+        </div>
+      </div>
+      
+      <!-- Step 12 -->
+      <div class="step right phase-after">
+        <div class="step-icon">📈</div>
+        <div class="step-content">
+          <div class="step-number">Step 12</div>
+          <div class="step-title">Run Escalation Rules</div>
+          <div class="step-description">Execute escalation rules for Cases to escalate based on time and criteria.</div>
+        </div>
+      </div>
+      
+      <!-- Step 13 -->
+      <div class="step left phase-after">
+        <div class="step-icon">⚙️</div>
+        <div class="step-content">
+          <div class="step-number">Step 13</div>
+          <div class="step-title">Execute Salesforce Flow Automation</div>
+          <div class="step-description">Run record-triggered flows configured as "after save". Can perform DML operations and callouts.</div>
+        </div>
+      </div>
+      
+      <!-- Step 14 -->
+      <div class="step right phase-after">
+        <div class="step-icon">🔄</div>
+        <div class="step-content">
+          <div class="step-number">Step 14</div>
+          <div class="step-title">Run After-Save Record-Triggered Flows</div>
+          <div class="step-description">Execute flows that run after record is saved. Used for asynchronous operations.</div>
+        </div>
+      </div>
+      
+      <!-- Step 15 -->
+      <div class="step left phase-after">
+        <div class="step-icon">🎫</div>
+        <div class="step-content">
+          <div class="step-number">Step 15</div>
+          <div class="step-title">Apply Entitlement Rules</div>
+          <div class="step-description">Execute entitlement processes for Cases to track service level agreements (SLAs).</div>
+        </div>
+      </div>
+      
+      <!-- Step 16 -->
+      <div class="step right phase-after">
+        <div class="step-icon">🧮</div>
+        <div class="step-content">
+          <div class="step-number">Step 16</div>
+          <div class="step-title">Update Roll-Up Summary Fields</div>
+          <div class="step-description">If record has roll-up summary fields, update parent records. May trigger parent record's order of execution.</div>
+        </div>
+      </div>
+      
+      <!-- Step 17 -->
+      <div class="step left phase-after">
+        <div class="step-icon">👴</div>
+        <div class="step-content">
+          <div class="step-number">Step 17</div>
+          <div class="step-title">Check for Grandparent Record Update</div>
+          <div class="step-description">If parent record updated, check if grandparent has roll-up summary fields and update recursively.</div>
+        </div>
+      </div>
+      
+      <!-- Step 18 -->
+      <div class="step right phase-after">
+        <div class="step-icon">🔐</div>
+        <div class="step-content">
+          <div class="step-number">Step 18</div>
+          <div class="step-title">Reevaluate Criteria-Based Sharing</div>
+          <div class="step-description">Recalculate sharing rules if record criteria changed. Updates sharing tables.</div>
+        </div>
+      </div>
+      
+      <!-- Step 19 -->
+      <div class="step left phase-commit">
+        <div class="step-icon">✔️</div>
+        <div class="step-content">
+          <div class="step-number">Step 19</div>
+          <div class="step-title">Commit All DML Operations to Database</div>
+          <div class="step-description">Transaction commits. All changes become permanent. If any error occurs before this, entire transaction rolls back.</div>
+        </div>
+      </div>
+      
+      <!-- Step 20 -->
+      <div class="step right phase-post">
+        <div class="step-icon">🚀</div>
+        <div class="step-content">
+          <div class="step-number">Step 20</div>
+          <div class="step-title">Execute Post-Commit Logic</div>
+          <div class="step-description">Run asynchronous operations: email sends, Platform Events, async Apex (@future, Queueable), outbound messages.</div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #00A1E0, #0080B8);"></div>
+        <div class="legend-text">Initialization</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #10b981, #059669);"></div>
+        <div class="legend-text">Before Save</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #FFB75D, #FF9500);"></div>
+        <div class="legend-text">Validation</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #ef4444, #dc2626);"></div>
+        <div class="legend-text">Database Save</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"></div>
+        <div class="legend-text">After Save</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"></div>
+        <div class="legend-text">Commit</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: linear-gradient(135deg, #ec4899, #db2777);"></div>
+        <div class="legend-text">Post-Commit</div>
+      </div>
+    </div>
+    
+    <!-- Important Notes -->
+    <div class="note">
+      <div class="note-title">⚠️ Critical Points</div>
+      <div class="note-text">
+        • <strong>Before triggers run before validation:</strong> They can modify field values, but system validation happens after.<br>
+        • <strong>After triggers see read-only records:</strong> Cannot modify the triggering record directly.<br>
+        • <strong>Workflow field updates cause re-evaluation:</strong> Steps 5-18 can repeat if workflow updates fields.<br>
+        • <strong>Roll-up summary updates cascade:</strong> Child record save can trigger parent's full order of execution.<br>
+        • <strong>Everything before Step 19 is in one transaction:</strong> Any error rolls back the entire operation.<br>
+        • <strong>Post-commit logic runs asynchronously:</strong> Cannot roll back if this fails.
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
